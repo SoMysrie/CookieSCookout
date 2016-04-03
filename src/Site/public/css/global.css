@@ -1,0 +1,36 @@
+html body header ,
+html body section#main ,
+html body footer
+{
+	border-style: solid ;
+	border-color: #000000 ;
+	border-width: 1px ;
+	padding: 5px;
+}
+
+html body header ,
+html body section#main 
+{
+	margin-bottom: 5px ;
+}
+
+/*****************************
+******* ONLY FOR TESTS *******
+******************************/
+
+html body header 
+{
+	font-family: 'CaviarDreams' ;
+}
+
+html body section#main 
+{
+	font-family: 'CaviarDreams' ;
+	font-weight: bold;
+}
+
+html body footer
+{
+	font-family: 'CaviarDreams' ;
+	font-style:italic;
+}

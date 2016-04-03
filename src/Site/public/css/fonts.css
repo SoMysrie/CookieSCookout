@@ -1,0 +1,27 @@
+@font-face {
+	font-family: 'CaviarDreams';
+	src: url('../font/CaviarDreams.ttf');
+	font-weight: normal; /* Pas gras */
+	font-style:  normal; /* Pas italic */
+}
+
+@font-face {
+	font-family: 'CaviarDreams';
+	src: url('../font/CaviarDreams_Bold.ttf');
+	font-weight: bold; /* En gras */
+	font-style:  normal; /* Pas italic */
+}
+
+@font-face {
+	font-family: 'CaviarDreams';
+	src: url('../font/CaviarDreams_BoldItalic.ttf');
+	font-weight: bold; /* En gras */
+	font-style:  italic; /* En italic */
+}
+
+@font-face {
+	font-family: 'CaviarDreams';
+	src: url('../font/CaviarDreams_Italic.ttf');
+	font-weight: normal; /* Pas gras */
+	font-style:  italic; /* En italic */
+}
