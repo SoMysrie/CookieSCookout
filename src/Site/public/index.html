@@ -5,12 +5,45 @@
 		<link rel="stylesheet" type="text/css" href="css/global.css">
 	</head>
 	<body>
-		<header>Entête de page</header>
-		<section id="main">
-			Contenu principale
+		<header><img src="/img/LogoCookieSCookout.png" /></header>
+		<section id="menu">
+			<div><a data-link="recipes" href="#">Recettes</a></div>
+			<div><a data-link="search" href="#">Recherche</a></div>
+			<div><a data-link="contact" href="#">Contact</a></div>
 		</section>
-		<footer>Bas de page</footer>
+		<section class="block" id="recipes">
+			<div class="recipe" data-background="/img/cooking/cooking_1.png">
+				<h1>Riz furikake revisité par Sôma</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_2.png">
+				<h1>Rôti en lamelle de boeuf à la Sôma</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_3.png">
+				<h1>Maque-Burger vite fait du Yukihira</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_4.png">
+				<h1>Maquereau onigiri chazuke du Yukihira</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_5.jpg">
+				<h1>Bento</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_6.jpg">
+				<h1>Tempura</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_7.jpg">
+				<h1>California Rolls</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_8.jpg">
+				<h1>Fish & Chips</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_9.jpg">
+				<h1>Couscous au poulet</h1>
+			</div><div class="recipe" data-background="/img/cooking/cooking_10.jpg">
+				<h1>Fajitas</h1>
+			</div>
+		</section>
+		<section class="block" id="search">
+			Recherche
+		</section>
+		<section class="block" id="contact">
+			Contact
+		</section>
+		<footer>CookieSCookout &copy; 2016 — Tous droits réservés.</footer>
 
 		<script src="/socket.io/socket.io.js"></script>
+		<script src="/js/jquery-2.2.3.min.js"></script>
+		<script src="/js/global.js"></script>
 	</body>
 </html>
