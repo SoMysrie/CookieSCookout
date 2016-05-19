@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sites>
+	<site>
+		<mainSite>http://www.marmiton.org</mainSite>
+		<searchSite>http://www.marmiton.org/recettes/recherche.aspx?s=REPLACEWITHKEYWORDS&amp;type=all</searchSite>
+		<divURLS>div [class="m_titre_resultat"] a[href][title][id]</divURLS>
+		<divVote>div [class="m_bloc_cadre"] div [class="m_content_recette_breadcrumb"]</divVote>
+		<divMark>span [class="average"]</divMark>
+	</site>
+	
+</Sites>
