@@ -52,13 +52,26 @@ public class Site {
     
 
 
-    public ArrayList<NotedReciepes> getUrls() {
+    public String getDivMark() {
+		return divMark;
+	}
+
+
+	public void setDivMark(String divMark) {
+		this.divMark = divMark;
+	}
+
+
+	public ArrayList<NotedReciepes> getUrls() {
         return urls;
     }
 
 
     public void replaceSearchSite(String s) {
         this.searchSite = this.searchSite.replace(Messages.getString("Site.ReplaceKey"), s);
+    }
+    public void reinitSearchSite(String s) {
+        this.searchSite = this.searchSite.replace(s,Messages.getString("Site.ReplaceKey"));
     }
 
     public void addURL(String s) {
