@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 
 public class XMLLoader {
 
-	public ArrayList<Site> load() {
+	public ArrayList<Site> load(String xmlPath) throws Exception {
 		ArrayList<Site> sites = new ArrayList<Site>();
 		final DocumentBuilderFactory factory = DocumentBuilderFactory
 				.newInstance();
@@ -27,7 +27,7 @@ public class XMLLoader {
 
 			final DocumentBuilder builder = factory.newDocumentBuilder();
 
-			final Document document = builder.parse(new File("conf/link.xml"));
+			final Document document = builder.parse(new File(xmlPath));
 			final Element root = document.getDocumentElement();
 
 			final NodeList nodeRoot = root.getChildNodes();
@@ -39,6 +39,8 @@ public class XMLLoader {
 
 					final Element mainSite = (Element) site.getElementsByTagName(
 							"mainSite").item(0);
+					if(mainSite.getTextContent()=="")
+						throw new Exception();
 					final Element searchSite = (Element) site.getElementsByTagName(
 							"searchSite").item(0);
 					final Element divURLS = (Element) site
@@ -47,8 +49,10 @@ public class XMLLoader {
 					.getElementsByTagName("divVote").item(0);
 					final Element divMark = (Element) site
 							.getElementsByTagName("divMark").item(0);
-
-					sites.add(new Site(mainSite.getTextContent(), searchSite.getTextContent(), divVote.getTextContent(), divMark.getTextContent(), divURLS.getTextContent()));
+					if(mainSite==null || searchSite==null ||divURLS==null ||divVote==null ||divMark==null)
+						throw new NullPointerException("An element is not in xml");
+					else
+						sites.add(new Site(mainSite.getTextContent(), searchSite.getTextContent(), divVote.getTextContent(), divMark.getTextContent(), divURLS.getTextContent()));
 				}
 			}
 		} catch (final ParserConfigurationException e) {
