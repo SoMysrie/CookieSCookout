@@ -1,4 +1,4 @@
-package testJunit.testLink;
+package testJunit.implementations;
 
 
 public class TestSite {

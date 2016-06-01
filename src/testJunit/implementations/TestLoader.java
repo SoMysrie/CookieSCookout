@@ -1,4 +1,4 @@
-package testJunit.testXML;
+package testJunit.implementations;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,7 @@ import link.Site;
 
 import org.junit.Test;
 
+import testJunit.interfaces.ITestLoader;
 import xmlLoader.XMLLoader;
 
 public class TestLoader extends TestCase implements ITestLoader {
@@ -15,7 +16,7 @@ public class TestLoader extends TestCase implements ITestLoader {
 	public void testLoadWhenOk() throws Exception  {
 		ArrayList<Site> sites;
 		XMLLoader loader = new XMLLoader();
-		sites = loader.load("src/testJunit/testXML/testOK.xml");
+		sites = loader.load("src/testJunit/xmlFiles/testOK.xml");
 		assertFalse("Not enough sites returned by XMLLoader", sites.size() < 3);
 		assertFalse("Too many sites returned by XMLLoader", sites.size() > 3);
 		int i = 1;
@@ -25,9 +26,9 @@ public class TestLoader extends TestCase implements ITestLoader {
 							+ i + " instead of : " + site.getMainSite(), site
 							.getMainSite().equals("mainSite" + i));
 			assertTrue(
-					"Search site has not been correctly initialized. Should be : searchSite"
+					"Search site has not been correctly initialized. Should be : REPLACEWITHKEYWORDS"
 							+ i + " instead of : " + site.getSearchSite(), site
-							.getSearchSite().equals("searchSite" + i));
+							.getSearchSite().equals("REPLACEWITHKEYWORDS" + i));
 			assertTrue(
 					"Div URLS has not been correctly initialized. Should be : divURLS"
 							+ i + " instead of : " + site.getDivURLS(), site
@@ -46,34 +47,17 @@ public class TestLoader extends TestCase implements ITestLoader {
 
 	@Test
 	public void testLoadWhenSmtNull() throws Exception {
-		ArrayList<Site> sites;
 		XMLLoader loader = new XMLLoader();
-		sites = loader.load("src/testJunit/testXML/okButSmtNull.xml");
-		assertFalse("Not enough sites returned by XMLLoader", sites.size() < 3);
-		assertFalse("Too many sites returned by XMLLoader", sites.size() > 3);
-		int i = 1;
-		for (Site site : sites) {
-			assertTrue(
-					"Main site has not been correctly initialized. Should be :   instead of : "
-							+ site.getMainSite(), site.getMainSite().equals(""));
-			assertTrue(
-					"Search site has not been correctly initialized. Should be : searchSite"
-							+ i + " instead of : " + site.getSearchSite(), site
-							.getSearchSite().equals("searchSite" + i));
-			assertTrue(
-					"Div URLS has not been correctly initialized. Should be : divURLS"
-							+ i + " instead of : " + site.getDivURLS(), site
-							.getDivURLS().equals("divURLS" + i));
-			assertTrue(
-					"Div vote has not been correctly initialized. Should be : divVote"
-							+ i + " instead of : " + site.getDivVote(), site
-							.getDivVote().equals("divVote" + i));
-			assertTrue(
-					"Div mark has not been correctly initialized. Should be : divMark"
-							+ i + " instead of : " + site.getDivMark(), site
-							.getDivMark().equals("divMark" + i));
-			i++;
+		try {
+			loader.load("src/testJunit/xmlFiles/okButSmtNull.xml");
+			Assert.fail("Must catch exception");
 		}
+		catch(Exception e){
+
+		}
+
+		int i = 1;
+
 	}
 
 	@Test
@@ -81,7 +65,7 @@ public class TestLoader extends TestCase implements ITestLoader {
 		
 		XMLLoader loader = new XMLLoader();
 		try {
-			loader.load("src/testJunit/testXML/xmlIncomplete.xml");
+			loader.load("src/testJunit/xmlFiles/xmlIncomplete.xml");
 			Assert.fail("Exception hasn't been thrown");
 		} catch (Exception e) {
 		}

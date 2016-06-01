@@ -1,4 +1,4 @@
-package testJunit.testSearch.interfaces;
+package testJunit.interfaces;
 
 
 public interface ITestSearch {

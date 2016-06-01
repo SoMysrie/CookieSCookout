@@ -1,4 +1,4 @@
-package testJunit;
+package testJunit.implementations;
 
 
 import junit.extensions.ActiveTestSuite;
@@ -11,8 +11,8 @@ public class MainTest extends TestCase {
 		
 		TestSuite suite = new ActiveTestSuite();
 		
-		suite.addTest(new TestSuite(testJunit.testSearch.implementations.TestSearch.class));
-		suite.addTest(new TestSuite(testJunit.testXML.implementations.TestLoader.class));
+		suite.addTest(new TestSuite(testJunit.implementations.TestSearch.class));
+		suite.addTest(new TestSuite(testJunit.implementations.TestLoader.class));
 		
 	
 		return suite;

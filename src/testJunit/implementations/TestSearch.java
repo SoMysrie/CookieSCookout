@@ -1,4 +1,4 @@
-package testJunit.testSearch.implementations;
+package testJunit.implementations;
 
 import junit.framework.TestCase;
 import link.Search;
@@ -7,14 +7,14 @@ import link.Site;
 import org.junit.Before;
 import org.junit.Test;
 
-import testJunit.testSearch.interfaces.ITestSearch;
+import testJunit.interfaces.ITestSearch;
 
 public class TestSearch extends TestCase implements ITestSearch {
 	public Search searcher = new Search();
 
 	@Test
 	public void testInitSite() {
-		Search.confPath = "src/testJunit/testSearch/xmlFiles/testOK.xml";
+		Search.confPath = "src/testJunit/xmlFiles/testOK.xml";
 		try {
 			searcher.initSites();
 			int i = 1;
@@ -33,7 +33,7 @@ public class TestSearch extends TestCase implements ITestSearch {
 			}
 
 		} catch (Exception e) {
-			// TODO Bloc catch auto-généré
+			// TODO Bloc catch auto-gï¿½nï¿½rï¿½
 			e.printStackTrace();
 		}
 
@@ -80,11 +80,9 @@ public class TestSearch extends TestCase implements ITestSearch {
 	@Test
 	public void testInitLinks() {
 		try {
-			searcher.initSites();
 			String[] keyWords = { "oignon", "citron" };
 			searcher.setKeyWords(keyWords);
 			searcher.updateResearcher();
-			searcher.initLinks();
 			int i = 1;
 			for (Site site : searcher.getSites()) {
 				assertEquals("Link not properly initialized",
@@ -92,7 +90,7 @@ public class TestSearch extends TestCase implements ITestSearch {
 				i++;
 			}
 		} catch (Exception e) {
-			// TODO Bloc catch auto-généré
+			// TODO Bloc catch auto-gï¿½nï¿½rï¿½
 			e.printStackTrace();
 		}
 
@@ -104,11 +102,10 @@ public class TestSearch extends TestCase implements ITestSearch {
 		try {
 			String[] keyWords = { "oignon", "citron" };
 			searcher.setKeyWords(keyWords);
-			searcher.init();
 			try {
 				searcher.research();
 			} catch (Exception e) {
-				// TODO Bloc catch auto-généré
+				// TODO Bloc catch auto-gï¿½nï¿½rï¿½
 				e.printStackTrace();
 			} finally {
 				int i = 1;
@@ -119,7 +116,7 @@ public class TestSearch extends TestCase implements ITestSearch {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Bloc catch auto-généré
+			// TODO Bloc catch auto-gï¿½nï¿½rï¿½
 			e.printStackTrace();
 		}
 
