@@ -90,11 +90,7 @@ public final class App
 			break;
 		}
 		
-		System.out.println("Par quoi voulez-vous modifier?") ;
-		String modification = sc.nextLine() ;
-		System.out.println("Vous avez saisi : " + modification) ;
-		
-		modifyInBDD(recipeToModify, toModify, modification) ;
+		modifyInBDD(toModify) ;
 		
 		getFromBDD() ;
 	} ;
@@ -258,7 +254,7 @@ public final class App
 	 * 
 	 * @param toModify
 	 */
-	public static void modifyInBDD(String recipeToModify, String toModify, String modification)
+	public static void modifyInBDD(String toModify)
 	{
 		// Information d'accès à la BDD
 		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
@@ -276,7 +272,7 @@ public final class App
 			cn = DriverManager.getConnection(url, login, password) ;
 			// Etape 3: creation d'un statement
 			st = cn.createStatement() ;
-			String sql = "" ;
+			String sql = "SELECT * FROM SiteWeb" ;
 			// Etape 4: execution requete
 		}
 		catch(SQLException e)
