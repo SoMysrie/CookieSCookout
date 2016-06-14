@@ -116,6 +116,40 @@ div.formulaire label
     text-align: right;
 }
 
+div.formulaire input, textarea 
+{
+    font: 1em sans-serif;
+    width: 300px;
+    border: 1px solid #999;
+}
+
+div.formulaire input:focus, textarea:focus 
+{
+    border-color: #000;
+}
+
+div.formulaire textarea 
+{
+    vertical-align: top;
+    height: 5em;
+    resize: vertical;
+}
+
+div.formulaire .button 
+{
+    padding-left: 90px;
+}
+
+div.formulaire button 
+{
+    margin-left: .5em;
+}
+
+div.formulaire table 
+{
+    border-spacing: 5px;
+}
+
 /*****************************
 ********* RESPONSIVE *********
 ******************************/
