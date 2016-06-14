@@ -16,7 +16,8 @@ public class Search {
     String researcher = "";
     public static String confPath = "conf/link.xml";
     Properties conf;
-    String[] keyWords = {"oignon", "citron"};
+    ArrayList<String> keyWords = new ArrayList<String>();
+    ArrayList<String> exceptedIngredients = new ArrayList<String>();
 
     public ArrayList<Site> getSites() {
         return sites;
@@ -34,17 +35,28 @@ public class Search {
         this.researcher = researcher;
     }
 
-    public String[] getKeyWords() {
+    public ArrayList<String> getKeyWords() {
         return keyWords;
     }
 
-    public void setKeyWords(String[] keyWords) {
+    public void setKeyWords(ArrayList<String> keyWords) {
         this.keyWords = keyWords;
     }
 
     public void initSites() throws Exception {
         XMLLoader loader = new XMLLoader();
         this.sites = loader.load(confPath);
+    }
+
+    public void initKeyWords() {
+        String input = "citron oignon ^poulet";
+        String[] tmpKeys = input.split(" ");
+        for (String s : tmpKeys) {
+            if (s.startsWith("^"))
+                this.exceptedIngredients.add(s.substring(1));
+            else
+                this.keyWords.add(s);
+        }
     }
 
     public void initLinks() {
@@ -54,6 +66,7 @@ public class Search {
     }
 
     public void init() throws Exception {
+        initKeyWords();
         initSites();
 
         updateResearcher();
@@ -61,12 +74,14 @@ public class Search {
     }
 
     public void updateResearcher() {
-        this.researcher = "";
-        int i;
-        for (i = 0; i < keyWords.length - 1; i++) {
-            this.researcher += keyWords[i] + "-";
+        if (keyWords.size() != 0) {
+            this.researcher = "";
+            int i;
+            for (i = 0; i < keyWords.size() - 1; i++) {
+                this.researcher += keyWords.get(i) + "-";
+            }
+            this.researcher += keyWords.get(i);
         }
-        this.researcher += keyWords[i];
     }
 
     public void research() {
@@ -98,38 +113,49 @@ public class Search {
 
     public void addDatas() {
         Document doc;
+        ArrayList<Integer> indexToRemove = new ArrayList<Integer>();
         for (Site s : this.sites) {
-            for (int i = 0; i < s.getUrls().size(); i++) {
+            int size = s.getUrls().size();
+            for (int i = 0; i < size; i++) {
                 try {
                     doc = Jsoup.connect(s.getUrls().get(i).getUrl()).get();
-                    for (Element file : doc.select(s.getDivVote())) {
-                        // System.out.println(Integer.valueOf(file.ownText()));
-                        s.getUrls()
-                                .get(i)
-                                .setVote(
-                                        Integer.valueOf(extractVote(file
-                                                .ownText())));
-
-
-                    }
-                    if (doc.select(s.getDivVote()).size() == 0) {
-                        s.getUrls().get(i).setVote(0);
-                    }
                     for (Element file : doc.select(s.divIngredients)) {
                         System.out.println();
-                        s.getUrls()
-                                .get(i)
-                                .setIngredients(
-                                        file.outerHtml().replaceAll("<.*?>", "").replaceAll("[\r\n]", " ").split(" - "));
-                        for (int j = 0; j < s.getUrls().get(i).getIngredients().length; j++) {
+                        String ingredients = file.outerHtml().replaceAll("<.*?>", "").replaceAll("[\r\n]", " ");
+                        for (String str : exceptedIngredients) {
+                            if (ingredients.toLowerCase().contains(str.toLowerCase())) {
+                                indexToRemove.add(i);
+                                System.out.println("REMOVE : " + s.getUrls().get(i).getUrl());
+                            } else {
+                                s.getUrls()
+                                        .get(i)
+                                        .setIngredients(
+                                                ingredients.split(" - "));
+                                for (int j = 0; j < s.getUrls().get(i).getIngredients().length; j++) {
 
-                            s.getUrls().get(i).getIngredients()[j] = s.getUrls().get(i).getIngredients()[j].replaceAll(" +", " ");
+                                    s.getUrls().get(i).getIngredients()[j] = s.getUrls().get(i).getIngredients()[j].replaceAll(" +", " ");
+                                    System.out.println(s.getUrls().get(i).getIngredients()[j]);
+                                }
+                            }
+                        }
+                    }
+                    if (!indexToRemove.contains(i)) {
+                        for (Element file : doc.select(s.getDivVote())) {
+                             System.out.println(Integer.valueOf(extractVote(file.ownText())));
+                            s.getUrls()
+                                    .get(i)
+                                    .setVote(
+                                            Integer.valueOf(extractVote(file
+                                                    .ownText())));
+
 
                         }
-
-
+                        if (doc.select(s.getDivVote()).size() == 0) {
+                            s.getUrls().get(i).setVote(0);
+                        }
                     }
-                    System.out.println(s.getUrls().get(i).getVote());
+
+
                 } catch (UnknownHostException e) {
                     System.out.println("Impossible d'accéder au site "
                             + sites.get(i).getSearchSite());
@@ -140,13 +166,21 @@ public class Search {
                     e.printStackTrace();
                 }
             }
+            this.updateLinks(s, indexToRemove);
         }
+
     }
 
     public String extractVote(String s) {
         return s.replace("(", "").replace(" ", "").replace(")", "")
                 .replace("votes", "");
 
+    }
+
+    void updateLinks(Site s, ArrayList<Integer> indexToRemove) {
+        for (Integer i : indexToRemove) {
+            s.getUrls().remove(i);
+        }
     }
 
     public void run() {

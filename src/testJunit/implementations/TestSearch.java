@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import testJunit.interfaces.ITestSearch;
 
+import java.util.ArrayList;
+
 public class TestSearch extends TestCase implements ITestSearch {
     public Search searcher = new Search();
 
@@ -43,7 +45,9 @@ public class TestSearch extends TestCase implements ITestSearch {
     @Test
     @Override
     public void testUpdateResearcherFirstTime() {
-        String[] keyWords1 = {"oignon", "citron"};
+        ArrayList<String> keyWords1 = new ArrayList<String>();
+        keyWords1.add("oignon");
+        keyWords1.add("citron");
         searcher.setKeyWords(keyWords1);
         searcher.updateResearcher();
         assertEquals("Researcher not properly updated for the first time",
@@ -53,7 +57,8 @@ public class TestSearch extends TestCase implements ITestSearch {
     @Test
     @Override
     public void testUpdateResearcherWithOneKeyWord() {
-        String[] keyWords1 = {"citron"};
+        ArrayList<String> keyWords1 = new ArrayList<String>();
+        keyWords1.add("citron");
         searcher.setKeyWords(keyWords1);
         searcher.updateResearcher();
         assertEquals("Researcher not properly updated with one key word",
@@ -63,12 +68,16 @@ public class TestSearch extends TestCase implements ITestSearch {
     @Test
     @Override
     public void testUpdateResearcherTwice() {
-        String[] keyWords1 = {"champignon", "bacon"};
-        String[] keyWords2 = {"oignon", "citron"};
+        ArrayList<String> keyWords1 = new ArrayList<String>();
+        ArrayList<String> keyWords2 = new ArrayList<String>();
+        keyWords1.add("champignon");
+        keyWords1.add("bacon");
+        keyWords2.add("oignon");
+        keyWords2.add("citron");
 
         searcher.setKeyWords(keyWords1);
         searcher.updateResearcher();
-        assertEquals("Researcher not properly updated", "champignon-bacon",
+       assertEquals("Researcher not properly updated", "champignon-bacon",
                 searcher.getResearcher());
         searcher.setKeyWords(keyWords2);
         searcher.updateResearcher();
@@ -80,7 +89,10 @@ public class TestSearch extends TestCase implements ITestSearch {
     @Test
     public void testInitLinks() {
         try {
-            String[] keyWords = {"oignon", "citron"};
+
+            ArrayList<String> keyWords= new ArrayList<String>();
+            keyWords.add("oignon");
+            keyWords.add("citron");
             searcher.setKeyWords(keyWords);
             searcher.updateResearcher();
             int i = 1;
@@ -100,7 +112,9 @@ public class TestSearch extends TestCase implements ITestSearch {
     @Test
     public void testSearchLinkAfterSearch() {
         try {
-            String[] keyWords = {"oignon", "citron"};
+            ArrayList<String> keyWords= new ArrayList<String>();
+            keyWords.add("oignon");
+            keyWords.add("citron");
             searcher.setKeyWords(keyWords);
             try {
                 searcher.research();
