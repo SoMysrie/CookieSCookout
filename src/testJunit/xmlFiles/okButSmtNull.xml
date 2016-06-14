@@ -7,6 +7,7 @@
         <divURLS>divURLS1</divURLS>
         <divVote>divVote1</divVote>
         <divMark>divMark1</divMark>
+        <divIngredients>divIngredients1</divIngredients>
     </site>
     <site>
         <mainSite></mainSite>
@@ -14,6 +15,7 @@
         <divURLS>divURLS2</divURLS>
         <divVote>divVote2</divVote>
         <divMark>divMark2</divMark>
+        <divIngredients>divIngredients2</divIngredients>
     </site>
     <site>
         <mainSite></mainSite>
@@ -21,6 +23,7 @@
         <divURLS>divURLS3</divURLS>
         <divVote>divVote3</divVote>
         <divMark>divMark3</divMark>
+        <divIngredients>divIngredients3</divIngredients>
     </site>
 
 </Sites>

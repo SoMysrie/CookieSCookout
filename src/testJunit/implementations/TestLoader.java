@@ -41,12 +41,16 @@ public class TestLoader extends TestCase implements ITestLoader {
 					"Div mark has not been correctly initialized. Should be : divMark"
 							+ i + " instead of : " + site.getDivMark(), site
 							.getDivMark().equals("divMark" + i));
+			assertTrue(
+					"Div Ingredients has not been correctly initialized. Should be : divIngredients"
+							+ i + " instead of : " + site.getDivIngredients(), site
+							.getDivIngredients().equals("divIngredients" + i));
 			i++;
 		}
 	}
 
 	@Test
-	public void testLoadWhenSmtNull() throws Exception {
+	public void testLoadWhenSmtNull() {
 		XMLLoader loader = new XMLLoader();
 		try {
 			loader.load("src/testJunit/xmlFiles/okButSmtNull.xml");
@@ -56,7 +60,6 @@ public class TestLoader extends TestCase implements ITestLoader {
 
 		}
 
-		int i = 1;
 
 	}
 
