@@ -6,6 +6,18 @@ package link;
 public class NotedReciepes {
     private String url;
     private int vote;
+    private int note;
+    private String[] ingredients;
+
+    public String[] getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String[] ingredients) {
+        this.ingredients = ingredients;
+    }
+
+
 
     public NotedReciepes(String url){
         this.url=url;

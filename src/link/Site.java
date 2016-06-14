@@ -8,7 +8,18 @@ public class Site {
     String divVote;
     String divMark;
     String divURLS;
+    String divIngredients;
     ArrayList<NotedReciepes> urls = new ArrayList<NotedReciepes>();
+
+    public String getDivIngredients() {
+        return divIngredients;
+    }
+
+    public void setDivIngredients(String divIngredients) {
+        this.divIngredients = divIngredients;
+    }
+
+
 
     public String getDivVote() {
         return divVote;
@@ -49,20 +60,17 @@ public class Site {
     }
 
 
-    
-
-
     public String getDivMark() {
-		return divMark;
-	}
+        return divMark;
+    }
 
 
-	public void setDivMark(String divMark) {
-		this.divMark = divMark;
-	}
+    public void setDivMark(String divMark) {
+        this.divMark = divMark;
+    }
 
 
-	public ArrayList<NotedReciepes> getUrls() {
+    public ArrayList<NotedReciepes> getUrls() {
         return urls;
     }
 
@@ -70,8 +78,9 @@ public class Site {
     public void replaceSearchSite(String s) {
         this.searchSite = this.searchSite.replace(Messages.getString("Site.ReplaceKey"), s);
     }
+
     public void reinitSearchSite(String s) {
-        this.searchSite = this.searchSite.replace(s,Messages.getString("Site.ReplaceKey"));
+        this.searchSite = this.searchSite.replace(s, Messages.getString("Site.ReplaceKey"));
     }
 
     public void addURL(String s) {
@@ -80,15 +89,16 @@ public class Site {
     }
 
 
-	public Site(String mainSite, String searchSite, String divVote,
-			String divMark, String divURLS) {
-		super();
-		this.mainSite = mainSite;
-		this.searchSite = searchSite;
-		this.divVote = divVote;
-		this.divMark = divMark;
-		this.divURLS = divURLS;
-	}
+    public Site(String mainSite, String searchSite, String divVote,
+                String divMark, String divURLS, String divIngredients) {
+        super();
+        this.mainSite = mainSite;
+        this.searchSite = searchSite;
+        this.divVote = divVote;
+        this.divMark = divMark;
+        this.divURLS = divURLS;
+        this.divIngredients= divIngredients;
+    }
 
- 
+
 }
