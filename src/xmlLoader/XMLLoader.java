@@ -49,10 +49,12 @@ public class XMLLoader {
 					.getElementsByTagName("divVote").item(0);
 					final Element divMark = (Element) site
 							.getElementsByTagName("divMark").item(0);
-					if(mainSite==null || searchSite==null ||divURLS==null ||divVote==null ||divMark==null)
+					final Element divIngredients = (Element) site
+					.getElementsByTagName("divIngredients").item(0);
+					if(mainSite==null || searchSite==null ||divURLS==null ||divVote==null ||divMark==null ||divIngredients==null)
 						throw new NullPointerException("An element is not in xml");
 					else
-						sites.add(new Site(mainSite.getTextContent(), searchSite.getTextContent(), divVote.getTextContent(), divMark.getTextContent(), divURLS.getTextContent()));
+						sites.add(new Site(mainSite.getTextContent(), searchSite.getTextContent(), divVote.getTextContent(), divMark.getTextContent(), divURLS.getTextContent(),divIngredients.getTextContent()));
 				}
 			}
 		} catch (final ParserConfigurationException e) {
