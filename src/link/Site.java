@@ -9,7 +9,7 @@ public class Site {
     String divMark;
     String divURLS;
     String divIngredients;
-    ArrayList<NotedReciepes> urls = new ArrayList<NotedReciepes>();
+    ArrayList<NotedRecipes> urls = new ArrayList<NotedRecipes>();
 
     public String getDivIngredients() {
         return divIngredients;
@@ -70,7 +70,7 @@ public class Site {
     }
 
 
-    public ArrayList<NotedReciepes> getUrls() {
+    public ArrayList<NotedRecipes> getUrls() {
         return urls;
     }
 
@@ -84,7 +84,7 @@ public class Site {
     }
 
     public void addURL(String s) {
-        this.urls.add(new NotedReciepes(this.mainSite + s));
+        this.urls.add(new NotedRecipes(this.mainSite + s));
         System.out.println(this.mainSite + s);
     }
 

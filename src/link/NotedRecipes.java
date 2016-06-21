@@ -3,13 +3,30 @@ package link;
 /**
  * Created by Nicolas_Travail on 17/03/2016.
  */
-public class NotedReciepes {
+public class NotedRecipes {
     private String url;
     private int vote;
     private int note;
     private String[] ingredients;
+    private String recipe;
 
-    public String[] getIngredients() {
+    public int getNote() {
+		return note;
+	}
+
+	public void setNote(int note) {
+		this.note = note;
+	}
+
+	public String getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(String recipe) {
+		this.recipe = recipe;
+	}
+
+	public String[] getIngredients() {
         return ingredients;
     }
 
@@ -19,7 +36,7 @@ public class NotedReciepes {
 
 
 
-    public NotedReciepes(String url){
+    public NotedRecipes(String url){
         this.url=url;
         this.vote=0;
     }
