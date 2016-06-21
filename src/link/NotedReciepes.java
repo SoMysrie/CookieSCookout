@@ -8,8 +8,25 @@ public class NotedReciepes {
     private int vote;
     private int note;
     private String[] ingredients;
+    private String recipe;
 
-    public String[] getIngredients() {
+    public int getNote() {
+		return note;
+	}
+
+	public void setNote(int note) {
+		this.note = note;
+	}
+
+	public String getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(String recipe) {
+		this.recipe = recipe;
+	}
+
+	public String[] getIngredients() {
         return ingredients;
     }
 
