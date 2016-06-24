@@ -1,11 +1,10 @@
 package plugin;
 
-import link.Search;
-
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarFile;
 
@@ -15,12 +14,15 @@ import java.util.jar.JarFile;
 public class PluginLoader {
     private String[] files;
 
-    private Object classResearchPlugin=null;
+    private ArrayList<Object> classResearchPlugin;
 
 
-
+public PluginLoader(){
+	this.classResearchPlugin=new ArrayList<Object>();
+}
 
     public PluginLoader(String[] files){
+    	this();
         this.files = files;
     }
 
@@ -30,27 +32,26 @@ public class PluginLoader {
     }
 
 
-    public ResearchPlugin loadResearchPlugin() throws Exception {
+    public ArrayList<ResearchPlugin> loadResearchPlugin() throws Exception {
 
         this.initializeLoader();
-
-
-            ResearchPlugin tmp = (ResearchPlugin)((Class)this.classResearchPlugin).newInstance();
+        ArrayList<ResearchPlugin> tmp = new ArrayList<ResearchPlugin>();
+        for(int i=0;i<this.classResearchPlugin.size();i++)
+            tmp.add((ResearchPlugin)((Class)this.classResearchPlugin.get(i)).newInstance());
         return tmp;
     }
 
 
 
     private void initializeLoader() throws Exception{
-        //On vérifie que la liste des plugins à charger à été initialisé
         if(this.files == null || this.files.length == 0 ){
             throw new Exception("Pas de fichier spécifié");
         }
 
-        if(this.classResearchPlugin != null ){
+        if(this.classResearchPlugin.size()!=0 ){
             return ;
         }
-
+       
         File[] f = new File[this.files.length];
         URLClassLoader loader;
         String tmp = "";
@@ -58,7 +59,7 @@ public class PluginLoader {
         Class tmpClass = null;
 
         for(int index = 0 ; index < f.length ; index ++ ){
-
+        	
             f[index] = new File(this.files[index]);
 
             if( !f[index].exists() ) {
@@ -85,9 +86,9 @@ public class PluginLoader {
                     tmpClass = Class.forName(tmp ,true,loader);
 
                     for(int i = 0 ; i < tmpClass.getInterfaces().length; i ++ ){
-
-                        if(tmpClass.getInterfaces()[i].getName().toString().equals("plugin.ResearchPlugin") && this.classResearchPlugin==null) {
-                            this.classResearchPlugin=tmpClass;
+                        if(tmpClass.getInterfaces()[i].getName().equals("plugin.ResearchPlugin")) {
+                            this.classResearchPlugin.add(tmpClass);
+                            
                         }
                     }
 
