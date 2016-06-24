@@ -1,7 +1,6 @@
 package plugin;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -44,13 +43,11 @@ public PluginLoader(){
 
 
     private void initializeLoader() throws Exception{
-        if(this.files == null || this.files.length == 0 ){
-            throw new Exception("Pas de fichier spécifié");
+        if(this.files == null || this.files.length == 0 || this.classResearchPlugin.size()!=0){
+            return;
         }
 
-        if(this.classResearchPlugin.size()!=0 ){
-            return ;
-        }
+       
        
         File[] f = new File[this.files.length];
         URLClassLoader loader;
@@ -66,8 +63,8 @@ public PluginLoader(){
                 break;
             }
 
-            URI uri = f[index].toURI();
-            URL u=uri.toURL();
+            URL u = f[index].toURI().toURL();
+            
             loader = new URLClassLoader(new URL[] {u});
 
             JarFile jar = new JarFile(f[index].getAbsolutePath());
