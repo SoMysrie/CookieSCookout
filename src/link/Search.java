@@ -9,6 +9,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import plugin.PluginLoader;
+import plugin.ResearchPlugin;
+
 import xmlLoader.XMLLoader;
 
 public class Search {
@@ -18,6 +21,9 @@ public class Search {
     Properties conf;
     ArrayList<String> keyWords = new ArrayList<String>();
     ArrayList<String> exceptedIngredients = new ArrayList<String>();
+    String[] plugins={"plugin.jar","plugin2.jar"};
+    PluginLoader pluginLoader= new PluginLoader(plugins);
+    ArrayList<ResearchPlugin> researchPlugins;
 
     public ArrayList<Site> getSites() {
         return sites;
@@ -85,7 +91,13 @@ public class Search {
     }
 
     public void research() {
-
+    	
+    	if(researchPlugins.size()!=0){
+    		for(ResearchPlugin rp : this.researchPlugins){
+    			rp.research();
+    		}
+    	}
+    	else{
         Document doc;
         for (int i = 0; i < this.sites.size(); i++) {
             try {
@@ -108,7 +120,7 @@ public class Search {
                 sites.get(i).reinitSearchSite(this.researcher);
             }
         }
-
+    	}
     }
 
     public void addDatas() {
@@ -186,6 +198,7 @@ public class Search {
     public void run() {
         try {
             this.initSites();
+           this.researchPlugins=this.pluginLoader.loadResearchPlugin();
         } catch (Exception e) {
             // TODO Bloc catch auto-g�n�r�
             e.printStackTrace();
