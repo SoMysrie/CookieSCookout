@@ -26,8 +26,9 @@ public class TestPluginLoader extends TestCase implements ITestPluginLoader {
 
 	@After
 	public void cleanUpStream() {
-	    System.setOut(null);
+		System.setOut(null);
 	}
+
 	@Test
 	@Override
 	public void testWhenResearchPluginOk() {
@@ -35,13 +36,17 @@ public class TestPluginLoader extends TestCase implements ITestPluginLoader {
 				new String[] { "src/testJunit/plugins/pluginTestOk.jar" });
 		try {
 			ArrayList<ResearchPlugin> rp = pluginLoader.loadResearchPlugin();
-			assertEquals("Research Plugin not correctly loaded",1 , rp.size());
+			assertEquals("Research Plugin not correctly loaded", 1, rp.size());
 			setUpStream();
 			rp.get(0).research();
-			assertEquals("Methods research of plugin should dislay Plugin a and display "+outContent.toString(),"Plugin a"+System.getProperty("line.separator"),outContent.toString());
+			assertEquals(
+					"Methods research of plugin should dislay Plugin a and display "
+							+ outContent.toString(),
+					"Plugin a" + System.getProperty("line.separator"),
+					outContent.toString());
 			cleanUpStream();
 		} catch (Exception e) {
-			Assert.fail("Plugin ok, must not throw an exception");
+			Assert.fail("Mustn't throw Exception");
 		}
 	}
 
@@ -51,8 +56,8 @@ public class TestPluginLoader extends TestCase implements ITestPluginLoader {
 				new String[] { "src/testJunit/plugins/pluginNonExistant.jar" });
 		try {
 			ArrayList<ResearchPlugin> rp = pluginLoader.loadResearchPlugin();
-			assertEquals("Research Plugin loaded",0 ,rp.size() );
-			
+			assertEquals("Research Plugin loaded", 0, rp.size());
+
 		} catch (Exception e) {
 			Assert.fail("Try to load a non existant Plugin must not be a probleme, the plugin must not just be loaded");
 		}
@@ -60,28 +65,59 @@ public class TestPluginLoader extends TestCase implements ITestPluginLoader {
 	}
 
 	@Override
+	@Test
 	public void testWhenResearchPluginKO() {
 		PluginLoader pluginLoader = new PluginLoader(
 				new String[] { "src/testJunit/plugins/pluginKo.jar" });
 		try {
 			ArrayList<ResearchPlugin> rp = pluginLoader.loadResearchPlugin();
-			assertEquals("Research Plugin mustn't be loaded", 0, rp.size());
-			
+			Assert.fail("Must throw exception because Plugin Ko");
+
 		} catch (Exception e) {
-			
+		}
+	}
+
+	@Test
+	@Override
+	public void testWhenSeveralResearchPluginsOk() {
+		PluginLoader pluginLoader = new PluginLoader(new String[] {
+				"src/testJunit/plugins/pluginTestOk.jar",
+				"src/testJunit/plugins/pluginTestOk2.jar" });
+		try {
+			ArrayList<ResearchPlugin> rp = pluginLoader.loadResearchPlugin();
+			assertEquals("Research Plugin not correctly loaded", 2, rp.size());
+			setUpStream();
+			for (ResearchPlugin r : rp) {
+				r.research();
+			}
+			assertEquals("Methods research of plugin should dislay Plugin a"
+					+ System.getProperty("line.separator")
+					+ "Plugin b and display " + outContent.toString(),
+					"Plugin a" + System.getProperty("line.separator")+"Plugin b" + System.getProperty("line.separator"),
+					outContent.toString());
+			cleanUpStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Mustn't throw exception");
+
 		}
 	}
 
 	@Override
-	public void testWhenSeveralResearchPluginsOk() {
-		// TODO Module de remplacement de méthode auto-généré
-
-	}
-
-	@Override
 	public void testWhenSeveralResearchPluginsAndOneKo() {
-		// TODO Module de remplacement de méthode auto-généré
+		PluginLoader pluginLoader = new PluginLoader(new String[] {
+				"src/testJunit/plugins/pluginTestOk.jar",
+				"src/testJunit/plugins/pluginKo.jar" });
+			ArrayList<ResearchPlugin> rp = new ArrayList<ResearchPlugin>();
+			try {
+				rp = pluginLoader.loadResearchPlugin();
+				
+				Assert.fail("Must throw an exception");
+			} catch (Exception e) {
+			}
+			
+		} 
 
 	}
 
-}
+
