@@ -75,13 +75,14 @@ public class PluginLoader {
 				if (tmp.length() > 6 && tmp.endsWith(".class")) {
 
 					tmpClass = setClassName(loader, tmp);
-
+					if(tmpClass !=null){
 					for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
 						if (tmpClass.getInterfaces()[i].getName().equals(
 								"plugin.ResearchPlugin")) {
 							verifiyAndAddRessearchPlugin(tmpClass, i);
 						}
 
+					}
 					}
 
 				}
@@ -97,12 +98,15 @@ public class PluginLoader {
 		for (int j = 0; j < tmpClassIMethodes.length && correct; j++) {
 			Boolean find = false;
 			for (int k = 0; k < tmpClass.getMethods().length && !find; k++) {
-
 				find = verifiyImplementations(tmpClass, tmpClassIMethodes, j,
 						find, k);
 
 			}
-			correct = find;
+			if(!find){
+				System.out.println(tmpClassIMethodes[i]);
+				correct = find;
+				break;
+			}
 		}
 		if (correct)
 			this.classResearchPlugin.add(tmpClass);
@@ -139,14 +143,21 @@ public class PluginLoader {
 		return find;
 	}
 
-	private Class setClassName(URLClassLoader loader, String tmp)
-			throws ClassNotFoundException {
-		Class tmpClass;
+	private Class setClassName(URLClassLoader loader, String tmp) throws  ClassNotFoundException
+			 {
+		Class tmpClass=null;
 		tmp = tmp.substring(0, tmp.length() - 6);
 		tmp = tmp.replaceAll("/", ".");
-
-		tmpClass = Class.forName(tmp, true, loader);
+		try{
+		tmpClass = Class.forName(tmp, true, loader);	
+		}
+		catch(NoClassDefFoundError e){
+			System.out.println("erreur plugin");
+		}
+		
+		
 		return tmpClass;
+		
 	}
 
 }
