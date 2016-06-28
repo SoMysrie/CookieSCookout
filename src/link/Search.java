@@ -136,47 +136,10 @@ public class Search {
 				try {
 					doc = Jsoup.connect(s.getUrls().get(i).getUrl()).get();
 					for (Element file : doc.select(s.divIngredients)) {
-						System.out.println();
-						String ingredients = file.outerHtml()
-								.replaceAll("<.*?>", "")
-								.replaceAll("[\r\n]", " ");
-						for (String str : exceptedIngredients) {
-							if (ingredients.toLowerCase().contains(
-									str.toLowerCase())) {
-								indexToRemove.add(i);
-								System.out.println("REMOVE : "
-										+ s.getUrls().get(i).getUrl());
-							} else {
-								s.getUrls()
-										.get(i)
-										.setIngredients(
-												ingredients.split(" - "));
-								for (int j = 0; j < s.getUrls().get(i)
-										.getIngredients().length; j++) {
-
-									s.getUrls().get(i).getIngredients()[j] = s
-											.getUrls().get(i).getIngredients()[j]
-											.replaceAll(" +", " ");
-									System.out.println(s.getUrls().get(i)
-											.getIngredients()[j]);
-								}
-							}
-						}
+						setIngredients(indexToRemove, s, i, file);
 					}
 					if (!indexToRemove.contains(i)) {
-						for (Element file : doc.select(s.getDivVote())) {
-							System.out.println(Integer.valueOf(extractVote(file
-									.ownText())));
-							s.getUrls()
-									.get(i)
-									.setVote(
-											Integer.valueOf(extractVote(file
-													.ownText())));
-
-						}
-						if (doc.select(s.getDivVote()).size() == 0) {
-							s.getUrls().get(i).setVote(0);
-						}
+						setVote(doc, s, i);
 					}
 
 				} catch (UnknownHostException e) {
@@ -192,6 +155,51 @@ public class Search {
 			this.updateLinks(s, indexToRemove);
 		}
 
+	}
+
+	private void setIngredients(ArrayList<Integer> indexToRemove, Site s,
+			int i, Element file) {
+		String ingredients = file.outerHtml()
+				.replaceAll("<.*?>", "")
+				.replaceAll("[\r\n]", " ");
+		for (String str : exceptedIngredients) {
+			if (ingredients.toLowerCase().contains(
+					str.toLowerCase())) {
+				indexToRemove.add(i);
+				System.out.println("REMOVE : "
+						+ s.getUrls().get(i).getUrl());
+			} else {
+				s.getUrls()
+						.get(i)
+						.setIngredients(
+								ingredients.split(" - "));
+				for (int j = 0; j < s.getUrls().get(i)
+						.getIngredients().length; j++) {
+
+					s.getUrls().get(i).getIngredients()[j] = s
+							.getUrls().get(i).getIngredients()[j]
+							.replaceAll(" +", " ");
+					System.out.println(s.getUrls().get(i)
+							.getIngredients()[j]);
+				}
+			}
+		}
+	}
+
+	private void setVote(Document doc, Site s, int i) {
+		for (Element file : doc.select(s.getDivVote())) {
+			System.out.println(Integer.valueOf(extractVote(file
+					.ownText())));
+			s.getUrls()
+					.get(i)
+					.setVote(
+							Integer.valueOf(extractVote(file
+									.ownText())));
+
+		}
+		if (doc.select(s.getDivVote()).size() == 0) {
+			s.getUrls().get(i).setVote(0);
+		}
 	}
 
 	public String extractVote(String s) {
