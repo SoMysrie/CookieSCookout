@@ -71,7 +71,7 @@ public class Main extends Application
                 //make 2 labels
                 lbltotal = new Label("Websites chosen: 5");
                 lbllist = new Label("- Website Marmiton \n"
-                		+ "- Website Cuisineaz \n"
+                		+ "- Website cuisineaz \n"
                 		+ "- Website auFeminin \n"
                  		+ "- Website Cookie's Cookout \n"
                 		+ "- Local \n");
@@ -167,19 +167,18 @@ public class Main extends Application
     		   picture.setPromptText("Enter your recipe's picture.");
     		   GridPane.setConstraints(picture, 0, 1);
     		   grid.getChildren().add(picture);
-    		   //Defining the ingredients text field
-    		   final TextField ingredients = new TextField();
-    		   ingredients.setPrefColumnCount(15);
-    		   ingredients.setPromptText("Enter your recipe's ingredients.");
-    		   GridPane.setConstraints(ingredients, 0, 2);
-    		   grid.getChildren().add(ingredients);
     		   //Defining the  text field
     		   final TextField steps = new TextField();
     		   steps.setPrefColumnCount(15);
     		   steps.setPromptText("Enter your recipe's steps.");
     		   GridPane.setConstraints(steps, 0, 2);
     		   grid.getChildren().add(steps);
-    		   
+    		   //Defining the ingredients text field
+    		   final TextField ingredients = new TextField();
+    		   ingredients.setPrefColumnCount(15);
+    		   ingredients.setPromptText("Enter your recipe's ingredients.");
+    		   GridPane.setConstraints(ingredients, 0, 2);
+    		   grid.getChildren().add(ingredients);
     		   //Defining the Submit button
     		   Button submit = new Button("Submit");
     		   GridPane.setConstraints(submit, 1, 0);
@@ -224,7 +223,7 @@ public class Main extends Application
             	   }
     		   });
     		   
-    		   vbfile.getChildren().addAll(title, picture, ingredients, steps);
+    		   vbfile.getChildren().addAll(title, picture, steps, ingredients);
                vbfile2.getChildren().addAll(submit, clear, label);
             	 
                //create main container
@@ -283,17 +282,22 @@ public class Main extends Application
                  		+ "	You can search through our different support to find any recipe. \n"
                  		+ "		Websites: Marmiton, Cuisineaz, auFeminin \n"
                  		+ "		Even on our website Cookie's Cookout \n"
-                 		+ "		Or locally. \n");
+                 		+ "		Or locally. \n"
+                 		+ "	\n");
                  lblFile = new Label("File \n"
                  		+ "	You can add any new recipe with these following information: \n"
                  		+ "		- Title\n"
                  		+ "		- Picture\n"
                  		+ "		- Ingredients\n"
-                 		+ "		- Steps\n");
+                 		+ "		- Steps\n"
+                 		+ "		- URL\n"
+                 		+ "	\n");
                  lblPlugin = new Label("Plugin \n"
-                 		+ "	You can add any new plugin.\n");
+                 		+ "	You can add any new plugin.\n"
+                 		+ " \n");
                  lblHelp = new Label("Help \n"
-                 		+ "	You can see this list of information.\n");
+                 		+ "	You can see this list of information.\n"
+                 		+ " \n");
                  
                  vblabels.getChildren().addAll(lblMenu, lblFile, lblPlugin, lblHelp);
                  

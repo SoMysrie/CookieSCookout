@@ -1,14 +1,23 @@
 package application;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
  
 public class Main extends Application 
@@ -56,7 +65,7 @@ public class Main extends Application
                  
                 //make 5 checkboxes
                 chkmarmiton = new CheckBox("Website Marmiton");
-                chkcuisineaz = new CheckBox("Website Cuisineaz");
+                chkcuisineaz = new CheckBox("Website cuisineaz");
                 chkaufeminin = new CheckBox("Website auFeminin");
                 chkbdd = new CheckBox("Website Cookie's Cookout");
                 chklocal = new CheckBox("Local");
@@ -71,7 +80,7 @@ public class Main extends Application
                 //make 2 labels
                 lbltotal = new Label("Websites chosen: 5");
                 lbllist = new Label("- Website Marmiton \n"
-                		+ "- Website Cuisineaz \n"
+                		+ "- Website cuisineaz \n"
                 		+ "- Website auFeminin \n"
                  		+ "- Website Cookie's Cookout \n"
                 		+ "- Local \n");
@@ -167,19 +176,18 @@ public class Main extends Application
     		   picture.setPromptText("Enter your recipe's picture.");
     		   GridPane.setConstraints(picture, 0, 1);
     		   grid.getChildren().add(picture);
-    		   //Defining the ingredients text field
-    		   final TextField ingredients = new TextField();
-    		   ingredients.setPrefColumnCount(15);
-    		   ingredients.setPromptText("Enter your recipe's ingredients.");
-    		   GridPane.setConstraints(ingredients, 0, 2);
-    		   grid.getChildren().add(ingredients);
     		   //Defining the  text field
     		   final TextField steps = new TextField();
     		   steps.setPrefColumnCount(15);
     		   steps.setPromptText("Enter your recipe's steps.");
     		   GridPane.setConstraints(steps, 0, 2);
     		   grid.getChildren().add(steps);
-    		   
+    		   //Defining the ingredients text field
+    		   final TextField ingredients = new TextField();
+    		   ingredients.setPrefColumnCount(15);
+    		   ingredients.setPromptText("Enter your recipe's ingredients.");
+    		   GridPane.setConstraints(ingredients, 0, 2);
+    		   grid.getChildren().add(ingredients);
     		   //Defining the Submit button
     		   Button submit = new Button("Submit");
     		   GridPane.setConstraints(submit, 1, 0);
@@ -224,7 +232,7 @@ public class Main extends Application
             	   }
     		   });
     		   
-    		   vbfile.getChildren().addAll(title, picture, ingredients, steps);
+    		   vbfile.getChildren().addAll(title, picture, steps, ingredients);
                vbfile2.getChildren().addAll(submit, clear, label);
             	 
                //create main container
@@ -280,20 +288,13 @@ public class Main extends Application
                  
                  //make 2 labels
                  lblMenu = new Label("Menu \n"
-                 		+ "	You can search through our different support to find any recipe. \n"
-                 		+ "		Websites: Marmiton, Cuisineaz, auFeminin \n"
-                 		+ "		Even on our website Cookie's Cookout \n"
-                 		+ "		Or locally. \n");
+                 		+ "");
                  lblFile = new Label("File \n"
-                 		+ "	You can add any new recipe with these following information: \n"
-                 		+ "		- Title\n"
-                 		+ "		- Picture\n"
-                 		+ "		- Ingredients\n"
-                 		+ "		- Steps\n");
+                 		+ "");
                  lblPlugin = new Label("Plugin \n"
-                 		+ "	You can add any new plugin.\n");
+                 		+ "");
                  lblHelp = new Label("Help \n"
-                 		+ "	You can see this list of information.\n");
+                 		+ "		You can see this list of information.");
                  
                  vblabels.getChildren().addAll(lblMenu, lblFile, lblPlugin, lblHelp);
                  
