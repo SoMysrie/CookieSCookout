@@ -25,10 +25,9 @@ public class Main extends Application
 	//controls needed for app:
     CheckBox chkmarmiton, chkcuisineaz, chkaufeminin, chkbdd, chklocal;
     Label lbltotal, lbllist, lblMenu, lblFile, lblPlugin;
-    Button btsubmit, btclear;
-    
-    //VBoxes for the labels and checkboxes 
-    VBox vbchecks, vblabels, vbhome, vbfile, vbfile2, vbplugin, vbhelp, vbbutton;
+   
+   //VBoxes for the labels and checkboxes 
+    VBox vbchecks, vblabels, vbhome, vbfile, vbfile2, vbplugin, vbhelp;
     
     public static void main(String[] args) {
         launch(args);
@@ -54,11 +53,6 @@ public class Main extends Application
                  vblabels.setSpacing(10);
                  vblabels.setPadding(new Insets(20));
                  
-                 //vbox for buttons
-                 vbbutton = new VBox();
-                 vbbutton.setSpacing(10);
-                 vbbutton.setPadding(new Insets(20));
-                 
                  //make 5 checkboxes
                  chkmarmiton = new CheckBox("Website Marmiton");
                  chkcuisineaz = new CheckBox("Website cuisineaz");
@@ -81,15 +75,9 @@ public class Main extends Application
                  		+ "- Website Cookie's Cookout \n"
                 		+ "- Local \n");
                  
-                 //Defining the Submit button
-            	 btsubmit = new Button("Submit");
-            	 //Defining the Clear button
-            	 btclear = new Button("Clear");
-                 
                  //add all things to vboxes
                  vbchecks.getChildren().addAll(chkmarmiton, chkcuisineaz, chkaufeminin, chkbdd, chklocal);
                  vblabels.getChildren().addAll(lbltotal, lbllist);
-                 vbbutton.getChildren().addAll(btsubmit, btclear);
                  
                  //attach click-method to all 5 checkboxes
                  chkmarmiton.setOnAction(e -> handleButtonAction(e));
@@ -98,30 +86,10 @@ public class Main extends Application
                  chkbdd.setOnAction(e -> handleButtonAction(e));
                  chklocal.setOnAction(e -> handleButtonAction(e));
                  
-                 //attach click-method to all 2 buttons
-                 btsubmit.setOnAction(new EventHandler<ActionEvent>() {
-            		 @Override
-            	     public void handle(ActionEvent e) {
-            	         
-            	      }
-            	  });
-                 btclear.setOnAction(new EventHandler<ActionEvent>() {
-            		 @Override
-            	     public void handle(ActionEvent e) {
-            			 chkmarmiton.setSelected(false);
-                         chkcuisineaz.setSelected(false);
-                         chkaufeminin.setSelected(false);
-                         chkbdd.setSelected(false);
-                         chklocal.setSelected(false);
-                         lbltotal.setText("Website chosen: 0");
-                         lbllist.setText("None");
-            	     }
-            	 });
-                 
                  //create main container
                  FlowPane root = new FlowPane();
                  root.setHgap(20);
-                 root.getChildren().addAll(menuBar, vbchecks, vblabels, vbbutton);
+                 root.getChildren().addAll(menuBar, vbchecks, vblabels);
                  String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                  root.setStyle("-fx-background-image: url('" + image + "'); " 
                 		 + "-fx-background-position: center center; " 
@@ -149,7 +117,7 @@ public class Main extends Application
             	 vbfile2.setSpacing(10);
             	 vbfile2.setPadding(new Insets(20));
             	 
-            	 //Creating a GridPane container
+            	//Creating a GridPane container
             	 GridPane grid = new GridPane();
             	 grid.setPadding(new Insets(10, 10, 10, 10));
             	 grid.setVgap(5);

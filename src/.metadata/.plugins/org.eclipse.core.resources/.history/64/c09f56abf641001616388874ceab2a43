@@ -83,8 +83,12 @@ public class Main extends Application
                  
                  //Defining the Submit button
             	 btsubmit = new Button("Submit");
+            	 GridPane.setConstraints(btsubmit, 1, 0);
+            	 grid.getChildren().add(btsubmit);
             	 //Defining the Clear button
             	 btclear = new Button("Clear");
+            	 GridPane.setConstraints(btclear, 1, 1);
+            	 grid.getChildren().add(btclear);
                  
                  //add all things to vboxes
                  vbchecks.getChildren().addAll(chkmarmiton, chkcuisineaz, chkaufeminin, chkbdd, chklocal);
@@ -121,7 +125,7 @@ public class Main extends Application
                  //create main container
                  FlowPane root = new FlowPane();
                  root.setHgap(20);
-                 root.getChildren().addAll(menuBar, vbchecks, vblabels, vbbutton);
+                 root.getChildren().addAll(menuBar, vbchecks, vblabels);
                  String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                  root.setStyle("-fx-background-image: url('" + image + "'); " 
                 		 + "-fx-background-position: center center; " 
@@ -149,7 +153,7 @@ public class Main extends Application
             	 vbfile2.setSpacing(10);
             	 vbfile2.setPadding(new Insets(20));
             	 
-            	 //Creating a GridPane container
+            	//Creating a GridPane container
             	 GridPane grid = new GridPane();
             	 grid.setPadding(new Insets(10, 10, 10, 10));
             	 grid.setVgap(5);

@@ -81,10 +81,19 @@ public class Main extends Application
                  		+ "- Website Cookie's Cookout \n"
                 		+ "- Local \n");
                  
+                 //Creating a GridPane container
+            	 GridPane grid = new GridPane();
+            	 grid.setPadding(new Insets(10, 10, 10, 10));
+            	 grid.setVgap(5);
+            	 grid.setHgap(5);
                  //Defining the Submit button
             	 btsubmit = new Button("Submit");
+            	 GridPane.setConstraints(btsubmit, 1, 0);
+            	 grid.getChildren().add(btsubmit);
             	 //Defining the Clear button
             	 btclear = new Button("Clear");
+            	 GridPane.setConstraints(btclear, 1, 1);
+            	 grid.getChildren().add(btclear);
                  
                  //add all things to vboxes
                  vbchecks.getChildren().addAll(chkmarmiton, chkcuisineaz, chkaufeminin, chkbdd, chklocal);
