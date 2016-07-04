@@ -3,4 +3,20 @@
 <fullyQualifiedTypeName name="com.sun.java_cup.internal.runtime.Scanner"/>
 <fullyQualifiedTypeName name="com.mysql.jdbc.ResultSet"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.awt.Insets"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Button"/>
+<fullyQualifiedTypeName name="javafx.scene.paint.Color"/>
+<fullyQualifiedTypeName name="javafx.scene.text.Font"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Label"/>
+<fullyQualifiedTypeName name="javafx.geometry.Pos"/>
+<fullyQualifiedTypeName name="javafx.geometry.Insets"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Menu"/>
+<fullyQualifiedTypeName name="javafx.event.ActionEvent"/>
+<fullyQualifiedTypeName name="javafx.event.EventHandler"/>
+<fullyQualifiedTypeName name="javafx.event.Event"/>
+<fullyQualifiedTypeName name="javafx.scene.text.FontPosture"/>
+<fullyQualifiedTypeName name="javafx.scene.text.FontWeight"/>
+<fullyQualifiedTypeName name="javafx.scene.text.TextFlow"/>
+<fullyQualifiedTypeName name="javafx.scene.layout.StackPane"/>
+<fullyQualifiedTypeName name="javafx.scene.text.Text"/>
 </qualifiedTypeNameHistroy>

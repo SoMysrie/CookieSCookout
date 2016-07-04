@@ -1,0 +1,56 @@
+package application;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+ 
+public class Main extends Application 
+{
+    public static void main(String[] args) {
+        launch(args);
+    };
+ 
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("CookieSCookout");
+        Scene scene = new Scene(new VBox(), 400, 350);
+        scene.setFill(Color.OLDLACE);
+        Circle circ = new Circle(40, 40, 30);
+        Group root = new Group(circ);
+        
+        MenuBar menuBar = new MenuBar();
+ 
+        final VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(0, 10, 0, 10));
+        
+        // --- Menu Home
+        Menu menuHome = new Menu("Home");
+        menuHome.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            }
+        });       
+        // --- Menu File
+        Menu menuFile = new Menu("File");
+        // --- Menu Plugin
+        Menu menuPlugin = new Menu("Plugin");
+        // --- Menu Help
+        Menu menuHelp = new Menu("Help");
+        
+        menuBar.getMenus().addAll(menuHome, menuFile, menuPlugin, menuHelp);
+        ((VBox) scene.getRoot()).getChildren().addAll(menuBar, vbox);
+        
+        stage.setScene(scene);
+        stage.show();
+    }
+} 
