@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost:3306
--- Généré le :  Lun 04 Juillet 2016 à 17:21
+-- Généré le :  Lun 04 Juillet 2016 à 17:24
 -- Version du serveur :  5.5.42
 -- Version de PHP :  5.6.10
 
@@ -26,13 +26,14 @@ CREATE TABLE `SiteWeb` (
   `recipe` text NOT NULL,
   `ingredients` text NOT NULL,
   `score` int(11) NOT NULL,
-  `poll` int(11) NOT NULL
+  `poll` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `SiteWeb`
 --
 
-INSERT INTO `SiteWeb` (`img`, `title`, `recipe`, `ingredients`, `score`, `poll`) VALUES
-('/Site/public/img/cooking/cooking_1.png', 'Riz furikake revisité par Sôma', '7 ailes de poulet + 4 oeufs + riz', '', 0, 0),
-('/Site/public/img/cooking/cooking_2.png', 'Rôti en lamelle de boeuf de Sôma', '7 pommes de terre + 1 boeuf', '', 0, 0);
+INSERT INTO `SiteWeb` (`img`, `title`, `recipe`, `ingredients`, `score`, `poll`, `url`) VALUES
+('/Site/public/img/cooking/cooking_1.png', 'Riz furikake revisité par Sôma', '7 ailes de poulet + 4 oeufs + riz', '', 0, 0, ''),
+('/Site/public/img/cooking/cooking_2.png', 'Rôti en lamelle de boeuf de Sôma', '7 pommes de terre + 1 boeuf', '', 0, 0, '');
