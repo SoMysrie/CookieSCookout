@@ -413,8 +413,7 @@ public class Main extends Application
   			cn = DriverManager.getConnection(url, login, password) ;
   			// Etape 3: creation d'un statement
   			st = cn.createStatement() ;
-  			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients, score, poll, url) "
-  					+ "VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "','" + 1 + "','" + 1 + "','" + null +"');" ;
+  			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients) VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "');" ;
   			// Etape 4: execution requete
   			st.executeUpdate(sql) ;
   			System.out.println("Successfuly saved in BDD!");

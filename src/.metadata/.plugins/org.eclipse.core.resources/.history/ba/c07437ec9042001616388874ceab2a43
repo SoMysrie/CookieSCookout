@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+import com.mysql.jdbc.ResultSet;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,6 +19,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+import com.mysql.jdbc.ResultSet;
  
 public class Main extends Application 
 {
@@ -413,8 +422,7 @@ public class Main extends Application
   			cn = DriverManager.getConnection(url, login, password) ;
   			// Etape 3: creation d'un statement
   			st = cn.createStatement() ;
-  			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients, score, poll, url) "
-  					+ "VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "','" + 1 + "','" + 1 + "','" + null +"');" ;
+  			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients) VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "');" ;
   			// Etape 4: execution requete
   			st.executeUpdate(sql) ;
   			System.out.println("Successfuly saved in BDD!");

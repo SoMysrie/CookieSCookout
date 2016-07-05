@@ -97,8 +97,6 @@ package cookiescookout;
  		modifyInBDD(recipeToModify, toModify, modification) ;
  		
  		getFromBDD() ;
- 		
- 		sc.close();
  	} ;
  	
  	/**
@@ -109,7 +107,7 @@ package cookiescookout;
  	 */
  	public static void saveInBDD(String img, String title, String contents)
  	{
- 		// Information d'acces a la BDD
+ 		// Information d'accès à la BDD
  		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
  		String login = "root" ;
  		String password = "root" ;
@@ -140,7 +138,7 @@ package cookiescookout;
  		{
  			try
  			{
- 				// Etape 5: liberer les ressources de la memoire
+ 				// Etape 5: libérer les ressources de la mémoire
  				cn.close() ;
  				st.close() ;
  			}
@@ -157,7 +155,7 @@ package cookiescookout;
  	 */
  	public static void getFromBDD()
  	{
- 		// Information d'acces a la BDD
+ 		// Information d'accès à la BDD
  		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
  		String login = "root" ;
  		String password = "root" ;
@@ -196,7 +194,7 @@ package cookiescookout;
  		{
  			try
  			{
- 				// Etape 6: liberer les ressources de la memoire
+ 				// Etape 6: libérer les ressources de la mémoire
  				cn.close() ;
  				st.close() ;
  			}
@@ -213,12 +211,13 @@ package cookiescookout;
  	 */
  	public static void deleteInBDD(String toDelete)
  	{
- 		// Information d'acces a la BDD
+ 		// Information d'accès à la BDD
  		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
  		String login = "root" ;
  		String password = "root" ;
  		Connection cn = null ;
  		Statement st = null ;
+ 		ResultSet rs = null ;
  				
  		try
  		{
@@ -244,7 +243,7 @@ package cookiescookout;
  		{
  			try
  			{
- 				// Etape 6: liberer les ressources de la memoire
+ 				// Etape 6: libérer les ressources de la mémoire
  				cn.close() ;
  				st.close() ;
  			}
@@ -261,12 +260,13 @@ package cookiescookout;
  	 */
  	public static void modifyInBDD(String recipeToModify, String toModify, String modification)
  	{
- 		// Information d'accï¿½s ï¿½ la BDD
+ 		// Information d'accès à la BDD
  		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
  		String login = "root" ;
  		String password = "root" ;
  		Connection cn = null ;
  		Statement st = null ;
+ 		ResultSet rs = null ;
  				
  		try
  		{
@@ -276,7 +276,7 @@ package cookiescookout;
  			cn = DriverManager.getConnection(url, login, password) ;
  			// Etape 3: creation d'un statement
  			st = cn.createStatement() ;
- 			
+ 			String sql = "" ;
  			// Etape 4: execution requete
  		}
  		catch(SQLException e)
@@ -291,7 +291,7 @@ package cookiescookout;
  		{
  			try
  			{
- 				// Etape 6: liberer les ressources de la memoire
+ 				// Etape 6: libérer les ressources de la mémoire
  				cn.close() ;
  				st.close() ;
  			}

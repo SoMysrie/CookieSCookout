@@ -1,12 +1,5 @@
 package application;
 
-import cookiescookout.ws.WsServer;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,12 +21,8 @@ public class Main extends Application
     //VBoxes for the labels and checkboxes 
     VBox vbchecks, vblabels, vbplugin, vbhelp, vbbutton, vbtext;
     
-    public static void main(String[] args) throws ClassNotFoundException, SQLException
+    public static void main(String[] args) 
     {
-    	System.out.println("CookieSCookout app...") ;
- 		WsServer ws = new WsServer() ;
- 		ws.start() ;
- 		
         launch(args) ;
     } ;
  
@@ -186,10 +175,10 @@ public class Main extends Application
     		   GridPane.setConstraints(title, 0, 0);
     		   grid.getChildren().add(title);
     		   //Defining the picture text field
-    		   final TextField img = new TextField();
-    		   img.setPromptText("Enter your recipe's image.");
-    		   GridPane.setConstraints(img, 0, 1);
-    		   grid.getChildren().add(img);
+    		   final TextField picture = new TextField();
+    		   picture.setPromptText("Enter your recipe's picture.");
+    		   GridPane.setConstraints(picture, 0, 1);
+    		   grid.getChildren().add(picture);
     		   //Defining the ingredients text field
     		   final TextField ingredients = new TextField();
     		   ingredients.setPrefColumnCount(15);
@@ -197,11 +186,11 @@ public class Main extends Application
     		   GridPane.setConstraints(ingredients, 0, 2);
     		   grid.getChildren().add(ingredients);
     		   //Defining the  text field
-    		   final TextField recipe = new TextField();
-    		   recipe.setPrefColumnCount(15);
-    		   recipe.setPromptText("Enter your recipe's steps.");
-    		   GridPane.setConstraints(recipe, 0, 2);
-    		   grid.getChildren().add(recipe);
+    		   final TextField steps = new TextField();
+    		   steps.setPrefColumnCount(15);
+    		   steps.setPromptText("Enter your recipe's steps.");
+    		   GridPane.setConstraints(steps, 0, 2);
+    		   grid.getChildren().add(steps);
     		   
     		   //Defining the Submit button
     		   Button submit = new Button("Submit");
@@ -225,16 +214,15 @@ public class Main extends Application
     			   public void handle(ActionEvent e) 
     			   {
     				   if ((title.getText() != null && !title.getText().isEmpty()) 
-    						   && (img.getText() != null && !img.getText().isEmpty()) 
-    						   && (ingredients.getText() != null && !ingredients.getText().isEmpty()) 
-    						   && (recipe.getText() != null && !recipe.getText().isEmpty())) 
+    						   || (picture.getText() != null && !picture.getText().isEmpty()) 
+    						   || (ingredients.getText() != null && !ingredients.getText().isEmpty()) 
+    						   || (steps.getText() != null && !steps.getText().isEmpty())) 
     				   {
-    					   label.setText("Yes!");
-    					   saveInBDD(img.toString(), title.toString(), recipe.toString(), ingredients.toString());
+    					   label.setText("You have to complete everything!");
             	       } 
     				   else
     				   {
-    					   label.setText("You have to complete everything!");
+    					   label.setText("No!");
     				   }
     			   }
     		   });
@@ -246,14 +234,14 @@ public class Main extends Application
             	   public void handle(ActionEvent e) 
     			   {
     				   title.clear();
-    				   img.clear();
+    				   picture.clear();
     				   ingredients.clear();
-    				   recipe.clear();
+            	       steps.clear();
             	       label.setText(null);
             	   }
     		   });
     		   
-    		   vbtext.getChildren().addAll(title, img, ingredients, recipe);
+    		   vbtext.getChildren().addAll(title, picture, ingredients, steps);
                vbbutton.getChildren().addAll(submit, clear, label);
             	 
                //create main container
@@ -395,51 +383,4 @@ public class Main extends Application
         lbltotal.setText("Websites chosen: " + count);
         lbllist.setText(choices);
      };
-
-    public static void saveInBDD(String img, String title, String recipe, String ingredients)
-  	{
-  		// Information d'acces a la BDD
-  		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
-  		String login = "root" ;
-  		String password = "root" ;
-  		Connection cn = null ;
-  		Statement st = null ;
-  		
-  		try
-  		{
-  			// Etape 1: chargement du driver
-  			Class.forName("com.mysql.jdbc.Driver") ;
-  			// Etape 2: recuperation de la connexion
-  			cn = DriverManager.getConnection(url, login, password) ;
-  			// Etape 3: creation d'un statement
-  			st = cn.createStatement() ;
-  			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients, score, poll, url) "
-  					+ "VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "','" + 1 + "','" + 1 + "','" + null +"');" ;
-  			// Etape 4: execution requete
-  			st.executeUpdate(sql) ;
-  			System.out.println("Successfuly saved in BDD!");
-  		}
-  		catch(SQLException e)
-  		{
-  			e.printStackTrace() ;
-  		}
-  		catch(ClassNotFoundException e)
-  		{
-  			e.printStackTrace() ;
-  		}
-  		finally
-  		{
-  			try
-  			{
-  				// Etape 5: liberer les ressources de la memoire
-  				cn.close() ;
-  				st.close() ;
-  			}
-  			catch(SQLException e)
-  			{
-  				e.printStackTrace() ;
-  			}
-  		}
-  		
-  	} ;
 }; 

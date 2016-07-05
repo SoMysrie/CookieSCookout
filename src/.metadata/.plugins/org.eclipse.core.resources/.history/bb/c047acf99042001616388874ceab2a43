@@ -97,8 +97,6 @@ package cookiescookout;
  		modifyInBDD(recipeToModify, toModify, modification) ;
  		
  		getFromBDD() ;
- 		
- 		sc.close();
  	} ;
  	
  	/**
@@ -219,6 +217,7 @@ package cookiescookout;
  		String password = "root" ;
  		Connection cn = null ;
  		Statement st = null ;
+ 		ResultSet rs = null ;
  				
  		try
  		{
@@ -267,6 +266,7 @@ package cookiescookout;
  		String password = "root" ;
  		Connection cn = null ;
  		Statement st = null ;
+ 		ResultSet rs = null ;
  				
  		try
  		{
@@ -276,7 +276,7 @@ package cookiescookout;
  			cn = DriverManager.getConnection(url, login, password) ;
  			// Etape 3: creation d'un statement
  			st = cn.createStatement() ;
- 			
+ 			String sql = "" ;
  			// Etape 4: execution requete
  		}
  		catch(SQLException e)
