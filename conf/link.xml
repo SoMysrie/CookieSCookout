@@ -6,6 +6,7 @@
 		<divURLS>div [class="m_titre_resultat"] a[href][title][id]</divURLS>
 		<divVote>div [class="m_bloc_cadre"] div [class="m_content_recette_breadcrumb"]</divVote>
 		<divMark>span [class="average"]</divMark>
+		<divIngredients>div [class="m_content_recette_ingredients m_avec_substitution"] </divIngredients>
 	</site>
 	
 </Sites>

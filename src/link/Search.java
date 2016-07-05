@@ -21,7 +21,7 @@ public class Search {
 	Properties conf;
 	ArrayList<String> keyWords = new ArrayList<String>();
 	ArrayList<String> exceptedIngredients = new ArrayList<String>();
-	String[] plugins = {"plugin.jar","plugin2.jar","plugin3.jar"};
+	String[] plugins = {};//"plugin.jar","plugin2.jar","plugin3.jar"};
 	PluginLoader pluginLoader = new PluginLoader(plugins);
 	ArrayList<ResearchPlugin> researchPlugins;
 
@@ -229,3 +229,4 @@ public class Search {
 
 	}
 }
+
