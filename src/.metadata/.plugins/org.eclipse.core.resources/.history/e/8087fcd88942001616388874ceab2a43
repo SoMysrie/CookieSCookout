@@ -19,7 +19,7 @@ public class Main extends Application
     Button btsubmit, btclear;
     
     //VBoxes for the labels and checkboxes 
-    VBox vbchecks, vblabels, vbplugin, vbhelp, vbbutton, vbtext;
+    VBox vbchecks, vblabels, vbhome, vbplugin, vbhelp, vbbutton, vbtext;
     
     public static void main(String[] args) 
     {
@@ -65,6 +65,10 @@ public class Main extends Application
                 chkaufeminin = new CheckBox("Website auFeminin");
                 chkbdd = new CheckBox("Website Cookie's Cookout");
                 chklocal = new CheckBox("Local");
+                 
+                //textfield
+                final TextField search = new TextField();
+     		    search.setPromptText("What do you want to search?");
      		   
                 //setSelected on true for all 5 checkboxes
                 chkmarmiton.setSelected(true);
@@ -81,19 +85,15 @@ public class Main extends Application
                  		+ "- Website Cookie's Cookout \n"
                 		+ "- Local \n");
                  
-                //textfield
-                final TextField search = new TextField();
-     		    search.setPromptText("What do you want to search?");
-                
                 //Defining the Submit button
                 btsubmit = new Button("Submit");
             	//Defining the Clear button
                 btclear = new Button("Clear");
-
+                 
                 //add all things to vboxes
                 vbchecks.getChildren().addAll(chkmarmiton, chkcuisineaz, chkaufeminin, chkbdd, chklocal);
-                vblabels.getChildren().addAll(lbltotal, lbllist);
                 vbtext.getChildren().add(search);
+                vblabels.getChildren().addAll(lbltotal, lbllist);
                 vbbutton.getChildren().addAll(btsubmit, btclear);
                  
                 //attach click-method to all 5 checkboxes

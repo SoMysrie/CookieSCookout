@@ -19,7 +19,7 @@ public class Main extends Application
     Button btsubmit, btclear;
     
     //VBoxes for the labels and checkboxes 
-    VBox vbchecks, vblabels, vbplugin, vbhelp, vbbutton, vbtext;
+    VBox vbchecks, vblabels, vbhome, vbfile, vbfile2, vbplugin, vbhelp, vbbutton;
     
     public static void main(String[] args) 
     {
@@ -44,11 +44,6 @@ public class Main extends Application
                 vbchecks.setSpacing(10);
                 vbchecks.setPadding(new Insets(20));
                  
-                //vbox for textfield
-                vbtext = new VBox();
-                vbtext.setSpacing(10);
-                vbtext.setPadding(new Insets(20));		
-                
                 //vbox for labels
                 vblabels = new VBox();
                 vblabels.setSpacing(10);
@@ -65,7 +60,7 @@ public class Main extends Application
                 chkaufeminin = new CheckBox("Website auFeminin");
                 chkbdd = new CheckBox("Website Cookie's Cookout");
                 chklocal = new CheckBox("Local");
-     		   
+                 
                 //setSelected on true for all 5 checkboxes
                 chkmarmiton.setSelected(true);
                 chkcuisineaz.setSelected(true);
@@ -81,19 +76,14 @@ public class Main extends Application
                  		+ "- Website Cookie's Cookout \n"
                 		+ "- Local \n");
                  
-                //textfield
-                final TextField search = new TextField();
-     		    search.setPromptText("What do you want to search?");
-                
                 //Defining the Submit button
                 btsubmit = new Button("Submit");
             	//Defining the Clear button
                 btclear = new Button("Clear");
-
+                 
                 //add all things to vboxes
                 vbchecks.getChildren().addAll(chkmarmiton, chkcuisineaz, chkaufeminin, chkbdd, chklocal);
                 vblabels.getChildren().addAll(lbltotal, lbllist);
-                vbtext.getChildren().add(search);
                 vbbutton.getChildren().addAll(btsubmit, btclear);
                  
                 //attach click-method to all 5 checkboxes
@@ -130,7 +120,7 @@ public class Main extends Application
                 //create main container
                 FlowPane root = new FlowPane();
                 root.setHgap(20);
-                root.getChildren().addAll(menuBar, vbchecks, vblabels, vbtext, vbbutton);
+                root.getChildren().addAll(menuBar, vbchecks, vblabels, vbbutton);
                 String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                 root.setStyle("-fx-background-image: url('" + image + "'); " 
                 		 + "-fx-background-position: center center; " 
@@ -151,14 +141,14 @@ public class Main extends Application
             public void handle(ActionEvent event) 
     	    {
     		   //vbbox for text field
-    		   vbtext = new VBox();
-    		   vbtext.setSpacing(10);
-    		   vbtext.setPadding(new Insets(20));
+    		   vbfile = new VBox();
+    		   vbfile.setSpacing(10);
+    		   vbfile.setPadding(new Insets(20));
             	 
     		   //vbbox for buttons
-    		   vbbutton = new VBox();
-    		   vbbutton.setSpacing(10);
-    		   vbbutton.setPadding(new Insets(20));
+    		   vbfile2 = new VBox();
+    		   vbfile2.setSpacing(10);
+    		   vbfile2.setPadding(new Insets(20));
             	 
     		   //Creating a GridPane container
     		   GridPane grid = new GridPane();
@@ -166,7 +156,11 @@ public class Main extends Application
     		   grid.setVgap(5);
     		   grid.setHgap(5);
     		   //Defining the Title text field
-    		   final TextField title = new TextField();
+    		   //final TextField title = new TextField();
+    		   TextArea title = new TextArea();
+
+    		   title.setEditable(false);
+    		   title.setMaxWidth( 75 );
     		   title.setPromptText("Enter your recipe's title");
     		   title.setPrefColumnCount(10);
     		   title.getText();
@@ -234,13 +228,13 @@ public class Main extends Application
             	   }
     		   });
     		   
-    		   vbtext.getChildren().addAll(title, picture, ingredients, steps);
-               vbbutton.getChildren().addAll(submit, clear, label);
+    		   vbfile.getChildren().addAll(title, picture, ingredients, steps);
+               vbfile2.getChildren().addAll(submit, clear, label);
             	 
                //create main container
                FlowPane root = new FlowPane();
                root.setHgap(20);
-               root.getChildren().addAll(menuBar, vbtext, vbbutton);
+               root.getChildren().addAll(menuBar, vbfile, vbfile2);
                String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                root.setStyle("-fx-background-image: url('" + image + "'); " 
                  		+ "-fx-background-position: center center; " 
