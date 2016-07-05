@@ -1,0 +1,41 @@
+Il reste:
+
+Projet
+	 1 - intégrer l'architecture MVC
+
+Application lourde
+	 1 - interface graphique avec javafx
+	 2 - méthode modifyInBDD()
+	 3 - nettoyer le fichier main et créer un nouveau pour les méthodes SQL
+	 4 - moteur de recherche
+	 5 - plugin twitter
+	 6 - pour les plugins prévoir un outil de checking
+	
+Site Web
+	 1 - récuperer les informations de la BDD grâce au node.js
+	 2 - page recherche
+	 3 - page contact
+
+Recettes
+	 1 - ecrire le contenu
+	 2 - arriver à 10 recettes
+	 3 - arriver à 20 recettes
+	 4 - arriver à 30 recettes
+	 5 - arriver à 40 recettes
+	 6 - arriver à 50 recettes
+
+Documents
+	 1  - tableaux qui a fait le travail
+	 2  - parseur d'annotation
+	 3  - MCD
+	 4  - description du projet
+	 5  - technologies à utiliser
+	 6  - diagramme de gantt
+	 7  - schéma 
+	 8  - croquis de l'interface graphique
+	 9  - UML
+	 10 - SI
+
+Github
+	 1 - modifier l'architecture des commits
+	 2 - faire des commits
