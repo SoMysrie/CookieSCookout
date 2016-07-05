@@ -1,0 +1,87 @@
+package application;
+
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+ 
+public class Main extends Application 
+{
+	//controls needed for app:
+    CheckBox chksport1, chksport2, chksport3;
+    Label lbltotal, lbllist;
+   
+   //2 VBoxes for the labels and checkboxes 
+    VBox vbchecks, vblabels, vbmenu;
+    
+    public static void main(String[] args) {
+        launch(args);
+    };
+ 
+    @Override
+    public void start(Stage stage) {
+    	MenuBar menuBar = new MenuBar();
+    	
+    	// --- Menu Home
+        Menu menuHome = new Menu("Home");
+        MenuItem menuItemHome = new MenuItem("Home");
+        menuItemHome.setOnAction(new EventHandler<ActionEvent>() {
+                            
+             @Override
+             public void handle(ActionEvent event) {
+                // GOES into this method on click of the menu item 'My Item'
+                System.out.println("Inside On Action!!!");
+             }
+        });
+        menuHome.getItems().add(menuItemHome);
+        // --- Menu File
+        Menu menuFile = new Menu("File");
+        // --- Menu Plugin
+        Menu menuPlugin = new Menu("Plugin");
+        // --- Menu Help
+        Menu menuHelp = new Menu("Help");
+    	
+        menuBar.getMenus().addAll(menuHome, menuFile, menuPlugin, menuHelp);
+        
+      //create main container and add 2 vboxes to it
+        FlowPane root = new FlowPane();
+        root.setHgap(20);
+        root.getChildren().add(menuBar);
+            
+        Scene scene = new Scene(root, 300, 250);
+        stage.setTitle("CookiesCookout");
+        stage.setScene(scene);
+        stage.show();
+    };
+    
+    private void handleButtonAction(ActionEvent e) {
+        int count=0;
+        String choices="";
+        if(chksport1.isSelected()){
+            count++;
+            choices+=chksport1.getText() + "\n";
+         }
+        if(chksport2.isSelected()){
+            count++;
+            choices+=chksport2.getText() + "\n";
+         }
+        if(chksport3.isSelected()){
+            count++;
+            choices+=chksport3.getText() + "\n";
+         }
+       lbltotal.setText("Sports chosen: " + count);
+       lbllist.setText(choices);
+     };
+} 
