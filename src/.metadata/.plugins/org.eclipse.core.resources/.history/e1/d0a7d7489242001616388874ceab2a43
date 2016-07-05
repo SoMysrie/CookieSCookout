@@ -230,7 +230,7 @@ public class Main extends Application
     						   && (recipe.getText() != null && !recipe.getText().isEmpty())) 
     				   {
     					   label.setText("Yes!");
-    					   saveInBDD(img.getText(), title.getText(), recipe.getText(), ingredients.getText());
+    					   saveInBDD(img.toString(), title.toString(), recipe.toString(), ingredients.toString());
             	       } 
     				   else
     				   {
