@@ -84,7 +84,7 @@ public class Main extends Application
                 //textfield
                 final TextField search = new TextField();
      		    search.setPromptText("What do you want to search?");
-     		    search.setPrefWidth(200);
+     		    search.setPrefWidth(80);
                 
                 //Defining the Submit button
                 btsubmit = new Button("Submit");
@@ -125,7 +125,6 @@ public class Main extends Application
                         chklocal.setSelected(false);
                         lbltotal.setText("Website chosen: 0");
                         lbllist.setText("None");
-                        search.clear();
             	    }
             	});
                  

@@ -125,7 +125,6 @@ public class Main extends Application
                         chklocal.setSelected(false);
                         lbltotal.setText("Website chosen: 0");
                         lbllist.setText("None");
-                        search.clear();
             	    }
             	});
                  
