@@ -2,8 +2,7 @@ package link;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,12 +17,12 @@ public class Search {
 	ArrayList<Site> sites = new ArrayList<Site>();
 	String researcher = "";
 	public static String confPath = "conf/link.xml";
-	Properties conf;
 	ArrayList<String> keyWords = new ArrayList<String>();
 	ArrayList<String> exceptedIngredients = new ArrayList<String>();
 	String[] plugins = {};//"plugin.jar","plugin2.jar","plugin3.jar"};
 	PluginLoader pluginLoader = new PluginLoader(plugins);
 	ArrayList<ResearchPlugin> researchPlugins;
+    ArrayList<NotedRecipes> resultSearch= new ArrayList<NotedRecipes>();
 
 	public ArrayList<Site> getSites() {
 		return sites;
@@ -74,7 +73,6 @@ public class Search {
 	public void init() throws Exception {
 		initKeyWords();
 		initSites();
-
 		updateResearcher();
 		initLinks();
 	}
@@ -103,12 +101,10 @@ public class Search {
 		
 		Document doc;
 		for (int i = 0; i < this.sites.size(); i++) {
-			System.out.println("in");
 			try {
 				doc = Jsoup.connect(sites.get(i).searchSite).get();
 				for (Element file : doc.select(sites.get(i).getDivURLS())) {
 					sites.get(i).addURL(file.attr("href"));
-					// System.out.println(sites.get(i).getMainSite()+file.attr("href"));
 				}
 			} catch (UnknownHostException e) {
 				System.out.println("Impossible d'acc�der au site "
@@ -139,7 +135,9 @@ public class Search {
 						setIngredients(indexToRemove, s, i, file);
 					}
 					if (!indexToRemove.contains(i)) {
+                        System.out.println(s.getUrls().get(i).getUrl());
 						setVote(doc, s, i);
+						setMark(doc,s,i);
 					}
 
 				} catch (UnknownHostException e) {
@@ -157,14 +155,28 @@ public class Search {
 
 	}
 
-	private void setIngredients(ArrayList<Integer> indexToRemove, Site s,
+    public boolean containIngredients(String ingredients, String reg){
+        boolean result =ingredients.toLowerCase().contains(
+                reg.toLowerCase())||ingredients.toLowerCase().contains(
+                reg.toLowerCase()+"s")||ingredients.toLowerCase().contains(
+                reg.toLowerCase()+"x");
+        if(reg.endsWith("s")){
+            result=ingredients.toLowerCase().contains(
+                    reg.toLowerCase().substring(0,reg.lastIndexOf("s")));
+        }
+        else if(reg.endsWith("x")) {
+            result = ingredients.toLowerCase().contains(
+                    reg.toLowerCase().substring(0, reg.lastIndexOf("x")));
+        }
+        return(result);
+    }
+	public void setIngredients(ArrayList<Integer> indexToRemove, Site s,
 			int i, Element file) {
 		String ingredients = file.outerHtml()
 				.replaceAll("<.*?>", "")
 				.replaceAll("[\r\n]", " ");
 		for (String str : exceptedIngredients) {
-			if (ingredients.toLowerCase().contains(
-					str.toLowerCase())) {
+			if (this.containIngredients(ingredients,str)) {
 				indexToRemove.add(i);
 				System.out.println("REMOVE : "
 						+ s.getUrls().get(i).getUrl());
@@ -179,8 +191,8 @@ public class Search {
 					s.getUrls().get(i).getIngredients()[j] = s
 							.getUrls().get(i).getIngredients()[j]
 							.replaceAll(" +", " ");
-					System.out.println(s.getUrls().get(i)
-							.getIngredients()[j]);
+		/*			System.out.println(s.getUrls().get(i)
+							.getIngredients()[j]);*/
 				}
 			}
 		}
@@ -188,25 +200,48 @@ public class Search {
 
 	private void setVote(Document doc, Site s, int i) {
 		for (Element file : doc.select(s.getDivVote())) {
-			System.out.println(Integer.valueOf(extractVote(file
-					.ownText())));
-			s.getUrls()
+            System.out.println(s.getMainSite()+"    "+file);
+            s.getUrls()
 					.get(i)
 					.setVote(
-							Integer.valueOf(extractVote(file
-									.ownText())));
+							Integer.valueOf(extractVote(file.toString()
+									,s)));
+
+
 
 		}
 		if (doc.select(s.getDivVote()).size() == 0) {
 			s.getUrls().get(i).setVote(0);
 		}
 	}
+	private void setMark(Document doc, Site s, int i) {
+        for (Element file : doc.select(s.getDivMark())) {
+            s.getUrls()
+                    .get(i)
+                    .setMark(
+                            Float.valueOf(extractMark(file.toString().replace(",",".")
+                                    ,s)));
+            System.out.println( s.getUrls()
+                    .get(i).getVote()+"     "+s.getUrls().get(i).getMark());
 
-	public String extractVote(String s) {
-		return s.replace("(", "").replace(" ", "").replace(")", "")
-				.replace("votes", "");
 
+
+        }
+        if (doc.select(s.getDivVote()).size() == 0) {
+            s.getUrls().get(i).setVote(0);
+        }
 	}
+	public String extractVote(String s,Site site) {
+        String[] split=site.getTitleVote().split("value");
+        String res=s.substring(s.indexOf(split[0])+split[0].length(),s.indexOf(split[1],s.indexOf(split[0])+split[0].length()));
+
+        return res;
+	}
+    public String extractMark(String s,Site site) {
+        String[] split=site.getTitleMark().split("value");
+        String res=s.substring(s.indexOf(split[0])+split[0].length(),s.indexOf(split[1],s.indexOf(split[0])+split[0].length()));
+        return res;
+    }
 
 	void updateLinks(Site s, ArrayList<Integer> indexToRemove) {
 		for (Integer i : indexToRemove) {
@@ -222,11 +257,25 @@ public class Search {
 			this.init();
 			this.researchWithPlugins();
 			this.addDatas();
+            this.setResultMap();
 		} catch (Exception e) {
 			// TODO Bloc catch auto-g�n�r�
 			e.printStackTrace();
 		}
 
 	}
+    public void setResultMap(){
+
+        for(Site s : this.getSites()){
+            for(NotedRecipes recipe : s.getUrls()){
+               resultSearch.add((recipe));
+            }
+        }
+        Collections.sort(resultSearch,Collections.reverseOrder()
+        );
+        for(NotedRecipes recipe : resultSearch) {
+            System.out.println(recipe.getMark() + "   " + recipe.getVote() + "   " + recipe.getUrl());
+        }
+    }
 }
 

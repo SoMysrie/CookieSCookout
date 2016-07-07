@@ -3,21 +3,21 @@ package link;
 /**
  * Created by Nicolas_Travail on 17/03/2016.
  */
-public class NotedRecipes {
+public class NotedRecipes implements Comparable {
     
 	private String name;
 	private String url;
     private int vote;
-    private int note;
+    private float mark;
     private String[] ingredients;
     private String recipe;
 
-    public int getNote() {
-		return note;
+    public float getMark() {
+		return mark;
 	}
 
-	public void setNote(int note) {
-		this.note = note;
+	public void setMark(float mark) {
+		this.mark= mark;
 	}
 
 	public String getRecipe() {
@@ -54,7 +54,7 @@ public class NotedRecipes {
 		this.name= name;
 		this.url = url;
 		this.vote = vote;
-		this.note = note;
+		this.mark = mark;
 		this.ingredients = ingredients;
 		this.recipe = recipe;
 	}
@@ -72,5 +72,23 @@ public class NotedRecipes {
 
     public void setVote(int vote) {
         this.vote = vote;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        NotedRecipes recipe = (NotedRecipes) o;
+        if(recipe.getMark()>this.getMark())
+            return -1;
+        else if(recipe.getMark()<this.getMark())
+            return 1;
+        else {
+            if(recipe.getMark()>this.getMark()) {
+                System.out.println(recipe.getUrl()+"       "+this.getUrl());;
+                return -1;
+            }
+            else if(recipe.getMark()<this.getMark())
+                 return 1;
+            else return 0;
+        }
     }
 }

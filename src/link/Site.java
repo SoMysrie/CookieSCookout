@@ -9,6 +9,25 @@ public class Site {
     String divMark;
     String divURLS;
     String divIngredients;
+
+    public String getTitleVote() {
+        return titleVote;
+    }
+
+    public void setTitleVote(String titleVote) {
+        this.titleVote = titleVote;
+    }
+
+    public String getTitleMark() {
+        return titleMark;
+    }
+
+    public void setTitleMark(String titleMark) {
+        this.titleMark = titleMark;
+    }
+
+    String titleVote;
+    String titleMark;
     ArrayList<NotedRecipes> urls = new ArrayList<NotedRecipes>();
 
     public String getDivIngredients() {
@@ -90,7 +109,7 @@ public class Site {
 
 
     public Site(String mainSite, String searchSite, String divVote,
-                String divMark, String divURLS, String divIngredients) {
+                String divMark, String divURLS, String divIngredients, String titleVote, String titleMark) {
         super();
         this.mainSite = mainSite;
         this.searchSite = searchSite;
@@ -98,6 +117,8 @@ public class Site {
         this.divMark = divMark;
         this.divURLS = divURLS;
         this.divIngredients= divIngredients;
+        this.titleVote=titleVote;
+        this.titleMark=titleMark;
     }
 
 
