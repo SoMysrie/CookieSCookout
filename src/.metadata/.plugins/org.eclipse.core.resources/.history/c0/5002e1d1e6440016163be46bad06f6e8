@@ -171,10 +171,10 @@ public class Main extends Application
        });
         menuHome.getItems().add(menuItemHome);
         
-        // --- Menu Recipes
-        Menu menuRecipe = new Menu("Recipes");
-        MenuItem menuItemRecipe = new MenuItem("Recipes");
-        menuItemRecipe.setOnAction(new EventHandler<ActionEvent>() 
+        // --- Menu File
+        Menu menuFile = new Menu("File");
+        MenuItem menuItemFile = new MenuItem("File");
+        menuItemFile.setOnAction(new EventHandler<ActionEvent>() 
         {
         	@Override
             public void handle(ActionEvent event) 
@@ -290,7 +290,7 @@ public class Main extends Application
                stage.show();
     	    }
         });
-        menuRecipe.getItems().add(menuItemRecipe);
+        menuFile.getItems().add(menuItemFile);
         
         // --- Menu Plugin
         Menu menuPlugin = new Menu("Plugin");
@@ -408,7 +408,7 @@ public class Main extends Application
         });
         menuHelp.getItems().add(menuItemHelp);
     	
-        menuBar.getMenus().addAll(menuHome, menuRecipe, menuPlugin, menuHelp);
+        menuBar.getMenus().addAll(menuHome, menuFile, menuPlugin, menuHelp);
         
         //create main container
         FlowPane root = new FlowPane();
