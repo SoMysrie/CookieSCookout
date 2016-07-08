@@ -516,7 +516,7 @@ public class Main extends Application
             desktop.open(file);
         } catch (IOException ex) {
             Logger.getLogger(
-                Main.class.getName()).log(
+                FileChooserSample.class.getName()).log(
                     Level.SEVERE, null, ex
                 );
         }

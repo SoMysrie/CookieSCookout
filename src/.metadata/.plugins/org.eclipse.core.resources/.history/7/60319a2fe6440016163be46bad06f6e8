@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.logging.Level;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,15 +16,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
 
 public class Main extends Application 
 {
@@ -332,22 +328,10 @@ public class Main extends Application
                      }
                  );
                  
-                 final GridPane inputGridPane = new GridPane();
-                 
-                 GridPane.setConstraints(openButton, 0, 0);
-                 GridPane.setConstraints(openMultipleButton, 1, 0);
-                 inputGridPane.setHgap(6);
-                 inputGridPane.setVgap(6);
-                 inputGridPane.getChildren().addAll(openButton, openMultipleButton);
-          
-                 final Pane rootGroup = new VBox(12);
-                 rootGroup.getChildren().addAll(inputGridPane);
-                 rootGroup.setPadding(new Insets(12, 12, 12, 12));
-                 
             	 //create main container
                  FlowPane root = new FlowPane();
                  root.setHgap(20);
-                 root.getChildren().addAll(menuBar, rootGroup);
+                 root.getChildren().addAll(menuBar);
                  String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                  root.setStyle("-fx-background-image: url('" + image + "'); " 
                  		+ "-fx-background-position: center center; " 
@@ -516,7 +500,7 @@ public class Main extends Application
             desktop.open(file);
         } catch (IOException ex) {
             Logger.getLogger(
-                Main.class.getName()).log(
+                FileChooserSample.class.getName()).log(
                     Level.SEVERE, null, ex
                 );
         }

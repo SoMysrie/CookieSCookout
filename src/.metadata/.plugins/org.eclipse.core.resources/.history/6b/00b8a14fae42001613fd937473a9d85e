@@ -6,8 +6,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.logging.Level;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,16 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
-import javafx.stage.FileChooser;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
-
+ 
 public class Main extends Application 
 {
 	//controls needed for app:
@@ -36,9 +27,6 @@ public class Main extends Application
     
     //VBoxes for the labels and checkboxes 
     VBox vbchecks, vblabels, vbplugin, vbhelp, vbbutton, vbtext;
-    
-    //
-    private Desktop desktop = Desktop.getDesktop();
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException
     {
@@ -53,9 +41,6 @@ public class Main extends Application
     public void start(Stage stage) 
     {
     	MenuBar menuBar = new MenuBar() ;
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Open Resource File");
-    	fileChooser.showOpenDialog(stage);
     	
     	// --- Menu Home
         Menu menuHome = new Menu("Home");
@@ -162,8 +147,7 @@ public class Main extends Application
                 String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                 root.setStyle("-fx-background-image: url('" + image + "'); " 
                 		 + "-fx-background-position: center center; " 
-                		 + "-fx-background-repeat: stretch;"
-                		 + "-fx-background-color : transparent");    
+                		 + "-fx-background-repeat: stretch;");    
                 Scene scene = new Scene(root, 750, 750);
                 stage.setScene(scene);
                 stage.show();
@@ -195,14 +179,14 @@ public class Main extends Application
     		   grid.setVgap(5);
     		   grid.setHgap(5);
     		   //Defining the Title text field
-    		   final TextField title = new TextField();
+    		   final TextArea title = new TextArea();
     		   title.setPromptText("Enter your recipe's title");
     		   title.setPrefColumnCount(10);
     		   title.getText();
     		   GridPane.setConstraints(title, 0, 0);
     		   grid.getChildren().add(title);
     		   //Defining the picture text field
-    		   final TextField img = new TextField();
+    		   final TextArea img = new TextArea();
     		   img.setPromptText("Enter your recipe's image.");
     		   GridPane.setConstraints(img, 0, 1);
     		   grid.getChildren().add(img);
@@ -212,8 +196,6 @@ public class Main extends Application
     		   ingredients.setPromptText("Enter your recipe's ingredients.");
     		   GridPane.setConstraints(ingredients, 0, 2);
     		   grid.getChildren().add(ingredients);
-    		   ingredients.setMaxWidth(250);
-    		   ingredients.setMaxHeight(8);
     		   //Defining the  text field
     		   final TextArea recipe = new TextArea();
     		   recipe.setPrefColumnCount(15);
@@ -221,7 +203,6 @@ public class Main extends Application
     		   GridPane.setConstraints(recipe, 0, 2);
     		   grid.getChildren().add(recipe);
     		   recipe.setPrefWidth(250);
-    		   recipe.setPrefWidth(50);
     		   
     		   //Defining the Submit button
     		   Button submit = new Button("Submit");
@@ -283,8 +264,7 @@ public class Main extends Application
                String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                root.setStyle("-fx-background-image: url('" + image + "'); " 
                  		+ "-fx-background-position: center center; " 
-                 		+ "-fx-background-repeat: stretch;"
-                 		+ "-fx-background-color : transparent");   
+                 		+ "-fx-background-repeat: stretch;");   
                Scene scene = new Scene(root, 750, 750);
                stage.setScene(scene);
                stage.show();
@@ -300,59 +280,14 @@ public class Main extends Application
              @Override
              public void handle(ActionEvent event) 
              {
-            	 final FileChooser fileChooser = new FileChooser();
-            	 
-                 final Button openButton = new Button("Open a Picture...");
-                 final Button openMultipleButton = new Button("Open Pictures...");
-          
-                 openButton.setOnAction(
-                     new EventHandler<ActionEvent>() {
-                         @Override
-                         public void handle(final ActionEvent e) {
-                             File file = fileChooser.showOpenDialog(stage);
-                             if (file != null) {
-                                 openFile(file);
-                             }
-                         }
-                     }
-                 );
-          
-                 openMultipleButton.setOnAction(
-                     new EventHandler<ActionEvent>() {
-                         @Override
-                         public void handle(final ActionEvent e) {
-                             List<File> list =
-                                 fileChooser.showOpenMultipleDialog(stage);
-                             if (list != null) {
-                                 for (File file : list) {
-                                     openFile(file);
-                                 }
-                             }
-                         }
-                     }
-                 );
-                 
-                 final GridPane inputGridPane = new GridPane();
-                 
-                 GridPane.setConstraints(openButton, 0, 0);
-                 GridPane.setConstraints(openMultipleButton, 1, 0);
-                 inputGridPane.setHgap(6);
-                 inputGridPane.setVgap(6);
-                 inputGridPane.getChildren().addAll(openButton, openMultipleButton);
-          
-                 final Pane rootGroup = new VBox(12);
-                 rootGroup.getChildren().addAll(inputGridPane);
-                 rootGroup.setPadding(new Insets(12, 12, 12, 12));
-                 
-            	 //create main container
+               //create main container
                  FlowPane root = new FlowPane();
                  root.setHgap(20);
-                 root.getChildren().addAll(menuBar, rootGroup);
+                 root.getChildren().addAll(menuBar);
                  String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                  root.setStyle("-fx-background-image: url('" + image + "'); " 
                  		+ "-fx-background-position: center center; " 
-                 		+ "-fx-background-repeat: stretch;"
-                 		+ "-fx-background-color : transparent");  
+                 		+ "-fx-background-repeat: stretch;");  
                  Scene scene = new Scene(root, 750, 750);
                  stage.setScene(scene);
                  stage.show();
@@ -399,8 +334,7 @@ public class Main extends Application
                  String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
                  root.setStyle("-fx-background-image: url('" + image + "'); " 
                  		+ "-fx-background-position: center center; " 
-                 		+ "-fx-background-repeat: stretch;"
-                 		+ "-fx-background-color : transparent");  
+                 		+ "-fx-background-repeat: stretch;");  
                  Scene scene = new Scene(root, 750, 750);
                  stage.setScene(scene);
                  stage.show();
@@ -418,8 +352,7 @@ public class Main extends Application
         String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
         root.setStyle("-fx-background-image: url('" + image + "'); " 
         		+ "-fx-background-position: center center; " 
-        		+ "-fx-background-repeat: stretch;"
-        		+ "-fx-background-color : transparent");
+        		+ "-fx-background-repeat: stretch;");
         Scene scene = new Scene(root, 750, 750);
         stage.setTitle("CookiesCookout");
         stage.setScene(scene);
@@ -510,15 +443,4 @@ public class Main extends Application
   		}
   		
   	} ;
-
-  	private void openFile(File file) {
-        try {
-            desktop.open(file);
-        } catch (IOException ex) {
-            Logger.getLogger(
-                Main.class.getName()).log(
-                    Level.SEVERE, null, ex
-                );
-        }
-    }
 }; 
