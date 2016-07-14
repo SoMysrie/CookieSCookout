@@ -35,10 +35,13 @@ public class Main extends Application
     Button btsubmit, btclear, btsearch;
     
     //VBoxes for the labels and checkboxes 
-    VBox vbchecks, vblabels, vbplugin, vbhelp, vbbutton, vbtext;
+    VBox vbchecks, vblabels, vbplugin, vbhelp, vbbutton, vbtext, vball;
+    
+    //Desktop needed for searching a file
+    private Desktop desktop = Desktop.getDesktop();
     
     //
-    private Desktop desktop = Desktop.getDesktop();
+    MainContainer mainContainer = new MainContainer();
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException
     {
@@ -65,6 +68,9 @@ public class Main extends Application
         	@Override
             public void handle(ActionEvent event) 
         	{
+        		//vbox for all
+        		vball = new VBox();
+        		
         		//vbox for checkboxes     
                 vbchecks = new VBox();
                 vbchecks.setSpacing(10);
@@ -155,20 +161,11 @@ public class Main extends Application
             	    }
             	});
                  
-                //create main container
-                FlowPane root = new FlowPane();
-                root.setHgap(20);
-                root.getChildren().addAll(menuBar, vbchecks, vblabels, vbtext, vbbutton);
-                String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
-                root.setStyle("-fx-background-image: url('" + image + "'); " 
-                		 + "-fx-background-position: center center; " 
-                		 + "-fx-background-repeat: stretch;"
-                		 + "-fx-background-color : transparent");    
-                Scene scene = new Scene(root, 750, 750);
-                stage.setScene(scene);
-                stage.show();
+                
+                vball.getChildren().addAll(menuBar, vbchecks, vblabels, vbtext, vbbutton);
+                mainContainer.createMainContainer(stage, menuBar, vball);
             }
-       });
+        });
         menuHome.getItems().add(menuItemHome);
         
         // --- Menu Recipes
@@ -276,18 +273,7 @@ public class Main extends Application
     		   vbtext.getChildren().addAll(title, img, ingredients, recipe);
                vbbutton.getChildren().addAll(submit, clear, label);
             	 
-               //create main container
-               FlowPane root = new FlowPane();
-               root.setHgap(20);
-               root.getChildren().addAll(menuBar, vbtext, vbbutton);
-               String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
-               root.setStyle("-fx-background-image: url('" + image + "'); " 
-                 		+ "-fx-background-position: center center; " 
-                 		+ "-fx-background-repeat: stretch;"
-                 		+ "-fx-background-color : transparent");   
-               Scene scene = new Scene(root, 750, 750);
-               stage.setScene(scene);
-               stage.show();
+               mainContainer.createMainContainer(stage, menuBar, vbtext, vbbutton);
     	    }
         });
         menuRecipe.getItems().add(menuItemRecipe);
@@ -302,60 +288,24 @@ public class Main extends Application
              {
             	 final FileChooser fileChooser = new FileChooser();
             	 
-                 final Button openButton = new Button("Open a Picture...");
-                 final Button openMultipleButton = new Button("Open Pictures...");
+                 final Button openButton = new Button("Choose a File...");
           
                  openButton.setOnAction(
-                     new EventHandler<ActionEvent>() {
+                     new EventHandler<ActionEvent>()
+                     {
                          @Override
-                         public void handle(final ActionEvent e) {
+                         public void handle(final ActionEvent e) 
+                         {
                              File file = fileChooser.showOpenDialog(stage);
-                             if (file != null) {
+                             if (file != null) 
+                             {
                                  openFile(file);
                              }
                          }
                      }
                  );
-          
-                 openMultipleButton.setOnAction(
-                     new EventHandler<ActionEvent>() {
-                         @Override
-                         public void handle(final ActionEvent e) {
-                             List<File> list =
-                                 fileChooser.showOpenMultipleDialog(stage);
-                             if (list != null) {
-                                 for (File file : list) {
-                                     openFile(file);
-                                 }
-                             }
-                         }
-                     }
-                 );
                  
-                 final GridPane inputGridPane = new GridPane();
-                 
-                 GridPane.setConstraints(openButton, 0, 0);
-                 GridPane.setConstraints(openMultipleButton, 1, 0);
-                 inputGridPane.setHgap(6);
-                 inputGridPane.setVgap(6);
-                 inputGridPane.getChildren().addAll(openButton, openMultipleButton);
-          
-                 final Pane rootGroup = new VBox(12);
-                 rootGroup.getChildren().addAll(inputGridPane);
-                 rootGroup.setPadding(new Insets(12, 12, 12, 12));
-                 
-            	 //create main container
-                 FlowPane root = new FlowPane();
-                 root.setHgap(20);
-                 root.getChildren().addAll(menuBar, rootGroup);
-                 String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
-                 root.setStyle("-fx-background-image: url('" + image + "'); " 
-                 		+ "-fx-background-position: center center; " 
-                 		+ "-fx-background-repeat: stretch;"
-                 		+ "-fx-background-color : transparent");  
-                 Scene scene = new Scene(root, 750, 750);
-                 stage.setScene(scene);
-                 stage.show();
+                 mainContainer.createMainContainer(stage, menuBar, openButton);
              }
         });
         menuPlugin.getItems().add(menuItemPlugin);
@@ -391,41 +341,19 @@ public class Main extends Application
                  		+ "	You can see this list of information.\n");
                  
                  vblabels.getChildren().addAll(lblMenu, lblFile, lblPlugin, lblHelp);
-                 
-                 //create main container
-                 FlowPane root = new FlowPane();
-                 root.setHgap(20);
-                 root.getChildren().addAll(menuBar, vblabels);
-                 String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
-                 root.setStyle("-fx-background-image: url('" + image + "'); " 
-                 		+ "-fx-background-position: center center; " 
-                 		+ "-fx-background-repeat: stretch;"
-                 		+ "-fx-background-color : transparent");  
-                 Scene scene = new Scene(root, 750, 750);
-                 stage.setScene(scene);
-                 stage.show();
+                 mainContainer.createMainContainer(stage, menuBar, vblabels);
              }
         });
         menuHelp.getItems().add(menuItemHelp);
     	
         menuBar.getMenus().addAll(menuHome, menuRecipe, menuPlugin, menuHelp);
-        
-        //create main container
-        FlowPane root = new FlowPane();
-        root.setHgap(20);
-        root.getChildren().add(menuBar);
-        menuBar.prefWidthProperty().bind(stage.widthProperty());
-        String image = Main.class.getResource(("/application/static/img/LogoCookieSCookout.png").toString()).toExternalForm();
-        root.setStyle("-fx-background-image: url('" + image + "'); " 
-        		+ "-fx-background-position: center center; " 
-        		+ "-fx-background-repeat: stretch;"
-        		+ "-fx-background-color : transparent");
-        Scene scene = new Scene(root, 750, 750);
-        stage.setTitle("CookiesCookout");
-        stage.setScene(scene);
-        stage.show();
+        mainContainer.createMainContainer(stage, menuBar);
     };
     
+    /**
+     * 
+     * @param e
+     */
     private void handleButtonAction(ActionEvent e) 
     {
         int count = 0;
@@ -464,6 +392,13 @@ public class Main extends Application
         lbllist.setText(choices);
      };
 
+     /**
+      * Save a recipe in the bdd
+      * @param img
+      * @param title
+      * @param recipe
+      * @param ingredients
+      */
     public static void saveInBDD(String img, String title, String recipe, String ingredients)
   	{
   		// Information d'acces a la BDD
@@ -511,11 +446,19 @@ public class Main extends Application
   		
   	} ;
 
+  	/**
+  	 * Open a file
+  	 * @param file
+  	 */
   	private void openFile(File file) {
-        try {
+        try 
+        {
             desktop.open(file);
-        } catch (IOException ex) {
-            Logger.getLogger(
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger
+            (
                 Main.class.getName()).log(
                     Level.SEVERE, null, ex
                 );
