@@ -1,31 +1,32 @@
 package application;
 
-import cookiescookout.ws.WsServer;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import java.util.logging.Level;
-
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.scene.control.Button;
-import javafx.stage.FileChooser;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import cookiescookout.ws.WsServer;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class Main extends Application 
 {
@@ -39,6 +40,16 @@ public class Main extends Application
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop();
+    
+    //TableView for Bdd
+    private TableView<Recipe> table = new TableView<Recipe>();
+    private TableColumn<Recipe, String> imgCol = new TableColumn<Recipe, String>();
+    private TableColumn<Recipe, String> titleCol = new TableColumn<Recipe, String>();
+    private TableColumn<Recipe, String> recipeCol = new TableColumn<Recipe, String>();
+    private TableColumn<Recipe, String> ingCol = new TableColumn<Recipe, String>();
+    private TableColumn<Recipe, String> scoreCol = new TableColumn<Recipe, String>();
+    private TableColumn<Recipe, String> pollCol = new TableColumn<Recipe, String>();
+    private TableColumn<Recipe, String> urlCol = new TableColumn<Recipe, String>();
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer();
@@ -114,7 +125,7 @@ public class Main extends Application
                 //textfield
                 final TextField search = new TextField();
      		    search.setPromptText("What do you want to search?");
-     		    search.setPrefWidth(200);
+     		    search.setMaxWidth(195);
                 
                 //Defining the Submit button
                 btsearch = new Button("Search");
@@ -166,6 +177,7 @@ public class Main extends Application
         });
         menuHome.getItems().add(menuItemHome);
         
+        /*
         // --- Menu Recipes
         Menu menuRecipe = new Menu("Recipes");
         MenuItem menuItemRecipe = new MenuItem("Recipes");
@@ -196,11 +208,15 @@ public class Main extends Application
     		   title.getText();
     		   GridPane.setConstraints(title, 0, 0);
     		   grid.getChildren().add(title);
+    		   title.setMaxWidth(250);
+    		   title.setMaxHeight(8);
     		   //Defining the picture text field
     		   final TextField img = new TextField();
     		   img.setPromptText("Enter your recipe's image.");
     		   GridPane.setConstraints(img, 0, 1);
     		   grid.getChildren().add(img);
+    		   img.setMaxWidth(250);
+    		   img.setMaxHeight(8);
     		   //Defining the ingredients text field
     		   final TextArea ingredients = new TextArea();
     		   ingredients.setPrefColumnCount(15);
@@ -208,28 +224,28 @@ public class Main extends Application
     		   GridPane.setConstraints(ingredients, 0, 2);
     		   grid.getChildren().add(ingredients);
     		   ingredients.setMaxWidth(250);
-    		   ingredients.setMaxHeight(8);
+    		   ingredients.setMaxHeight(250);
     		   //Defining the  text field
     		   final TextArea recipe = new TextArea();
     		   recipe.setPrefColumnCount(15);
     		   recipe.setPromptText("Enter your recipe's steps.");
-    		   GridPane.setConstraints(recipe, 0, 2);
+    		   GridPane.setConstraints(recipe, 0, 3);
     		   grid.getChildren().add(recipe);
-    		   recipe.setPrefWidth(250);
-    		   recipe.setPrefWidth(50);
+    		   recipe.setMaxWidth(250);
+    		   recipe.setMaxHeight(500);
     		   
     		   //Defining the Submit button
     		   Button submit = new Button("Submit");
-    		   GridPane.setConstraints(submit, 1, 0);
+    		   GridPane.setConstraints(submit, 2, 0);
     		   grid.getChildren().add(submit);
     		   //Defining the Clear button
     		   Button clear = new Button("Clear");
-    		   GridPane.setConstraints(clear, 1, 1);
+    		   GridPane.setConstraints(clear, 2, 1);
     		   grid.getChildren().add(clear);
             	 
     		   //Adding a Label
     		   final Label label = new Label();
-    		   GridPane.setConstraints(label, 0, 3);
+    		   GridPane.setConstraints(label, 0, 4);
     		   GridPane.setColumnSpan(label, 2);
     		   grid.getChildren().add(label);
             	 
@@ -271,6 +287,63 @@ public class Main extends Application
                vbbutton.getChildren().addAll(submit, clear, label);
             	 
                mainContainer.createMainContainer(stage, menuBar, vbtext, vbbutton);
+    	    }
+        });
+        menuRecipe.getItems().add(menuItemRecipe);
+        */
+        
+     // --- Menu Recipes
+        Menu menuRecipe = new Menu("Recipes");
+        MenuItem menuItemRecipe = new MenuItem("Recipes");
+        menuItemRecipe.setOnAction(new EventHandler<ActionEvent>() 
+        {
+        	@Override
+        	@FXML
+            public void handle(ActionEvent event) 
+    	    {
+        		// On démarre un autre fils d'execution pour ne pas ralentir la mise à jour de l'interface graphique
+        		new Thread(new Runnable(){
+        			@Override
+        			public void run()
+        			{
+        				table.setItems(bdd.getFromBDD());
+        				
+                		table.setEditable(true);
+                		table.setMaxSize(600, 600);
+                		
+                		//assert table != null : "fx:id=\"tableview\" was not injected: check your FXML file 'UserMaster.fxml'.";
+
+                		imgCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("img"));	
+                        imgCol.setMinWidth(100);
+                        titleCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("title"));   
+                        titleCol.setMinWidth(75);
+                        recipeCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("recipe"));   
+                        recipeCol.setMinWidth(50);
+                        ingCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("ing"));   
+                        ingCol.setMinWidth(50);
+                        scoreCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("score"));   
+                        scoreCol.setMinWidth(25);
+                        pollCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("poll"));   
+                        pollCol.setMinWidth(25);
+                        urlCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("url"));   
+                        urlCol.setMinWidth(100);
+                        
+                       Platform.runLater(new Runnable() {
+        				    @SuppressWarnings("unchecked")
+							@Override public void run()
+        				    {
+                                table.getColumns().addAll(imgCol, titleCol, recipeCol, ingCol, scoreCol, pollCol, urlCol);
+                                
+                                final VBox vbox = new VBox();
+                                vbox.setSpacing(5);
+                                vbox.setPadding(new Insets(10, 0, 0, 10));
+                                vbox.getChildren().add(table);
+                            	 
+                               mainContainer.createMainContainer(stage, menuBar, vbox);
+        					} ;
+                       });
+        			} ;
+        		}).start();
     	    }
         });
         menuRecipe.getItems().add(menuItemRecipe);
@@ -387,6 +460,72 @@ public class Main extends Application
         lbllist.setText(choices);
      };
 
+     /*
+     void initialize()
+     {
+    	 table.setEditable(true);
+    	 table.setMaxSize(600, 600);
+         assert table != null : "fx:id=\"tableview\" was not injected: check your FXML file 'UserMaster.fxml'.";
+         TableColumn imgCol = new TableColumn("Image's Path");
+         imgCol.setMinWidth(100);
+         TableColumn titleCol = new TableColumn("Title");
+         titleCol.setMinWidth(75);
+         TableColumn recipeCol = new TableColumn("Recipe");
+         recipeCol.setMinWidth(50);
+         TableColumn ingCol = new TableColumn("Ingredients");
+         ingCol.setMinWidth(50);
+         TableColumn scoreCol = new TableColumn("Score");
+         scoreCol.setMinWidth(25);
+         TableColumn pollCol = new TableColumn("Poll");
+         pollCol.setMinWidth(25);
+         TableColumn urlCol = new TableColumn("Recipe's url");
+         urlCol.setMinWidth(100);
+             
+         
+        
+        try{
+            con = bdd.getConnection();
+            buildData();
+        }
+        catch(ClassNotFoundException ce){
+            logger.info(ce.toString());
+        }
+        catch(SQLException ce){
+            logger.info(ce.toString());
+        }
+    }
+     
+
+     private ObservableList<Recipe> data;
+
+	public void buildData(){        
+    data = FXCollections.observableArrayList();
+    try{      
+        String SQL = "Select * from usermaster Order By UserName";            
+        ResultSet rs = con.createStatement().executeQuery(SQL);  
+        while(rs.next()){
+        	Recipe cm = new Recipe();
+            cm.userId.set(rs.getInt("UserId"));                       
+            Image img = new Image("tailoring/UserPhoto/User"+cm.getUserId().toString()+".jpg");                
+
+            ImageView mv = new ImageView();
+            mv.setImage(img);
+            mv.setFitWidth(70);
+            mv.setFitHeight(80);
+            cm.userPhoto.set(mv);
+            cm.userName.set(rs.getString("UserName"));
+            cm.userPassword.set(rs.getString("UserPassword"));
+            cm.userType.set(rs.getString("UserType"));
+            data.add(cm);                  
+        }
+        tableview.setItems(data);
+    }
+    catch(Exception e){
+          e.printStackTrace();
+          System.out.println("Error on Building Data");            
+    }
+	}*/
+     
   	/**
   	 * Open a file
   	 * @param file
@@ -405,5 +544,7 @@ public class Main extends Application
                     Level.SEVERE, null, ex
                 );
         }
-    }
+    };
+
+  	
 }; 

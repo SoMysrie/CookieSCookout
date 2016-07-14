@@ -1,0 +1,96 @@
+package application;
+
+import javafx.beans.property.SimpleStringProperty;
+
+public class Recipe 
+{
+	private String img;
+    private String title;
+    private String recipe;
+    private String ing;
+    private String score;
+    private String poll;
+    private String url;
+ 
+    private Recipe(String img, String title, String recipe, ing, score, poll, url) 
+    {
+        this.img = new SimpleStringProperty(img);
+        this.title = new SimpleStringProperty(title);
+        this.recipe = new SimpleStringProperty(recipe);
+        this.ing = new SimpleStringProperty(ing);
+        this.score = new SimpleStringProperty(score);
+        this.poll = new SimpleStringProperty(poll);
+        this.url = new SimpleStringProperty(url);
+    }
+ 
+    public void setimg(String img) 
+    {
+        this.img = img;
+    }
+    
+    public String getimg() 
+    {
+        return img;
+    }
+        
+    public void settitle(String title) 
+    {
+        this.title = title;
+    }
+    
+    public String gettitle() 
+    {
+        return title;
+    }
+    
+    public void setrecipe(String recipe) 
+    {
+        this.recipe = recipe;
+    }
+    
+    public String getrecipe() 
+    {
+        return recipe;
+    }
+    
+    public void seting(String ing) 
+    {
+        this.ing = ing;
+    }
+    
+    public String geting() 
+    {
+        return ing;
+    }
+    
+    public void setscore(String score) 
+    {
+        this.score = score;
+    }
+    
+    public String getscore() 
+    {
+        return score;
+    }
+        
+    public void setpoll(String poll) 
+    {
+        this.poll = poll;
+    }
+    
+    public String getpoll() 
+    {
+        return poll;
+    }
+    
+    public void seturl(String url) 
+    {
+        this.url = url;
+    }
+    
+    public String geturl() 
+    {
+        return url;
+    }
+    
+}

@@ -1,0 +1,221 @@
+package application;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import com.mysql.jdbc.ResultSet;
+
+import javafx.scene.control.Label;
+
+/**
+ * Final class because it must not be inherited
+ */
+public class Bdd
+{
+	Label label;
+	String string;
+	
+	public Connection getConnection() throws ClassNotFoundException, SQLException
+	{       
+        Class.forName("com.mysql.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/CookieSCookout","root","root"); 
+  }
+	
+	/**
+     * Save a recipe in the bdd
+     * @param img
+     * @param title
+     * @param recipe
+     * @param ingredients
+     */
+   public String saveInBDD(String img, String title, String recipe, String ingredients)
+ 	{
+ 		Connection cn = null ;
+ 		Statement st = null ;
+ 		
+ 		try
+ 		{
+ 			cn = getConnection();
+ 			st = cn.createStatement() ;
+ 			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients, score, poll, url) "
+ 					+ "VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "','" + 1 + "','" + 1 + "','" + null +"');" ;
+ 			st.executeUpdate(sql) ;
+ 			string = new String("Successfuly saved in BDD!");
+ 		}
+ 		catch(SQLException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String("Error! Cannot saved in BDD!");
+ 		}
+ 		catch(ClassNotFoundException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String("Error! Cannot saved in BDD!");
+ 		}
+ 		finally
+ 		{
+ 			try
+ 			{
+ 				cn.close() ;
+ 				st.close() ;
+ 			}
+ 			catch(SQLException e)
+ 			{
+ 				e.printStackTrace() ;
+ 			}
+ 		}
+		return string;
+ 		
+ 	} ;
+	
+	/**
+	 * 
+	 */
+	public String[][] getFromBDD()
+	{
+		String table[][] = null;
+		int i = 0;
+		Connection cn = null ;
+		Statement st = null ;
+		ResultSet rs = null ;
+		
+		try
+		{
+			cn = getConnection();
+			st = cn.createStatement() ;
+			String sql = "SELECT * FROM SiteWeb" ;
+			rs = (ResultSet) st.executeQuery(sql) ;
+			while(rs.next())
+			{
+				table[i][0] = (rs.getString("img"));
+				table[i][1] = (rs.getString("title"));
+				table[i][2] = (rs.getString("recipe"));
+				table[i][3] = (rs.getString("ingredients"));
+				table[i][4] = (rs.getString("score"));
+				table[i][5] = (rs.getString("poll"));
+				table[i][6] = (rs.getString("url"));
+				i++;
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace() ;
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace() ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+			}
+		}
+		
+		return table;
+	} ;
+	
+	/**
+	 * 
+	 * @param toDelete
+	 */
+	public void deleteInBDD(String toDelete)
+	{
+		Connection cn = null ;
+		Statement st = null ;
+				
+		try
+		{
+			cn = getConnection();
+			st = cn.createStatement() ;
+			String sql = "DELETE FROM `SiteWeb` WHERE title='" + toDelete + "';" ;
+			st.executeUpdate(sql) ;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace() ;
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace() ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+			}
+		}
+	} ;
+	
+	/**
+	 * 
+	 * @param toModify
+	 */
+	public void modifyInBDD(String recipeToModify, String toModify, String modification)
+	{
+		Connection cn = null ;
+		Statement st = null ;
+				
+		try
+		{
+			cn = getConnection();
+			st = cn.createStatement() ;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace() ;
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace() ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+			}
+		}
+	} ;
+	
+	public void buildData() {
+        Connection connect = new Connection();
+        Statement st = connect.Connect();
+        data = FXCollections.observableArrayList();
+        try {
+            ResultSet rs = st.executeQuery("SELECT * FROM USER");
+             while (rs.next()) {
+                ObservableList<User> row = FXCollections.observableArrayList();
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    row.add(rs.getString(i));
+                    System.out.println(row);
+                }
+                data.add(pol);
+            }
+            tabla.setItems(data);          
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+}
+	
+} ;
+
+

@@ -1,11 +1,16 @@
 package application;
 
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import com.mysql.jdbc.ResultSet;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 
 /**
@@ -15,6 +20,13 @@ public class Bdd
 {
 	Label label;
 	String string;
+	private ObservableList<Recipe> data;
+	
+	public Connection getConnection() throws ClassNotFoundException, SQLException
+	{       
+        Class.forName("com.mysql.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/CookieSCookout","root","root"); 
+  }
 	
 	/**
      * Save a recipe in the bdd
@@ -25,24 +37,15 @@ public class Bdd
      */
    public String saveInBDD(String img, String title, String recipe, String ingredients)
  	{
- 		// Information d'acces a la BDD
- 		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
- 		String login = "root" ;
- 		String password = "root" ;
  		Connection cn = null ;
  		Statement st = null ;
  		
  		try
  		{
- 			// Etape 1: chargement du driver
- 			Class.forName("com.mysql.jdbc.Driver") ;
- 			// Etape 2: recuperation de la connexion
- 			cn = DriverManager.getConnection(url, login, password) ;
- 			// Etape 3: creation d'un statement
+ 			cn = getConnection();
  			st = cn.createStatement() ;
  			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients, score, poll, url) "
  					+ "VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "','" + 1 + "','" + 1 + "','" + null +"');" ;
- 			// Etape 4: execution requete
  			st.executeUpdate(sql) ;
  			string = new String("Successfuly saved in BDD!");
  		}
@@ -60,7 +63,6 @@ public class Bdd
  		{
  			try
  			{
- 				// Etape 5: liberer les ressources de la memoire
  				cn.close() ;
  				st.close() ;
  			}
@@ -76,56 +78,58 @@ public class Bdd
 	/**
 	 * 
 	 */
-	public void getFromBDD()
+	public ObservableList<Recipe> getFromBDD()
 	{
-		// Information d'acces a la BDD
-		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
-		String login = "root" ;
-		String password = "root" ;
+		data = FXCollections.observableArrayList();
 		Connection cn = null ;
 		Statement st = null ;
 		ResultSet rs = null ;
 		
 		try
 		{
-			// Etape 1: chargement du driver
-			Class.forName("com.mysql.jdbc.Driver") ;
-			// Etape 2: recuperation de la connexion
-			cn = DriverManager.getConnection(url, login, password) ;
-			// Etape 3: creation d'un statement
+			cn = getConnection();
 			st = cn.createStatement() ;
 			String sql = "SELECT * FROM SiteWeb" ;
-			// Etape 4: execution requete
-			rs = (ResultSet) st.executeQuery(sql) ;
-			// Etape 5: parcours (ResultSet)
-			while(rs.next())
+			rs = st.executeQuery(sql) ;
+			
+			while( rs.next() )
 			{
-				System.out.println(rs.getString("img"));
-				System.out.println(rs.getString("title"));
-				System.out.println(rs.getString("contents"));
+				Recipe rec = new Recipe();
+				rec.setImg(rs.getString("img"));
+				rec.setTitle(rs.getString("title"));
+				rec.setRecipe( rs.getString("recipe"));
+				rec.setIng(rs.getString("ingredients"));
+				rec.setScore(rs.getString("score"));
+				rec.setPoll(rs.getString("poll"));
+				rec.setUrl(rs.getString("url"));
+				data.add(rec);
 			}
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace() ;
+			System.out.println("Error on Building Data");
 		}
 		catch(ClassNotFoundException e)
 		{
 			e.printStackTrace() ;
+			System.out.println("Error on Building Data");
 		}
 		finally
 		{
 			try
 			{
-				// Etape 6: liberer les ressources de la memoire
 				cn.close() ;
 				st.close() ;
 			}
 			catch(SQLException e)
 			{
 				e.printStackTrace() ;
+				System.out.println("Error on Building Data");
 			}
 		}
+		
+		return data;
 	} ;
 	
 	/**
@@ -134,23 +138,14 @@ public class Bdd
 	 */
 	public void deleteInBDD(String toDelete)
 	{
-		// Information d'acces a la BDD
-		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
-		String login = "root" ;
-		String password = "root" ;
 		Connection cn = null ;
 		Statement st = null ;
 				
 		try
 		{
-			// Etape 1: chargement du driver
-			Class.forName("com.mysql.jdbc.Driver") ;
-			// Etape 2: recuperation de la connexion
-			cn = DriverManager.getConnection(url, login, password) ;
-			// Etape 3: creation d'un statement
+			cn = getConnection();
 			st = cn.createStatement() ;
 			String sql = "DELETE FROM `SiteWeb` WHERE title='" + toDelete + "';" ;
-			// Etape 4: execution requete
 			st.executeUpdate(sql) ;
 		}
 		catch(SQLException e)
@@ -165,7 +160,6 @@ public class Bdd
 		{
 			try
 			{
-				// Etape 6: liberer les ressources de la memoire
 				cn.close() ;
 				st.close() ;
 			}
@@ -182,23 +176,13 @@ public class Bdd
 	 */
 	public void modifyInBDD(String recipeToModify, String toModify, String modification)
 	{
-		// Information d'acc�s � la BDD
-		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
-		String login = "root" ;
-		String password = "root" ;
 		Connection cn = null ;
 		Statement st = null ;
 				
 		try
 		{
-			// Etape 1: chargement du driver
-			Class.forName("com.mysql.jdbc.Driver") ;
-			// Etape 2: recuperation de la connexion
-			cn = DriverManager.getConnection(url, login, password) ;
-			// Etape 3: creation d'un statement
+			cn = getConnection();
 			st = cn.createStatement() ;
-			
-			// Etape 4: execution requete
 		}
 		catch(SQLException e)
 		{
@@ -212,7 +196,6 @@ public class Bdd
 		{
 			try
 			{
-				// Etape 6: liberer les ressources de la memoire
 				cn.close() ;
 				st.close() ;
 			}
@@ -222,6 +205,7 @@ public class Bdd
 			}
 		}
 	} ;
+	
 } ;
 
 

@@ -1,0 +1,207 @@
+package application;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import com.mysql.jdbc.ResultSet;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
+
+/**
+ * Final class because it must not be inherited
+ */
+public class Bdd
+{
+	Label label;
+	String string;
+	private ObservableList<Recipe> data;
+	
+	public Connection getConnection() throws ClassNotFoundException, SQLException
+	{       
+        Class.forName("com.mysql.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/CookieSCookout","root","root"); 
+  }
+	
+	/**
+     * Save a recipe in the bdd
+     * @param img
+     * @param title
+     * @param recipe
+     * @param ingredients
+     */
+   public String saveInBDD(String img, String title, String recipe, String ingredients)
+ 	{
+ 		Connection cn = null ;
+ 		Statement st = null ;
+ 		
+ 		try
+ 		{
+ 			cn = getConnection();
+ 			st = cn.createStatement() ;
+ 			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients, score, poll, url) "
+ 					+ "VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "','" + 1 + "','" + 1 + "','" + null +"');" ;
+ 			st.executeUpdate(sql) ;
+ 			string = new String("Successfuly saved in BDD!");
+ 		}
+ 		catch(SQLException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String("Error! Cannot saved in BDD!");
+ 		}
+ 		catch(ClassNotFoundException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String("Error! Cannot saved in BDD!");
+ 		}
+ 		finally
+ 		{
+ 			try
+ 			{
+ 				cn.close() ;
+ 				st.close() ;
+ 			}
+ 			catch(SQLException e)
+ 			{
+ 				e.printStackTrace() ;
+ 			}
+ 		}
+		return string;
+ 		
+ 	} ;
+	
+	/**
+	 * 
+	 */
+	public ObservableList<Recipe> getFromBDD()
+	{
+		data = FXCollections.observableArrayList();
+		Connection cn = null ;
+		Statement st = null ;
+		ResultSet rs = null ;
+		
+		try
+		{
+			cn = getConnection();
+			st = cn.createStatement() ;
+			String sql = "SELECT * FROM SiteWeb" ;
+			rs = (ResultSet) st.executeQuery(sql) ;
+			while(rs.next())
+			{
+				Recipe rec = new Recipe();
+				rec.img.set(rs.getString("img"));
+				rec.title.set(rs.getString("title"));
+				rec.recipe.set(rs.getString("recipe"));
+				rec.ing.set(rs.getString("ingredients"));
+				rec.score.set(rs.getString("score"));
+				rec.poll.set(rs.getString("poll"));
+				rec.url.set(rs.getString("url"));
+				data.add(rec);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace() ;
+			System.out.println("Error on Building Data");
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace() ;
+			System.out.println("Error on Building Data");
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+				System.out.println("Error on Building Data");
+			}
+		}
+		
+		return data;
+	} ;
+	
+	/**
+	 * 
+	 * @param toDelete
+	 */
+	public void deleteInBDD(String toDelete)
+	{
+		Connection cn = null ;
+		Statement st = null ;
+				
+		try
+		{
+			cn = getConnection();
+			st = cn.createStatement() ;
+			String sql = "DELETE FROM `SiteWeb` WHERE title='" + toDelete + "';" ;
+			st.executeUpdate(sql) ;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace() ;
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace() ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+			}
+		}
+	} ;
+	
+	/**
+	 * 
+	 * @param toModify
+	 */
+	public void modifyInBDD(String recipeToModify, String toModify, String modification)
+	{
+		Connection cn = null ;
+		Statement st = null ;
+				
+		try
+		{
+			cn = getConnection();
+			st = cn.createStatement() ;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace() ;
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace() ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+			}
+		}
+	} ;
+	
+} ;
+
+

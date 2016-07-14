@@ -1,0 +1,97 @@
+package application;
+
+import javafx.beans.property.SimpleStringProperty;
+
+public class Recipe 
+{
+	private SimpleStringProperty img;
+    private SimpleStringProperty title;
+    private SimpleStringProperty recipe;
+    private SimpleStringProperty ing;
+    private SimpleStringProperty score;
+    private SimpleStringProperty poll;
+    private SimpleStringProperty url;
+ 
+    private Recipe(String img, String title, String recipe, String ing, String score, String poll, String url) 
+    {
+        this.img = new SimpleStringProperty(img);
+        this.title = new SimpleStringProperty(title);
+        this.recipe = new SimpleStringProperty(recipe);
+        this.ing = new SimpleStringProperty(ing);
+        this.score = new SimpleStringProperty(score);
+        this.poll = new SimpleStringProperty(poll);
+        this.url = new SimpleStringProperty(url);
+    }
+ 
+    public void setimg(String img) 
+    {
+        this.img = img;
+    }
+    
+    public String getimg() 
+    {
+        return img.get();
+    }
+        
+    public void settitle(String title) 
+    {
+        this.title = title;
+    }
+    
+    public String gettitle() 
+    {
+        return title.get();
+    }
+    
+    public void setrecipe(String recipe) 
+    {
+        this.recipe = recipe;
+    }
+    
+    public String getrecipe() 
+    {
+        return recipe.get();
+    }
+    
+    public void seting(String ing) 
+    {
+        this.ing = ing;
+    }
+    
+    public String geting() 
+    {
+        return ing.get();
+    }
+    
+    public void setscore(String score) 
+    {
+        this.score = score;
+    }
+    
+    public String getscore() 
+    {
+        return score.get();
+    }
+        
+    public void setpoll(String poll) 
+    {
+        this.poll = poll;
+    }
+    
+    public String getpoll() 
+    {
+        return poll.get();
+    }
+    
+    public void seturl(String url) 
+    {
+        //this.url = url;
+        url.set(url);
+    }
+    
+    public String geturl() 
+    {
+        return url.get();
+    }
+    
+}

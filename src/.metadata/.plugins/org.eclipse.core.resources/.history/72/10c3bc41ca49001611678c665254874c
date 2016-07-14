@@ -1,0 +1,11 @@
+.root{
+    -fx-background-image: url("../img/LogoCookieSCookout.png");
+    -fx-background-position: center center; 
+    -fx-background-repeat: stretch;
+}
+
+.image
+{
+	-fx-opacity: 0.5;
+}
+
