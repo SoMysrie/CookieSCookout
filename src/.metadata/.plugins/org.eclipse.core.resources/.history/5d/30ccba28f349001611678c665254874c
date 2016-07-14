@@ -152,7 +152,7 @@ public class Main extends Application
             	    public void handle( ActionEvent e )
                 	{
             	         //TO DO
-            	     } ;
+            	     }
             	} ) ;
                 btclear.setOnAction( new EventHandler<ActionEvent>() 
                 {
@@ -167,12 +167,12 @@ public class Main extends Application
                         lbltotal.setText( "Website chosen: 0" ) ;
                         lbllist.setText( "None" ) ;
                         search.clear( ) ;
-            	    } ;
+            	    }
             	} ) ;
                 
                 vball.getChildren().addAll( menuBar , vbchecks , vblabels , vbtext , vbbutton ) ;
                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
-            } ;
+            }
         } ) ;
         menuHome.getItems().add( menuItemHome ) ;
         
@@ -297,176 +297,252 @@ public class Main extends Application
         menuItemRecipe.setOnAction( new EventHandler<ActionEvent>() 
         {
         	@Override
-            public void handle( ActionEvent event ) 
+            public void handle(ActionEvent event) 
     	    {
-        		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
-        		new Thread( new Runnable( ){
+        		// On démarre un autre fils d'execution pour ne pas ralentir la mise à jour de l'interface graphique
+        		new Thread(new Runnable(){
         			@Override
         			public void run()
         			{
-        				table.setItems( bdd.getFromBDD( ) ) ;
+        				table.setItems(bdd.getFromBDD());
         				
-                		table.setEditable( true ) ;
-                		table.setMaxSize( 600 , 600 ) ;
+                		table.setEditable(true);
+                		table.setMaxSize(600, 600);
                 		
-                		imgCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "img" ) ) ;
-                        titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "title" ) ) ;
-                        recipeCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "recipe" ) ) ;
-                        ingCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "ing" ) ) ;
-                        scoreCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "score" ) ) ;
-                        pollCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "poll" ) ) ;
-                        urlCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "url" ) ) ;
+                		//assert table != null : "fx:id=\"tableview\" was not injected: check your FXML file 'UserMaster.fxml'.";
+
+                		imgCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("img"));	
+                        imgCol.setMinWidth(100);
+                        titleCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("title"));   
+                        titleCol.setMinWidth(75);
+                        recipeCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("recipe"));   
+                        recipeCol.setMinWidth(50);
+                        ingCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("ing"));   
+                        ingCol.setMinWidth(50);
+                        scoreCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("score"));   
+                        scoreCol.setMinWidth(25);
+                        pollCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("poll"));   
+                        pollCol.setMinWidth(25);
+                        urlCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>("url"));   
+                        urlCol.setMinWidth(100);
                         
-                        Platform.runLater( new Runnable() 
-                        {
-        				    @SuppressWarnings( "unchecked" )
+                       Platform.runLater(new Runnable() {
+        				    @SuppressWarnings("unchecked")
 							@Override public void run()
         				    {
-                                table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
+                                table.getColumns().addAll(imgCol, titleCol, recipeCol, ingCol, scoreCol, pollCol, urlCol);
                                 
-                                final VBox vbox = new VBox() ;
-                                vbox.setSpacing( 5 ) ;
-                                vbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbox.getChildren().add( table ) ;
+                                final VBox vbox = new VBox();
+                                vbox.setSpacing(5);
+                                vbox.setPadding(new Insets(10, 0, 0, 10));
+                                vbox.getChildren().add(table);
                             	 
-                               mainContainer.createMainContainer( stage , menuBar , vbox ) ;
+                               mainContainer.createMainContainer(stage, menuBar, vbox);
         					} ;
-                       } ) ;
+                       });
         			} ;
-        		} ).start() ;
-    	    } ;
-        } ) ;
-        menuRecipe.getItems().add( menuItemRecipe ) ;
+        		}).start();
+    	    }
+        });
+        menuRecipe.getItems().add(menuItemRecipe);
         
         // --- Menu Plugin
-        Menu menuPlugin = new Menu( "Plugin" ) ;
-        MenuItem menuItemPlugin = new MenuItem( "Plugin" ) ;
-        menuItemPlugin.setOnAction( new EventHandler<ActionEvent>() 
+        Menu menuPlugin = new Menu("Plugin");
+        MenuItem menuItemPlugin = new MenuItem("Plugin");
+        menuItemPlugin.setOnAction(new EventHandler<ActionEvent>() 
         {
              @Override
-             public void handle( ActionEvent event ) 
+             public void handle(ActionEvent event) 
              {
-            	 final FileChooser fileChooser = new FileChooser() ;
-                 final Button openButton = new Button( "Choose a File..." ) ;
+            	 final FileChooser fileChooser = new FileChooser();
+                 final Button openButton = new Button("Choose a File...");
           
                  openButton.setOnAction(new EventHandler<ActionEvent>()
-                 {
-                	 @Override
-                     public void handle( final ActionEvent e )
-                	 {
-                		 File file = fileChooser.showOpenDialog( stage ) ;
-                		 if ( file != null )
-                		 {
-                			 openFile( file ) ;
+                     {
+                         @Override
+                         public void handle(final ActionEvent e) 
+                         {
+                             File file = fileChooser.showOpenDialog(stage);
+                             if (file != null) 
+                             {
+                                 openFile(file);
+                             }
                          }
-                     } ;
-                 } ) ;
+                     }
+                 );
                  
-                 mainContainer.createMainContainer( stage , menuBar , openButton ) ;
-             } ;
-        } ) ;
-        menuPlugin.getItems().add( menuItemPlugin ) ;
+                 mainContainer.createMainContainer(stage, menuBar, openButton);
+             }
+        });
+        menuPlugin.getItems().add(menuItemPlugin);
         
         // --- Menu Help
-        Menu menuHelp = new Menu( "Help" ) ;
-        MenuItem menuItemHelp = new MenuItem( "Help" ) ;
-        menuItemHelp.setOnAction( new EventHandler<ActionEvent>()
+        Menu menuHelp = new Menu("Help");
+        MenuItem menuItemHelp = new MenuItem("Help");
+        menuItemHelp.setOnAction(new EventHandler<ActionEvent>()
         {       
              @Override
-             public void handle( ActionEvent event )
+             public void handle(ActionEvent event)
              {
                  //vbox for labels
-                 vblabels = new VBox() ;
-                 vblabels.setSpacing( 10 ) ;
-                 vblabels.setPadding( new Insets( 20 ) ) ;
+                 vblabels = new VBox();
+                 vblabels.setSpacing(10);
+                 vblabels.setPadding(new Insets(20));
                  
                  //make 2 labels
-                 lblMenu = new Label( "Menu \n"
+                 lblMenu = new Label("Menu \n"
                  		+ "	You can search through our different support to find any recipe. \n"
                  		+ "		Websites: Marmiton, Cuisineaz, auFeminin \n"
                  		+ "		Even on our website Cookie's Cookout \n"
-                 		+ "		Or locally. \n" ) ;
-                 lblFile = new Label( "File \n"
+                 		+ "		Or locally. \n");
+                 lblFile = new Label("File \n"
                  		+ "	You can add any new recipe with these following information: \n"
                  		+ "		- Title\n"
                  		+ "		- Picture\n"
                  		+ "		- Ingredients\n"
-                 		+ "		- Steps\n" ) ;
-                 lblPlugin = new Label( "Plugin \n"
-                 		+ "	You can add any new plugin.\n" ) ;
-                 lblHelp = new Label( "Help \n"
-                 		+ "	You can see this list of information.\n" ) ;
+                 		+ "		- Steps\n");
+                 lblPlugin = new Label("Plugin \n"
+                 		+ "	You can add any new plugin.\n");
+                 lblHelp = new Label("Help \n"
+                 		+ "	You can see this list of information.\n");
                  
-                 vblabels.getChildren().addAll( lblMenu , lblFile , lblPlugin , lblHelp ) ;
-                 mainContainer.createMainContainer( stage , menuBar , vblabels ) ;
-             } ;
-        } ) ;
-        menuHelp.getItems().add( menuItemHelp ) ;
+                 vblabels.getChildren().addAll(lblMenu, lblFile, lblPlugin, lblHelp);
+                 mainContainer.createMainContainer(stage, menuBar, vblabels);
+             }
+        });
+        menuHelp.getItems().add(menuItemHelp);
     	
-        menuBar.getMenus().addAll( menuHome , menuRecipe , menuPlugin , menuHelp ) ;
-        mainContainer.createMainContainer( stage , menuBar ) ;
-    } ;
+        menuBar.getMenus().addAll(menuHome, menuRecipe, menuPlugin, menuHelp);
+        mainContainer.createMainContainer(stage, menuBar);
+    };
     
     /**
      * 
      * @param e
      */
-    private void handleButtonAction( ActionEvent e ) 
+    private void handleButtonAction(ActionEvent e) 
     {
-        int count = 0 ;
-        String choices = "" ;
-        if( chkmarmiton.isSelected() )
-        {
-            count++ ;
-            choices += "- " + chkmarmiton.getText() + "\n" ;
-        }
-        if( chkcuisineaz.isSelected( ) )
+        int count = 0;
+        String choices = "";
+        if(chkmarmiton.isSelected())
         {
             count++;
-            choices += "- " + chkcuisineaz.getText() + "\n" ;
+            choices += "- " + chkmarmiton.getText() + "\n";
         }
-        if( chkaufeminin.isSelected( ) )
+        if(chkcuisineaz.isSelected())
         {
             count++;
-            choices += "- " + chkaufeminin.getText() + "\n" ;
+            choices += "- " + chkcuisineaz.getText() + "\n";
         }
-        if( chkbdd.isSelected( ) )
+        if(chkaufeminin.isSelected())
         {
             count++;
-            choices += "- " + chkbdd.getText() + "\n" ;
+            choices += "- " + chkaufeminin.getText() + "\n";
         }
-        if( chklocal.isSelected( ) )
+        if(chkbdd.isSelected())
         {
             count++;
-            choices += "- " + chklocal.getText() + "\n" ;
+            choices += "- " + chkbdd.getText() + "\n";
         }
-        if (count == 0 )
+        if(chklocal.isSelected())
         {
-        	lbltotal.setText( "Website chosen: 0" ) ;
-            lbllist.setText( "None" ) ;
+            count++;
+            choices += "- " + chklocal.getText() + "\n";
         }
-        lbltotal.setText( "Websites chosen: " + count ) ;
-        lbllist.setText( choices ) ;
-     } ;
+        if(count == 0)
+        {
+        	lbltotal.setText("Website chosen: 0");
+            lbllist.setText("None");
+        }
+        lbltotal.setText("Websites chosen: " + count);
+        lbllist.setText(choices);
+     };
+
+     /*
+     void initialize()
+     {
+    	 table.setEditable(true);
+    	 table.setMaxSize(600, 600);
+         assert table != null : "fx:id=\"tableview\" was not injected: check your FXML file 'UserMaster.fxml'.";
+         TableColumn imgCol = new TableColumn("Image's Path");
+         imgCol.setMinWidth(100);
+         TableColumn titleCol = new TableColumn("Title");
+         titleCol.setMinWidth(75);
+         TableColumn recipeCol = new TableColumn("Recipe");
+         recipeCol.setMinWidth(50);
+         TableColumn ingCol = new TableColumn("Ingredients");
+         ingCol.setMinWidth(50);
+         TableColumn scoreCol = new TableColumn("Score");
+         scoreCol.setMinWidth(25);
+         TableColumn pollCol = new TableColumn("Poll");
+         pollCol.setMinWidth(25);
+         TableColumn urlCol = new TableColumn("Recipe's url");
+         urlCol.setMinWidth(100);
+             
+         
+        
+        try{
+            con = bdd.getConnection();
+            buildData();
+        }
+        catch(ClassNotFoundException ce){
+            logger.info(ce.toString());
+        }
+        catch(SQLException ce){
+            logger.info(ce.toString());
+        }
+    }
+     
+
+     private ObservableList<Recipe> data;
+
+	public void buildData(){        
+    data = FXCollections.observableArrayList();
+    try{      
+        String SQL = "Select * from usermaster Order By UserName";            
+        ResultSet rs = con.createStatement().executeQuery(SQL);  
+        while(rs.next()){
+        	Recipe cm = new Recipe();
+            cm.userId.set(rs.getInt("UserId"));                       
+            Image img = new Image("tailoring/UserPhoto/User"+cm.getUserId().toString()+".jpg");                
+
+            ImageView mv = new ImageView();
+            mv.setImage(img);
+            mv.setFitWidth(70);
+            mv.setFitHeight(80);
+            cm.userPhoto.set(mv);
+            cm.userName.set(rs.getString("UserName"));
+            cm.userPassword.set(rs.getString("UserPassword"));
+            cm.userType.set(rs.getString("UserType"));
+            data.add(cm);                  
+        }
+        tableview.setItems(data);
+    }
+    catch(Exception e){
+          e.printStackTrace();
+          System.out.println("Error on Building Data");            
+    }
+	}*/
      
   	/**
   	 * Open a file
   	 * @param file
   	 */
-  	private void openFile( File file ) 
+  	private void openFile(File file) 
   	{
         try 
         {
-            desktop.open( file ) ;
+            desktop.open(file);
         } 
         catch (IOException ex) 
         {
             Logger.getLogger
             (
-            	Main.class.getName() ).log(
-            		Level.SEVERE, null, ex
-                ) ;
+                Main.class.getName()).log(
+                    Level.SEVERE, null, ex
+                );
         }
     };
 
+  	
 }; 

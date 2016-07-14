@@ -368,44 +368,44 @@ public class Main extends Application
         menuPlugin.getItems().add( menuItemPlugin ) ;
         
         // --- Menu Help
-        Menu menuHelp = new Menu( "Help" ) ;
-        MenuItem menuItemHelp = new MenuItem( "Help" ) ;
-        menuItemHelp.setOnAction( new EventHandler<ActionEvent>()
+        Menu menuHelp = new Menu("Help");
+        MenuItem menuItemHelp = new MenuItem("Help");
+        menuItemHelp.setOnAction(new EventHandler<ActionEvent>()
         {       
              @Override
-             public void handle( ActionEvent event )
+             public void handle(ActionEvent event)
              {
                  //vbox for labels
-                 vblabels = new VBox() ;
-                 vblabels.setSpacing( 10 ) ;
-                 vblabels.setPadding( new Insets( 20 ) ) ;
+                 vblabels = new VBox();
+                 vblabels.setSpacing(10);
+                 vblabels.setPadding(new Insets(20));
                  
                  //make 2 labels
-                 lblMenu = new Label( "Menu \n"
+                 lblMenu = new Label("Menu \n"
                  		+ "	You can search through our different support to find any recipe. \n"
                  		+ "		Websites: Marmiton, Cuisineaz, auFeminin \n"
                  		+ "		Even on our website Cookie's Cookout \n"
-                 		+ "		Or locally. \n" ) ;
-                 lblFile = new Label( "File \n"
+                 		+ "		Or locally. \n");
+                 lblFile = new Label("File \n"
                  		+ "	You can add any new recipe with these following information: \n"
                  		+ "		- Title\n"
                  		+ "		- Picture\n"
                  		+ "		- Ingredients\n"
-                 		+ "		- Steps\n" ) ;
-                 lblPlugin = new Label( "Plugin \n"
-                 		+ "	You can add any new plugin.\n" ) ;
-                 lblHelp = new Label( "Help \n"
-                 		+ "	You can see this list of information.\n" ) ;
+                 		+ "		- Steps\n");
+                 lblPlugin = new Label("Plugin \n"
+                 		+ "	You can add any new plugin.\n");
+                 lblHelp = new Label("Help \n"
+                 		+ "	You can see this list of information.\n");
                  
-                 vblabels.getChildren().addAll( lblMenu , lblFile , lblPlugin , lblHelp ) ;
-                 mainContainer.createMainContainer( stage , menuBar , vblabels ) ;
-             } ;
-        } ) ;
-        menuHelp.getItems().add( menuItemHelp ) ;
+                 vblabels.getChildren().addAll(lblMenu, lblFile, lblPlugin, lblHelp);
+                 mainContainer.createMainContainer(stage, menuBar, vblabels);
+             }
+        });
+        menuHelp.getItems().add(menuItemHelp);
     	
-        menuBar.getMenus().addAll( menuHome , menuRecipe , menuPlugin , menuHelp ) ;
-        mainContainer.createMainContainer( stage , menuBar ) ;
-    } ;
+        menuBar.getMenus().addAll(menuHome, menuRecipe, menuPlugin, menuHelp);
+        mainContainer.createMainContainer(stage, menuBar);
+    };
     
     /**
      * 

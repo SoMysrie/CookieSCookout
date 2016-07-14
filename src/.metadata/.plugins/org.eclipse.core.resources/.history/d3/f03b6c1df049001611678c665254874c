@@ -86,7 +86,7 @@ public class Recipe
     
     public void setScore( SimpleStringProperty score ) 
     {
-        this.score.set( score.get() ) ;
+        this.score( score.get() ) ;
     } ;
     
     public void setScore( String score) 
