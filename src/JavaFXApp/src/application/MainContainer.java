@@ -2,6 +2,7 @@ package application;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -89,4 +90,24 @@ public class MainContainer
         stage.setScene(scene);
         stage.show();
     }
+    
+    /**
+     * 
+     * @param stage
+     * @param menuBar
+     * @param label
+     */
+    public void createMainContainer(Stage stage, MenuBar menuBar, Label label)
+    {
+    	//create main container
+        VBox root = new VBox();
+        root.getChildren().addAll(menuBar, label);
+        menuBar.prefWidthProperty().bind(stage.widthProperty());
+        Scene scene = new Scene(root, 750, 750);
+        scene.getStylesheets().add("/application/static/css/style.css");
+        stage.setTitle("CookiesCookout");
+        stage.setScene(scene);
+        stage.show();
+    }
+    
 }

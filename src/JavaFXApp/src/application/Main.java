@@ -40,8 +40,9 @@ public class Main extends Application
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop();
     
-    //
+    //Calling Methods
     MainContainer mainContainer = new MainContainer();
+    Bdd bdd = new Bdd();
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException
     {
@@ -56,9 +57,6 @@ public class Main extends Application
     public void start(Stage stage) 
     {
     	MenuBar menuBar = new MenuBar() ;
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Open Resource File");
-    	fileChooser.showOpenDialog(stage);
     	
     	// --- Menu Home
         Menu menuHome = new Menu("Home");
@@ -246,8 +244,7 @@ public class Main extends Application
     						   && (ingredients.getText() != null && !ingredients.getText().isEmpty()) 
     						   && (recipe.getText() != null && !recipe.getText().isEmpty())) 
     				   {
-    					   label.setText("Yes!");
-    					   saveInBDD(img.getText(), title.getText(), recipe.getText(), ingredients.getText());
+    					   label.setText(bdd.saveInBDD(img.getText(), title.getText(), recipe.getText(), ingredients.getText()));
             	       } 
     				   else
     				   {
@@ -287,11 +284,9 @@ public class Main extends Application
              public void handle(ActionEvent event) 
              {
             	 final FileChooser fileChooser = new FileChooser();
-            	 
                  final Button openButton = new Button("Choose a File...");
           
-                 openButton.setOnAction(
-                     new EventHandler<ActionEvent>()
+                 openButton.setOnAction(new EventHandler<ActionEvent>()
                      {
                          @Override
                          public void handle(final ActionEvent e) 
@@ -392,65 +387,12 @@ public class Main extends Application
         lbllist.setText(choices);
      };
 
-     /**
-      * Save a recipe in the bdd
-      * @param img
-      * @param title
-      * @param recipe
-      * @param ingredients
-      */
-    public static void saveInBDD(String img, String title, String recipe, String ingredients)
-  	{
-  		// Information d'acces a la BDD
-  		String url = "jdbc:mysql://localhost:3306/CookieSCookout" ;
-  		String login = "root" ;
-  		String password = "root" ;
-  		Connection cn = null ;
-  		Statement st = null ;
-  		
-  		try
-  		{
-  			// Etape 1: chargement du driver
-  			Class.forName("com.mysql.jdbc.Driver") ;
-  			// Etape 2: recuperation de la connexion
-  			cn = DriverManager.getConnection(url, login, password) ;
-  			// Etape 3: creation d'un statement
-  			st = cn.createStatement() ;
-  			String sql = "INSERT INTO SiteWeb (img, title, recipe, ingredients, score, poll, url) "
-  					+ "VALUES ('"+ img + "','" + title + "','" + recipe +  "','" + ingredients + "','" + 1 + "','" + 1 + "','" + null +"');" ;
-  			// Etape 4: execution requete
-  			st.executeUpdate(sql) ;
-  			System.out.println("Successfuly saved in BDD!");
-  		}
-  		catch(SQLException e)
-  		{
-  			e.printStackTrace() ;
-  		}
-  		catch(ClassNotFoundException e)
-  		{
-  			e.printStackTrace() ;
-  		}
-  		finally
-  		{
-  			try
-  			{
-  				// Etape 5: liberer les ressources de la memoire
-  				cn.close() ;
-  				st.close() ;
-  			}
-  			catch(SQLException e)
-  			{
-  				e.printStackTrace() ;
-  			}
-  		}
-  		
-  	} ;
-
   	/**
   	 * Open a file
   	 * @param file
   	 */
-  	private void openFile(File file) {
+  	private void openFile(File file) 
+  	{
         try 
         {
             desktop.open(file);
