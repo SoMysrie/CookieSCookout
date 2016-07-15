@@ -31,13 +31,12 @@ import javafx.scene.layout.VBox ;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
 
-
 public class Main extends Application 
 {
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkbdd , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
-    Button  btsearch , btclear , btpicture, btadd , btdel , btedit, btopen ;
+    Button  btsearch , btclear , btadd , btdel , btopen ;
     TextField search , addImg , addTitle , addRecipe  , addIng , addScore  , addPoll , addUrl ;
     
     //VBoxes and Hboxes for the labels and checkboxes 
@@ -261,21 +260,18 @@ public class Main extends Application
         		        		addUrl.setPromptText( "URL" ) ;
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         				        
-        		        		//buttons
-        		        		btadd = new Button( "Save" ) ;
+        		        		//button
+        		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
-        		        		btedit = new Button( "Edit" ) ;
         		        		
-        		        		//label
         		        		label = new Label( "" ) ;
         		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
-        				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
         				        
         				        hb = new HBox() ;
-        				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , btadd , btdel , btedit ) ;
+        				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , btadd , btdel ) ;
                                 hb.setSpacing( 3 ) ;
                                 
                                 vbbox = new VBox() ;
@@ -422,6 +418,15 @@ public class Main extends Application
      */
     private void handleButtonAddBdd( ActionEvent e )
  	{
+ 		data.add( new Recipe(
+ 				addImg.getText() ,
+ 				addTitle.getText() ,
+ 				addRecipe.getText() ,
+ 				addIng.getText() ,
+ 				addScore.getText() ,
+ 				addPoll.getText() ,
+ 				addUrl.getText()
+ 				) ) ;
  		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
 			  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
 			  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
@@ -431,16 +436,6 @@ public class Main extends Application
 			  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
  		   )
  		{
- 			data.add( new Recipe(
- 	 				addImg.getText() ,
- 	 				addTitle.getText() ,
- 	 				addRecipe.getText() ,
- 	 				addIng.getText() ,
- 	 				addScore.getText() ,
- 	 				addPoll.getText() ,
- 	 				addUrl.getText()
- 	 				) ) ;
- 			
  			label.setText( bdd.saveInBDD( 
  					addImg.getText() , 
  					addTitle.getText() , 
@@ -453,20 +448,21 @@ public class Main extends Application
      			) ;
  			
  			data = bdd.getFromBDD() ;
-			table.setItems( data ) ;
-			
-			addImg.clear() ;
-			addTitle.clear() ;
-			addRecipe.clear() ;
-			addIng.clear() ;
-			addScore.clear() ;
-			addPoll.clear() ;
-			addUrl.clear() ;
+				table.setItems( data ) ;
+ 			
+ 			addImg.clear() ;
+				addTitle.clear() ;
+				addRecipe.clear() ;
+				addIng.clear() ;
+				addScore.clear() ;
+				addPoll.clear() ;
+				addUrl.clear() ;
  	    } 
  		else
  		{
  			label.setText("You have to complete everything!");
 		}
+ 		
 	} ;
      
 	/**
@@ -489,33 +485,6 @@ public class Main extends Application
 		}
 	} ;
     
-	/**
-	 * Button edit from the database for the Recipes Tab
-	 * @param e
-	 */
-	private void handleButtonEditBdd( ActionEvent e )
-	{
-		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
-		
-		if ( recipe2 != null )
-		{
-			addImg.setText( recipe2.getImg() ) ;
-			addTitle.setText( recipe2.getTitle() ) ;
-			addRecipe.setText( recipe2.getRecipe() ) ;
-			addIng.setText( recipe2.getIng() ) ;
-			addScore.setText( recipe2.getScore() ) ;
-			addPoll.setText( recipe2.getPoll() ) ;
-			addUrl.setText( recipe2.getUrl() ) ;
-			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			bdd.deleteInBDD( recipe2.getTitle() ) ; 
-		}
-		else
-		{
-			label.setText( "You have to select a row in order to edit it!" ) ;
-		}
-		
-		
-	} ;
 	
     /**
      * Button open file for the Plugin Tab

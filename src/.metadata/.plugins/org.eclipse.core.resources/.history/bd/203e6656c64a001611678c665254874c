@@ -262,7 +262,7 @@ public class Main extends Application
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         				        
         		        		//buttons
-        		        		btadd = new Button( "Save" ) ;
+        		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		

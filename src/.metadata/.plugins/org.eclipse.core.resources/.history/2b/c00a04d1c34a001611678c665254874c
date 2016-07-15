@@ -262,7 +262,7 @@ public class Main extends Application
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         				        
         		        		//buttons
-        		        		btadd = new Button( "Save" ) ;
+        		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		
@@ -454,19 +454,21 @@ public class Main extends Application
  			
  			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
+ 			
 			
-			addImg.clear() ;
-			addTitle.clear() ;
-			addRecipe.clear() ;
-			addIng.clear() ;
-			addScore.clear() ;
-			addPoll.clear() ;
-			addUrl.clear() ;
  	    } 
  		else
  		{
  			label.setText("You have to complete everything!");
 		}
+ 		
+ 		addImg.setPromptText( "Image" ) ;
+		addTitle.setPromptText( "Title" ) ;
+		addRecipe.setPromptText( "Recipe" ) ;
+		addIng.setPromptText( "Ingredients" ) ;
+		addScore.setPromptText( "Score" ) ;
+		addPoll.setPromptText( "Poll" ) ;
+		addUrl.setPromptText( "Url" ) ;
 	} ;
      
 	/**
@@ -481,7 +483,6 @@ public class Main extends Application
 		{
 			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
 			data = bdd.getFromBDD() ;
-			table.setItems( data ) ;
 		}
 		else
 		{
@@ -499,22 +500,42 @@ public class Main extends Application
 		
 		if ( recipe2 != null )
 		{
-			addImg.setText( recipe2.getImg() ) ;
-			addTitle.setText( recipe2.getTitle() ) ;
-			addRecipe.setText( recipe2.getRecipe() ) ;
-			addIng.setText( recipe2.getIng() ) ;
-			addScore.setText( recipe2.getScore() ) ;
-			addPoll.setText( recipe2.getPoll() ) ;
-			addUrl.setText( recipe2.getUrl() ) ;
-			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			bdd.deleteInBDD( recipe2.getTitle() ) ; 
+			addImg.setPromptText( recipe2.getImg() ) ;
+			addTitle.setPromptText( recipe2.getTitle() ) ;
+			addRecipe.setPromptText( recipe2.getRecipe() ) ;
+			addIng.setPromptText( recipe2.getIng() ) ;
+			addScore.setPromptText( recipe2.getScore() ) ;
+			addPoll.setPromptText( recipe2.getPoll() ) ;
+			addUrl.setPromptText( recipe2.getUrl() ) ;
+			
+			if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
+					  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
+					  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
+					  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
+					  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
+					  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
+					  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
+		 		   )
+			{
+				label.setText( "YES" ) ;
+			}
+			else
+			{
+				label.setText( "NO" ) ;
+			}
 		}
 		else
 		{
 			label.setText( "You have to select a row in order to edit it!" ) ;
 		}
 		
-		
+		addImg.clear() ;
+		addTitle.clear() ;
+		addRecipe.clear() ;
+		addIng.clear() ;
+		addScore.clear() ;
+		addPoll.clear() ;
+		addUrl.clear() ;
 	} ;
 	
     /**

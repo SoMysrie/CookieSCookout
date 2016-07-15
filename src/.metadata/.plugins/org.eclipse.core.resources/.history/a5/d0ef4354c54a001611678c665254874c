@@ -262,7 +262,7 @@ public class Main extends Application
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         				        
         		        		//buttons
-        		        		btadd = new Button( "Save" ) ;
+        		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		
@@ -507,7 +507,7 @@ public class Main extends Application
 			addPoll.setText( recipe2.getPoll() ) ;
 			addUrl.setText( recipe2.getUrl() ) ;
 			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			bdd.deleteInBDD( recipe2.getTitle() ) ; 
+			
 		}
 		else
 		{

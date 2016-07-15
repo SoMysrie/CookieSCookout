@@ -262,12 +262,13 @@ public class Main extends Application
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         				        
         		        		//buttons
-        		        		btadd = new Button( "Save" ) ;
+        		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		
         		        		//label
         		        		label = new Label( "" ) ;
+        		        		lblHelp = new Label( "" ) ;
         		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
@@ -281,7 +282,7 @@ public class Main extends Application
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hb , label ) ;
+                                vbbox.getChildren().addAll( table , hb , label , lblHelp ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -506,8 +507,8 @@ public class Main extends Application
 			addScore.setText( recipe2.getScore() ) ;
 			addPoll.setText( recipe2.getPoll() ) ;
 			addUrl.setText( recipe2.getUrl() ) ;
-			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			bdd.deleteInBDD( recipe2.getTitle() ) ; 
+			lblHelp.setText( "Once you are done with your editing click on the button save!" ) ;
+			
 		}
 		else
 		{
