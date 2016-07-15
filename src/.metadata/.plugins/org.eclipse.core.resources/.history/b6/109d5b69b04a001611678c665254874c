@@ -36,7 +36,8 @@ public class Main extends Application
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkbdd , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
-    Button  btsearch , btclear , btadd , btdel , btopen ;
+    Button  btsearch , btclear , btadd = new Button( "Add" ) , btdel = new Button( "Delete" ) , 
+    		btopen = new Button( "Choose a File..." ) ;
     TextField search , addImg , addTitle , addRecipe  , addIng , addScore  , addPoll , addUrl ;
     
     //VBoxes and Hboxes for the labels and checkboxes 
@@ -45,7 +46,7 @@ public class Main extends Application
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
-    FileChooser fileChooser , pictureChooser ;
+    final FileChooser fileChooser = new FileChooser() ;
     
     //TableView for Bdd
     private TableView<Recipe> table ;
@@ -201,28 +202,14 @@ public class Main extends Application
         				    {
         				    	table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
                                 
-        				    	//IMG
-        		        		addImg = new TextField() ;
         				    	addImg.setPromptText( "Image" ) ;
         		        		addImg.setMaxWidth( imgCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//Title
-        		        		addTitle = new TextField() ;
         		        		addTitle.setPromptText( "Title" ) ;
         		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//RECIPE
-        		        		addRecipe = new TextField() ;
         		        		addRecipe.setPromptText( "Recipe" ) ;
         		        		addRecipe.setMaxWidth( recipeCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//ING
-        		        		addIng = new TextField() ;
         		        		addIng.setPromptText( "Ingredients" ) ;
         		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//SCORE
-        		        		addScore = new TextField() ;
         		        		addScore.setPromptText( "Score");
         		        		addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
         		        		// force the field to be numeric only
@@ -237,9 +224,6 @@ public class Main extends Application
        	        			            }
        	        			        }
        	        			    } ) ;
-       	        				
-       	        				//POLL
-        		        		addPoll = new TextField() ;
        	        				addPoll.setPromptText( "Poll");
        	        				addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
         		        		// force the field to be numeric only
@@ -254,16 +238,9 @@ public class Main extends Application
        	        			            }
        	        			        }
        	        			    } ) ;
-        		        		
-        		        		//URL
-        		        		addUrl = new TextField() ;
         		        		addUrl.setPromptText( "URL" ) ;
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         				        
-        		        		//button
-        		        		btadd = new Button( "Add" ) ;
-        		        		btdel = new Button( "Delete" ) ;
-        		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
@@ -275,7 +252,7 @@ public class Main extends Application
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hb ) ; //, label ) ;
+                                vbbox.getChildren().addAll( table , hb , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -294,8 +271,6 @@ public class Main extends Application
              @Override
              public void handle( ActionEvent event ) 
              {
-            	 btopen = new Button( "Choose a File..." ) ;
-            	 fileChooser = new FileChooser() ; 
                  btopen.setOnAction( e -> handleButtonOpenFile( e , stage ) ) ;
                  mainContainer.createMainContainer( stage , menuBar , btopen ) ;
              } ;
@@ -434,7 +409,7 @@ public class Main extends Application
 			  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
  		   )
  		{
- 			label = new Label( bdd.saveInBDD( 
+ 			label.setText( bdd.saveInBDD( 
  					addImg.getText() , 
  					addTitle.getText() , 
  					addRecipe.getText() , 
@@ -458,7 +433,7 @@ public class Main extends Application
  	    } 
  		else
  		{
- 			label = new Label("You have to complete everything!");
+ 			label.setText("You have to complete everything!");
 		}
  		
 	} ;
@@ -473,13 +448,13 @@ public class Main extends Application
 		
 		if ( recipe2 != null )
 		{
-			label = new Label( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
+			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
 			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
 		}
 		else
 		{
-			label = new Label( "You have to select a row in order to delete it!" ) ;
+			label.setText( "You have to select a row in order to delete it!" ) ;
 		}
 	} ;
     

@@ -275,7 +275,7 @@ public class Main extends Application
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hb ) ; //, label ) ;
+                                vbbox.getChildren().addAll( table , hb , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -414,8 +414,10 @@ public class Main extends Application
      * Button add in the database for the Recipes Tab
      * @param e
      */
-    private void handleButtonAddBdd( ActionEvent e )
+    private Label handleButtonAddBdd( ActionEvent e )
  	{
+    	label = new Label() ;
+    	
  		data.add( new Recipe(
  				addImg.getText() ,
  				addTitle.getText() ,
@@ -434,7 +436,7 @@ public class Main extends Application
 			  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
  		   )
  		{
- 			label = new Label( bdd.saveInBDD( 
+ 			label.setText( bdd.saveInBDD( 
  					addImg.getText() , 
  					addTitle.getText() , 
  					addRecipe.getText() , 
@@ -443,7 +445,7 @@ public class Main extends Application
  					Integer.parseInt(addPoll.getText() ) , 
  					addUrl.getText() 
  					) 
-     			) ;
+ 				) ;
  			
  			data = bdd.getFromBDD() ;
 				table.setItems( data ) ;
@@ -458,29 +460,32 @@ public class Main extends Application
  	    } 
  		else
  		{
- 			label = new Label("You have to complete everything!");
+ 			label.setText("You have to complete everything!");
 		}
  		
+ 		return label ;
 	} ;
      
 	/**
 	 * Button delete from the database for the Recipes Tab
 	 * @param e
 	 */
-    private void handleButtonDelBdd( ActionEvent e )
+    private Label handleButtonDelBdd( ActionEvent e )
 	{
 		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
-		
+		label = new Label() ;
 		if ( recipe2 != null )
 		{
-			label = new Label( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
+			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
 			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
 		}
 		else
 		{
-			label = new Label( "You have to select a row in order to delete it!" ) ;
+			label.setText( "You have to select a row in order to delete it!" ) ;
 		}
+		
+		return label ;
 	} ;
     
 	

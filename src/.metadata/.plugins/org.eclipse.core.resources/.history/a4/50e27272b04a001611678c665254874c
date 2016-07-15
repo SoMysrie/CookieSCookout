@@ -36,7 +36,7 @@ public class Main extends Application
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkbdd , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
-    Button  btsearch , btclear , btadd , btdel , btopen ;
+    Button  btsearch , btclear , btadd , btdel , btopen = new Button( "Choose a File..." ) ;
     TextField search , addImg , addTitle , addRecipe  , addIng , addScore  , addPoll , addUrl ;
     
     //VBoxes and Hboxes for the labels and checkboxes 
@@ -45,7 +45,7 @@ public class Main extends Application
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
-    FileChooser fileChooser , pictureChooser ;
+    FileChooser fileChooser ;
     
     //TableView for Bdd
     private TableView<Recipe> table ;
@@ -275,7 +275,7 @@ public class Main extends Application
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hb ) ; //, label ) ;
+                                vbbox.getChildren().addAll( table , hb , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -294,7 +294,7 @@ public class Main extends Application
              @Override
              public void handle( ActionEvent event ) 
              {
-            	 btopen = new Button( "Choose a File..." ) ;
+            	 btopen = new Button( "Choose a file..." ) ;
             	 fileChooser = new FileChooser() ; 
                  btopen.setOnAction( e -> handleButtonOpenFile( e , stage ) ) ;
                  mainContainer.createMainContainer( stage , menuBar , btopen ) ;
@@ -434,7 +434,7 @@ public class Main extends Application
 			  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
  		   )
  		{
- 			label = new Label( bdd.saveInBDD( 
+ 			label.setText( bdd.saveInBDD( 
  					addImg.getText() , 
  					addTitle.getText() , 
  					addRecipe.getText() , 
@@ -458,7 +458,7 @@ public class Main extends Application
  	    } 
  		else
  		{
- 			label = new Label("You have to complete everything!");
+ 			label.setText("You have to complete everything!");
 		}
  		
 	} ;
@@ -473,13 +473,13 @@ public class Main extends Application
 		
 		if ( recipe2 != null )
 		{
-			label = new Label( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
+			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
 			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
 		}
 		else
 		{
-			label = new Label( "You have to select a row in order to delete it!" ) ;
+			label.setText( "You have to select a row in order to delete it!" ) ;
 		}
 	} ;
     
