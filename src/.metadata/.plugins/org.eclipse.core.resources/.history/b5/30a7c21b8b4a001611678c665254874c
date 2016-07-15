@@ -48,7 +48,7 @@ public class Bdd
  			String sql = "INSERT INTO SiteWeb ( img , title , recipe , ingredients , score , poll , url ) "
  					+ " VALUES (' " + img + "','" + title + "','" + recipe +  "','" + ing + "','" + score + "','" + poll + "','" + url +"');" ;
  			st.executeUpdate( sql ) ;
- 			string = new String( title + " was successfuly saved in BDD!" ) ;
+ 			string = new String( "Successfuly saved in BDD!" ) ;
  		}
  		catch( SQLException e )
  		{
@@ -149,7 +149,7 @@ public class Bdd
 			st = cn.createStatement() ;
 			String sql = "DELETE FROM `SiteWeb` WHERE title='" + toDelete + "';" ;
 			st.executeUpdate( sql ) ;
-			string = new String( toDelete + " was successfuly deleted from BDD!" ) ;
+			string = new String( "Successfuly deleted from BDD!" ) ;
 		}
 		catch( SQLException e )
 		{

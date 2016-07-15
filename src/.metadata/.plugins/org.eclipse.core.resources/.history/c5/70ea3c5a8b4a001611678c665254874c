@@ -48,7 +48,7 @@ public class Bdd
  			String sql = "INSERT INTO SiteWeb ( img , title , recipe , ingredients , score , poll , url ) "
  					+ " VALUES (' " + img + "','" + title + "','" + recipe +  "','" + ing + "','" + score + "','" + poll + "','" + url +"');" ;
  			st.executeUpdate( sql ) ;
- 			string = new String( title + " was successfuly saved in BDD!" ) ;
+ 			string = new String( title + "was successfuly saved in BDD!" ) ;
  		}
  		catch( SQLException e )
  		{
