@@ -533,8 +533,6 @@ public class Main extends Application
 	 */
 	private void handleButtonSaveBdd( ActionEvent e )
 	{
-		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
-		
 		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
 				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
 				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
@@ -556,7 +554,6 @@ public class Main extends Application
 	 	 				) ) ;
 	 			
 	 			label.setText( bdd.updateInBDD(
-	 					Integer.parseInt( recipe2.getId() ) ,
 	 					addImg.getText() , 
 	 					addTitle.getText() , 
 	 					addRecipe.getText() , 

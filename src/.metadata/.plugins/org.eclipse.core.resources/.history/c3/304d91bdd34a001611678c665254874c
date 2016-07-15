@@ -88,7 +88,7 @@ public class Bdd
  	 * @param url
  	 * @return
  	 */
- 	public String updateInBDD( int id , String img , String title , String recipe , String ing , int score , int poll , String url )
+ 	public String updateInBDD( String img , String title , String recipe , String ing , int score , int poll , String url )
  	{
  		Connection cn = null ;
  		Statement st = null ;
@@ -97,25 +97,8 @@ public class Bdd
  		{
  			cn = getConnection() ;
  			st = cn.createStatement() ;
- 			String sql = "UPDATE SiteWeb SET "
- 					+ " img = \"" + img + "\" , "
- 					+ "title = \"" + title + "\" , "
- 					+ "recipe = \"" + recipe + "\" , "
- 					+ "ingredients = \"" + ing + "\" , "
- 					+ "score = " + score + ", "
- 					+ "poll = " + poll + ", "
- 					+ "url = \"" + url + "\" "
- 					+ " where id = " + id + ";" ;
- 			/*
- 			UPDATE `SiteWeb` SET `id`="ok",
- 					`img`="ok",`title`="ok",
- 					`recipe`="ok",
- 					`ingredients`="ok",
- 					`score`=4,
- 					`poll`=6,
- 					`url`="ok" 
- 					WHERE id = 13 ;
- 			*/
+ 			String sql = "INSERT INTO SiteWeb ( img , title , recipe , ingredients , score , poll , url ) "
+ 					+ " VALUES (' " + img + "','" + title + "','" + recipe +  "','" + ing + "','" + score + "','" + poll + "','" + url +"');" ;
  			st.executeUpdate( sql ) ;
  			string = new String( title + " was successfuly updated in BDD!" ) ;
  		}

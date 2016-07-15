@@ -97,18 +97,21 @@ public class Bdd
  		{
  			cn = getConnection() ;
  			st = cn.createStatement() ;
- 			String sql = "UPDATE SiteWeb SET "
- 					+ " img = \"" + img + "\" , "
- 					+ "title = \"" + title + "\" , "
- 					+ "recipe = \"" + recipe + "\" , "
- 					+ "ingredients = \"" + ing + "\" , "
- 					+ "score = " + score + ", "
- 					+ "poll = " + poll + ", "
- 					+ "url = \"" + url + "\" "
- 					+ " where id = " + id + ";" ;
+ 			String sql = "UPDATE 'SiteWeb' SET "
+ 					+ "'img' 		 = ' " + img 	+ "' , "
+ 					+ "'title' 		 = ' " + title 	+ "' , "
+ 					+ "'recipe' 	 = ' " + recipe + "' , "
+ 					+ "'ingredients' = ' " + ing  	+ "' , "
+ 					+ "'score' 		 =   " + score  + "  , "
+ 					+ "'poll' 		 =   " + poll 	+ "  , "
+ 					+ "'url' 		 = ' " + url 	+ "'   "
+ 					+ " where id 	 =   " + id 	+ "  ; " ;
+ 			
+ 			System.out.println(sql);
  			/*
- 			UPDATE `SiteWeb` SET `id`="ok",
- 					`img`="ok",`title`="ok",
+ 			UPDATE `SiteWeb` SET 
+ 					`img`="ok",
+ 					`title`="ok",
  					`recipe`="ok",
  					`ingredients`="ok",
  					`score`=4,
