@@ -344,17 +344,8 @@ public class Main extends Application
         				        	public void handle( ActionEvent e )
         				        	{
         				        		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
-        				        		
-        				        		if ( recipe2 != null )
-        				        		{
-        				        			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
-        				        			data = bdd.getFromBDD() ;
-            		        				table.setItems( data ) ;
-        				        		}
-        				        		else
-        				        		{
-        				        			label.setText( "You have to select a row in order to delete it!" ) ;
-        				        		}
+        				        		label.setText( recipe2.getTitle() ) ; 
+        			                	//label.setText( "You have to select a row in order to delete it!" ) ;
         				        	}
         				        } ) ;
         				        

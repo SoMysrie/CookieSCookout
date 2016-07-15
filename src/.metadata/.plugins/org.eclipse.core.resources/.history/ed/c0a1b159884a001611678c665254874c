@@ -279,10 +279,8 @@ public class Main extends Application
         		        		final TextField addUrl = new TextField() ;
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         		        		addUrl.setPromptText( "Url" ) ;
-        		        		//Buttons
         				        final Button addButton = new Button( "Add" ) ;
         				        final Button delButton = new Button( "Delete" ) ;
-        				        //Label
         				        final Label label = new Label() ;
         				        
         				        addButton.setOnAction( new EventHandler<ActionEvent>()
@@ -343,23 +341,12 @@ public class Main extends Application
         				        	@Override
         				        	public void handle( ActionEvent e )
         				        	{
-        				        		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
-        				        		
-        				        		if ( recipe2 != null )
-        				        		{
-        				        			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
-        				        			data = bdd.getFromBDD() ;
-            		        				table.setItems( data ) ;
-        				        		}
-        				        		else
-        				        		{
-        				        			label.setText( "You have to select a row in order to delete it!" ) ;
-        				        		}
+        			                	label.setText( "You have to select a row in order to delete it!" ) ;
         				        	}
         				        } ) ;
         				        
         				        hb = new HBox() ;
-        				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , addButton , delButton ) ;
+        				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , addButton ) ;
                                 hb.setSpacing( 3 ) ;
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
@@ -505,4 +492,4 @@ public class Main extends Application
         }
     };
     
-} ; 
+}; 

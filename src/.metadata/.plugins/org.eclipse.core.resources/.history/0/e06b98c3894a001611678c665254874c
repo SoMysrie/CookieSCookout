@@ -138,7 +138,7 @@ public class Bdd
 	 * 
 	 * @param toDelete
 	 */
-	public String deleteInBDD (String toDelete )
+	public void deleteInBDD (String toDelete )
 	{
 		Connection cn = null ;
 		Statement st = null ;
@@ -149,17 +149,16 @@ public class Bdd
 			st = cn.createStatement() ;
 			String sql = "DELETE FROM `SiteWeb` WHERE title='" + toDelete + "';" ;
 			st.executeUpdate( sql ) ;
-			string = new String( "Successfuly deleted from BDD!" ) ;
 		}
 		catch( SQLException e )
 		{
 			e.printStackTrace() ;
-			string = new String( "Error! Cannot delete!" ) ;
+			System.out.println( "Error! Cannot delete!" ) ;
 		}
 		catch( ClassNotFoundException e )
 		{
 			e.printStackTrace() ;
-			string = new String( "Error! Cannot delete!" ) ;
+			System.out.println( "Error! Cannot delete!" ) ;
 		}
 		finally
 		{
@@ -171,11 +170,9 @@ public class Bdd
 			catch( SQLException e )
 			{
 				e.printStackTrace() ;
-				string = new String( "Error! Cannot delete!" ) ;
+				System.out.println( "Error! Cannot close!" ) ;
 			}
 		}
-		
-		return string ;
 	} ;
 	
 	/**
