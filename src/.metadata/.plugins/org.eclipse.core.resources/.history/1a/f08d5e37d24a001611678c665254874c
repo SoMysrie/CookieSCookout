@@ -519,7 +519,6 @@ public class Main extends Application
 			label.setText( "Once you are done with your editing click on the button save!" ) ;
 			btsave.setDisable( false ) ;
 			btdel.setDisable( true ) ;
-			btadd.setDisable( true ) ;
 		}
 		else
 		{
@@ -574,9 +573,6 @@ public class Main extends Application
 				addScore.clear() ;
 				addPoll.clear() ;
 				addUrl.clear() ;
-				btsave.setDisable( true ) ;
-				btdel.setDisable( false ) ;
-				btadd.setDisable( false ) ;
 	 	    } 
 	 		else
 	 		{

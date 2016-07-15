@@ -269,15 +269,21 @@ public class Main extends Application
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		btsave = new Button( "Save" ) ;
-        		        		btsave.setDisable( true ) ;
+        		        		btsave.setVisible( false ) ;
         		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
-        				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
         				        
         				        
+        				        
+        				        if( btsave.isVisible() == true )
+        				        {
+        				        	btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
+        				        }
+        				        
+        				        System.out.println(btsave.isVisible() == true) ;
         				        
         				        hbrec = new HBox() ;
         				        hbrec.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl ) ;
@@ -517,9 +523,7 @@ public class Main extends Application
 			addPoll.setText( recipe2.getPoll() ) ;
 			addUrl.setText( recipe2.getUrl() ) ;
 			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			btsave.setDisable( false ) ;
-			btdel.setDisable( true ) ;
-			btadd.setDisable( true ) ;
+			btsave.setVisible( true ) ;
 		}
 		else
 		{
@@ -533,55 +537,16 @@ public class Main extends Application
 	 */
 	private void handleButtonSaveBdd( ActionEvent e )
 	{
-		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
-				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
-				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
-				  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
-				  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
-				  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
-				  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
-	 		   )
-	 		{
-	 			data.add( new Recipe(
-	 					null, 
-	 	 				addImg.getText() ,
-	 	 				addTitle.getText() ,
-	 	 				addRecipe.getText() ,
-	 	 				addIng.getText() ,
-	 	 				addScore.getText() ,
-	 	 				addPoll.getText() ,
-	 	 				addUrl.getText()
-	 	 				) ) ;
-	 			
-	 			label.setText( bdd.updateInBDD(
-	 					addImg.getText() , 
-	 					addTitle.getText() , 
-	 					addRecipe.getText() , 
-	 					addIng.getText() , 
-	 					Integer.parseInt(addScore.getText() ) , 
-	 					Integer.parseInt(addPoll.getText() ) , 
-	 					addUrl.getText() 
-	 					) 
-	     			) ;
-	 			
-	 			data = bdd.getFromBDD() ;
-				table.setItems( data ) ;
-				
-				addImg.clear() ;
-				addTitle.clear() ;
-				addRecipe.clear() ;
-				addIng.clear() ;
-				addScore.clear() ;
-				addPoll.clear() ;
-				addUrl.clear() ;
-				btsave.setDisable( true ) ;
-				btdel.setDisable( false ) ;
-				btadd.setDisable( false ) ;
-	 	    } 
-	 		else
-	 		{
-	 			label.setText("You have to complete everything!");
-			}
+		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
+		
+		if ( recipe2 != null )
+		{
+			label.setText( "YES" ) ;
+		}
+		else
+		{
+			label.setText( "NO" ) ;
+		}
 	}
 	
     /**

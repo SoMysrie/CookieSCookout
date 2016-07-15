@@ -27,7 +27,6 @@ public class Bdd
 	
 	/**
 	 * 
-	 * @param id
 	 * @param img
 	 * @param title
 	 * @param recipe
@@ -75,59 +74,9 @@ public class Bdd
  			}
  		}
 		return string ;
+ 		
  	} ;
 	
- 	/**
- 	 * 
- 	 * @param img
- 	 * @param title
- 	 * @param recipe
- 	 * @param ing
- 	 * @param score
- 	 * @param poll
- 	 * @param url
- 	 * @return
- 	 */
- 	public String updateInBDD( String img , String title , String recipe , String ing , int score , int poll , String url )
- 	{
- 		Connection cn = null ;
- 		Statement st = null ;
- 		
- 		try
- 		{
- 			cn = getConnection() ;
- 			st = cn.createStatement() ;
- 			String sql = "INSERT INTO SiteWeb ( img , title , recipe , ingredients , score , poll , url ) "
- 					+ " VALUES (' " + img + "','" + title + "','" + recipe +  "','" + ing + "','" + score + "','" + poll + "','" + url +"');" ;
- 			st.executeUpdate( sql ) ;
- 			string = new String( title + " was successfuly updated in BDD!" ) ;
- 		}
- 		catch( SQLException e )
- 		{
- 			e.printStackTrace() ;
- 			string = new String( "Error! Cannot updated in BDD!" ) ;
- 		}
- 		catch(ClassNotFoundException e)
- 		{
- 			e.printStackTrace() ;
- 			string = new String( "Error! Cannot updated in BDD!" ) ;
- 		}
- 		finally
- 		{
- 			try
- 			{
- 				cn.close() ;
- 				st.close() ;
- 			}
- 			catch( SQLException e )
- 			{
- 				e.printStackTrace() ;
- 				string = new String( "Error! Cannot close!" ) ;
- 			}
- 		}
-		return string ;
- 	} ;
- 	
 	/**
 	 * 
 	 */
@@ -148,7 +97,6 @@ public class Bdd
 			while( rs.next() )
 			{
 				Recipe rec = new Recipe() ;
-				rec.setId(rs.getString( "id" ) ) ;
 				rec.setImg( rs.getString( "img" ) ) ;
 				rec.setTitle( rs.getString( "title" ) ) ;
 				rec.setRecipe(  rs.getString( "recipe" ) ) ;
@@ -190,7 +138,7 @@ public class Bdd
 	 * 
 	 * @param toDelete
 	 */
-	public String deleteInBDD (int toDelete , String titleToDelete)
+	public String deleteInBDD (String toDelete )
 	{
 		Connection cn = null ;
 		Statement st = null ;
@@ -199,9 +147,9 @@ public class Bdd
 		{
 			cn = getConnection() ;
 			st = cn.createStatement() ;
-			String sql = "DELETE FROM `SiteWeb` WHERE id='" + toDelete + "';" ;
+			String sql = "DELETE FROM `SiteWeb` WHERE title='" + toDelete + "';" ;
 			st.executeUpdate( sql ) ;
-			string = new String( titleToDelete + " was successfuly deleted from BDD!" ) ;
+			string = new String( toDelete + " was successfuly deleted from BDD!" ) ;
 		}
 		catch( SQLException e )
 		{

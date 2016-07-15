@@ -42,7 +42,7 @@ public class Main extends Application
     
     //VBoxes and hbrecoxes for the labels and checkboxes 
     VBox vbchecks , vblabels , vbbutton , vbtext , vball , vbbox ;
-    HBox hbrec , hbbutton;
+    HBox hbrec , hbrecbutton;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
@@ -269,28 +269,35 @@ public class Main extends Application
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		btsave = new Button( "Save" ) ;
-        		        		btsave.setDisable( true ) ;
+        		        		btsave.setVisible( false ) ;
         		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
-        				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
         				        
         				        
+        				        
+        				        if( btsave.isVisible() == true )
+        				        {
+        				        	btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
+        				        }
+        				        
+        				        System.out.println(btsave.isVisible() == true) ;
         				        
         				        hbrec = new HBox() ;
         				        hbrec.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl ) ;
                                 hbrec.setSpacing( 3 ) ;
                                 
-                                hbbutton = new HBox() ;
-                                hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
+                                vbbutton = new VBox() ;
+                                vbbutton.setSpacing( 5 ) ;
+                                vbbutton.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
+                                vbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hbrec , hbbutton , label ) ;
+                                vbbox.getChildren().addAll( table , hbrec , vbbutton , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -517,9 +524,7 @@ public class Main extends Application
 			addPoll.setText( recipe2.getPoll() ) ;
 			addUrl.setText( recipe2.getUrl() ) ;
 			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			btsave.setDisable( false ) ;
-			btdel.setDisable( true ) ;
-			btadd.setDisable( true ) ;
+			btsave.setVisible( true ) ;
 		}
 		else
 		{
@@ -533,55 +538,16 @@ public class Main extends Application
 	 */
 	private void handleButtonSaveBdd( ActionEvent e )
 	{
-		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
-				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
-				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
-				  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
-				  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
-				  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
-				  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
-	 		   )
-	 		{
-	 			data.add( new Recipe(
-	 					null, 
-	 	 				addImg.getText() ,
-	 	 				addTitle.getText() ,
-	 	 				addRecipe.getText() ,
-	 	 				addIng.getText() ,
-	 	 				addScore.getText() ,
-	 	 				addPoll.getText() ,
-	 	 				addUrl.getText()
-	 	 				) ) ;
-	 			
-	 			label.setText( bdd.updateInBDD(
-	 					addImg.getText() , 
-	 					addTitle.getText() , 
-	 					addRecipe.getText() , 
-	 					addIng.getText() , 
-	 					Integer.parseInt(addScore.getText() ) , 
-	 					Integer.parseInt(addPoll.getText() ) , 
-	 					addUrl.getText() 
-	 					) 
-	     			) ;
-	 			
-	 			data = bdd.getFromBDD() ;
-				table.setItems( data ) ;
-				
-				addImg.clear() ;
-				addTitle.clear() ;
-				addRecipe.clear() ;
-				addIng.clear() ;
-				addScore.clear() ;
-				addPoll.clear() ;
-				addUrl.clear() ;
-				btsave.setDisable( true ) ;
-				btdel.setDisable( false ) ;
-				btadd.setDisable( false ) ;
-	 	    } 
-	 		else
-	 		{
-	 			label.setText("You have to complete everything!");
-			}
+		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
+		
+		if ( recipe2 != null )
+		{
+			label.setText( "YES" ) ;
+		}
+		else
+		{
+			label.setText( "NO" ) ;
+		}
 	}
 	
     /**

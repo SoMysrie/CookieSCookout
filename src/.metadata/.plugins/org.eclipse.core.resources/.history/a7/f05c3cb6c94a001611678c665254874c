@@ -48,7 +48,7 @@ public class Recipe
     	this.id.set( id ) ;
     } ;
     
-    public String getId()
+    public void getId()
     {
     	return id.get() ;
     } ;

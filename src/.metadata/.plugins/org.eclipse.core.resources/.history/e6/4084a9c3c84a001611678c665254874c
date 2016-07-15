@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleStringProperty ;
 
 public class Recipe 
 {
-	private SimpleStringProperty id		;
 	private SimpleStringProperty img 	;
 	private SimpleStringProperty title	;
 	private SimpleStringProperty recipe	;
@@ -16,7 +15,6 @@ public class Recipe
     
     public Recipe( ) 
     {
-    	this.id 	= new SimpleStringProperty( ) ;
         this.img 	= new SimpleStringProperty( ) ;
         this.title 	= new SimpleStringProperty( ) ;
         this.recipe = new SimpleStringProperty( ) ;
@@ -26,9 +24,8 @@ public class Recipe
         this.url 	= new SimpleStringProperty( ) ;
     } ;
     
-    public Recipe( String id , String img , String title , String recipe , String ing , String score , String poll , String url ) 
+    public Recipe( String img , String title , String recipe , String ing , String score , String poll , String url ) 
     {
-    	this.id 	= new SimpleStringProperty( ) ;
         this.img 	= new SimpleStringProperty( ) ;
         this.title 	= new SimpleStringProperty( ) ;
         this.recipe = new SimpleStringProperty( ) ;
@@ -37,22 +34,7 @@ public class Recipe
         this.poll 	= new SimpleStringProperty( ) ;
         this.url 	= new SimpleStringProperty( ) ;
     } ;
-    
-    public void setId( SimpleStringProperty id ) 
-    {
-        this.id.set( img.get() ) ;
-    } ;
-    
-    public void setId( String id )
-    {
-    	this.id.set( id ) ;
-    } ;
-    
-    public String getId()
-    {
-    	return id.get() ;
-    } ;
-    
+ 
     public void setImg( SimpleStringProperty img ) 
     {
         this.img.set( img.get() ) ;

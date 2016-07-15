@@ -37,12 +37,12 @@ public class Main extends Application
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkbdd , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
-    Button  btsearch , btclear , btpicture, btadd , btdel , btedit , btsave , btopen ;
+    Button  btsearch , btclear , btpicture, btsave , btdel , btedit, btopen ;
     TextField search , addImg , addTitle , addRecipe  , addIng , addScore  , addPoll , addUrl ;
     
-    //VBoxes and hbrecoxes for the labels and checkboxes 
+    //VBoxes and Hboxes for the labels and checkboxes 
     VBox vbchecks , vblabels , vbbutton , vbtext , vball , vbbox ;
-    HBox hbrec , hbbutton;
+    HBox hb ;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
@@ -260,37 +260,28 @@ public class Main extends Application
         		        		addUrl = new TextField() ;
         		        		addUrl.setPromptText( "URL" ) ;
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
-
+        				        
+        		        		//buttons
+        		        		btsave = new Button( "Save" ) ;
+        		        		btdel = new Button( "Delete" ) ;
+        		        		btedit = new Button( "Edit" ) ;
+        		        		
         		        		//label
         		        		label = new Label( "" ) ;
         		        		
-        		        		//buttons
-        		        		btadd = new Button( "Add" ) ;
-        		        		btdel = new Button( "Delete" ) ;
-        		        		btedit = new Button( "Edit" ) ;
-        		        		btsave = new Button( "Save" ) ;
-        		        		btsave.setDisable( true ) ;
-        		        		
         		        		//Button action on click
-        				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
+        				        btsave.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
-        				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
         				        
-        				        
-        				        
-        				        hbrec = new HBox() ;
-        				        hbrec.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl ) ;
-                                hbrec.setSpacing( 3 ) ;
-                                
-                                hbbutton = new HBox() ;
-                                hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
+        				        hb = new HBox() ;
+        				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , btsave , btdel , btedit ) ;
+                                hb.setSpacing( 3 ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hbrec , hbbutton , label ) ;
+                                vbbox.getChildren().addAll( table , hb , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -517,72 +508,14 @@ public class Main extends Application
 			addPoll.setText( recipe2.getPoll() ) ;
 			addUrl.setText( recipe2.getUrl() ) ;
 			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			btsave.setDisable( false ) ;
-			btdel.setDisable( true ) ;
-			btadd.setDisable( true ) ;
 		}
 		else
 		{
 			label.setText( "You have to select a row in order to edit it!" ) ;
 		}
+		
+		
 	} ;
-
-	/**
-	 * Button save in the datase for the Recipes Tab
-	 * @param e
-	 */
-	private void handleButtonSaveBdd( ActionEvent e )
-	{
-		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
-				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
-				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
-				  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
-				  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
-				  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
-				  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
-	 		   )
-	 		{
-	 			data.add( new Recipe(
-	 					null, 
-	 	 				addImg.getText() ,
-	 	 				addTitle.getText() ,
-	 	 				addRecipe.getText() ,
-	 	 				addIng.getText() ,
-	 	 				addScore.getText() ,
-	 	 				addPoll.getText() ,
-	 	 				addUrl.getText()
-	 	 				) ) ;
-	 			
-	 			label.setText( bdd.updateInBDD(
-	 					addImg.getText() , 
-	 					addTitle.getText() , 
-	 					addRecipe.getText() , 
-	 					addIng.getText() , 
-	 					Integer.parseInt(addScore.getText() ) , 
-	 					Integer.parseInt(addPoll.getText() ) , 
-	 					addUrl.getText() 
-	 					) 
-	     			) ;
-	 			
-	 			data = bdd.getFromBDD() ;
-				table.setItems( data ) ;
-				
-				addImg.clear() ;
-				addTitle.clear() ;
-				addRecipe.clear() ;
-				addIng.clear() ;
-				addScore.clear() ;
-				addPoll.clear() ;
-				addUrl.clear() ;
-				btsave.setDisable( true ) ;
-				btdel.setDisable( false ) ;
-				btadd.setDisable( false ) ;
-	 	    } 
-	 		else
-	 		{
-	 			label.setText("You have to complete everything!");
-			}
-	}
 	
     /**
      * Button open file for the Plugin Tab
