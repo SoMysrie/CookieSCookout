@@ -23,6 +23,17 @@ public class Recipe
         this.poll 	= new SimpleStringProperty( ) ;
         this.url 	= new SimpleStringProperty( ) ;
     } ;
+    
+    public Recipe( String img , String title , String recipe , String ing , String score , String poll , String url ) 
+    {
+        this.img 	= new SimpleStringProperty( ) ;
+        this.title 	= new SimpleStringProperty( ) ;
+        this.recipe = new SimpleStringProperty( ) ;
+        this.ing 	= new SimpleStringProperty( ) ;
+        this.score 	= new SimpleStringProperty( ) ;
+        this.poll 	= new SimpleStringProperty( ) ;
+        this.url 	= new SimpleStringProperty( ) ;
+    } ;
  
     public void setImg( SimpleStringProperty img ) 
     {

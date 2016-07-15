@@ -1,32 +1,33 @@
 package application ;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Desktop ;
+import java.io.File ;
+import java.io.IOException ;
+import java.sql.SQLException ;
+import java.util.logging.Level ;
+import java.util.logging.Logger ;
 
-import cookiescookout.ws.WsServer;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import cookiescookout.ws.WsServer ;
+import javafx.application.Application ;
+import javafx.application.Platform ;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent ;
+import javafx.event.EventHandler ;
+import javafx.geometry.Insets ;
+import javafx.scene.control.Button ;
+import javafx.scene.control.CheckBox ;
+import javafx.scene.control.Label ;
+import javafx.scene.control.Menu ;
+import javafx.scene.control.MenuBar ;
+import javafx.scene.control.MenuItem ;
+import javafx.scene.control.TableColumn ;
+import javafx.scene.control.TableView ;
+import javafx.scene.control.TextField ;
+import javafx.scene.control.cell.PropertyValueFactory ;
+import javafx.scene.layout.HBox ;
+import javafx.scene.layout.VBox ;
+import javafx.stage.FileChooser ;
+import javafx.stage.Stage ;
 
 public class Main extends Application 
 {
@@ -36,7 +37,10 @@ public class Main extends Application
     Button btsubmit , btclear , btsearch ;
     
     //VBoxes for the labels and checkboxes 
-    VBox vbchecks , vblabels , vbplugin , vbhelp , vbbutton , vbtext , vball;
+    VBox vbchecks , vblabels , vbbutton , vbtext , vball, vbbox ;
+    
+    //HBoxes for group of labels and buttons
+    HBox hb ;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
@@ -50,6 +54,7 @@ public class Main extends Application
     private TableColumn<Recipe, String> scoreCol = new TableColumn<Recipe, String>( "Score" ) ;
     private TableColumn<Recipe, String> pollCol = new TableColumn<Recipe, String>( "Poll" ) ;
     private TableColumn<Recipe, String> urlCol = new TableColumn<Recipe, String>( "URL" ) ;
+    private ObservableList<Recipe> data ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -300,14 +305,16 @@ public class Main extends Application
             public void handle( ActionEvent event ) 
     	    {
         		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
-        		new Thread( new Runnable( ){
+        		new Thread( new Runnable()
+        		{
         			@Override
         			public void run()
         			{
-        				table.setItems( bdd.getFromBDD( ) ) ;
+        				data = bdd.getFromBDD() ;
+        				table.setItems( data ) ;
         				
                 		table.setEditable( true ) ;
-                		table.setMaxSize( 600 , 600 ) ;
+                		table.setMaxSize( 700 , 600 ) ;
                 		
                 		imgCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "img" ) ) ;
                         titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "title" ) ) ;
@@ -322,15 +329,95 @@ public class Main extends Application
         				    @SuppressWarnings( "unchecked" )
 							@Override public void run()
         				    {
-                                table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
+        				    	table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
                                 
-                                final VBox vbox = new VBox() ;
-                                vbox.setSpacing( 5 ) ;
-                                vbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbox.getChildren().add( table ) ;
-                            	 
-                               mainContainer.createMainContainer( stage , menuBar , vbox ) ;
-        					} ;
+        				    	final TextField addImg = new TextField() ;
+        		        		addImg.setPromptText( "Image" ) ;
+        		        		addImg.setMaxWidth( imgCol.getPrefWidth( ) ) ;
+        		     			final TextField addTitle = new TextField() ;
+        		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
+        		        		addTitle.setPromptText( "Title" ) ;
+        		        		final TextField addRecipe = new TextField() ;
+        		        		addRecipe.setMaxWidth( recipeCol.getPrefWidth( ) ) ;
+        		  				addRecipe.setPromptText( "Recipe" ) ;
+        		  				final TextField addIng = new TextField() ;
+        		        		addIng.setPromptText( "Ingredient" ) ;
+        		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
+        		  				final TextField addScore = new TextField() ;
+        	      				addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
+       	        				addScore.setPromptText( "Score");
+        		        		final TextField addPoll = new TextField() ;
+        		        		addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
+        		        		addPoll.setPromptText( "Poll" ) ;
+        		        		final TextField addUrl = new TextField() ;
+        		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
+        		        		addUrl.setPromptText( "Url" ) ;
+        				        final Button addButton = new Button( "Add" ) ;
+        				        final Label label = new Label() ;
+        				        
+        				        addButton.setOnAction( new EventHandler<ActionEvent>()
+        				        {
+        				        	@Override
+        				        	public void handle( ActionEvent e )
+        				        	{
+        				        		data.add( new Recipe(
+        				        				addImg.getText() ,
+        				        				addTitle.getText() ,
+        				        				addRecipe.getText() ,
+        				        				addIng.getText() ,
+        				        				addScore.getText() ,
+        				        				addPoll.getText() ,
+        				        				addUrl.getText()
+        				        				) ) ;
+        				        		table.setItems( data ) ;
+        				        		
+        				        		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
+        			    				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
+        			    				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
+        			    				  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
+        			    				  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
+        			    				  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
+        			    				  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
+        				        		   )
+        				        		{
+        				        			label.setText( bdd.saveInBDD( 
+        				        					addImg.getText() , 
+        				        					addTitle.getText() , 
+        				        					addRecipe.getText() , 
+        				        					addIng.getText() , 
+        				        					Integer.parseInt(addScore.getText() ) , 
+        				        					Integer.parseInt(addPoll.getText() ) , 
+        				        					addUrl.getText() 
+        				        					) 
+            				        			) ;
+        				        			
+        				        				addImg.clear() ;
+            		        					addTitle.clear() ;
+            		        					addRecipe.clear() ;
+            		        					addIng.clear() ;
+            		        					addScore.clear() ;
+            		        					addPoll.clear() ;
+            		        					addUrl.clear() ;
+        			            	       } 
+        			    				   else
+        			    				   {
+        			    					   label.setText("You have to complete everything!");
+        			    				   }
+        				        		
+        				        		
+        		        			}
+        				        } ) ;
+        				        
+        				        hb = new HBox() ;
+        				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , addButton ) ;
+                                hb.setSpacing( 3 ) ;
+                                vbbox = new VBox() ;
+                                vbbox.setSpacing( 5 ) ;
+                                vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
+                                vbbox.getChildren().addAll( table , hb , label ) ;
+        		        		
+                                mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+        				    } ;
                        } ) ;
         			} ;
         		} ).start() ;
