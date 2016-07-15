@@ -201,7 +201,6 @@ public class Main extends Application
         				if ( data != null )
         				{
         					data.clear() ;
-        					data.removeAll( data ) ;
         				}
         				data = bdd.getFromBDD() ;
         				table.setItems( data ) ;
@@ -293,6 +292,8 @@ public class Main extends Application
         				        				addPoll.getText() ,
         				        				addUrl.getText()
         				        				) ) ;
+        				        		table.setItems( data ) ;
+        				        		
         				        		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
         			    				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
         			    				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
@@ -313,26 +314,22 @@ public class Main extends Application
         				        					) 
             				        			) ;
         				        			
-        				        			data = bdd.getFromBDD() ;
-            		        				table.setItems( data ) ;
-        				        			
-        				        			addImg.clear() ;
-            		        				addTitle.clear() ;
-            		        				addRecipe.clear() ;
-            		        				addIng.clear() ;
-            		        				addScore.clear() ;
-            		        				addPoll.clear() ;
-            		        				addUrl.clear() ;
+        				        				addImg.clear() ;
+            		        					addTitle.clear() ;
+            		        					addRecipe.clear() ;
+            		        					addIng.clear() ;
+            		        					addScore.clear() ;
+            		        					addPoll.clear() ;
+            		        					addUrl.clear() ;
         			            	       } 
         			    				   else
         			    				   {
         			    					   label.setText("You have to complete everything!");
         			    				   }
         				        		
+        				        		
         		        			}
         				        } ) ;
-        				        
-        				        
         				        
         				        hb = new HBox() ;
         				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , addButton ) ;

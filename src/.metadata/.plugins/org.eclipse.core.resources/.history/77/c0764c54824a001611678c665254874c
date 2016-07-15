@@ -197,12 +197,6 @@ public class Main extends Application
         			@Override
         			public void run()
         			{
-        				System.out.println(data == null);
-        				if ( data != null )
-        				{
-        					data.clear() ;
-        					data.removeAll( data ) ;
-        				}
         				data = bdd.getFromBDD() ;
         				table.setItems( data ) ;
         				
@@ -224,55 +218,41 @@ public class Main extends Application
         				    {
         				    	table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
                                 
-        				    	//Image
         				    	final TextField addImg = new TextField() ;
         		        		addImg.setPromptText( "Image" ) ;
         		        		addImg.setMaxWidth( imgCol.getPrefWidth( ) ) ;
-        		        		//Title
         		     			final TextField addTitle = new TextField() ;
         		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
         		        		addTitle.setPromptText( "Title" ) ;
-        		        		//Recipe
         		        		final TextField addRecipe = new TextField() ;
         		        		addRecipe.setMaxWidth( recipeCol.getPrefWidth( ) ) ;
         		  				addRecipe.setPromptText( "Recipe" ) ;
-        		  				//Ingredient
         		  				final TextField addIng = new TextField() ;
         		        		addIng.setPromptText( "Ingredient" ) ;
         		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
-        		        		//Score
         		  				final TextField addScore = new TextField() ;
         	      				addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
        	        				addScore.setPromptText( "Score");
        	        				// force the field to be numeric only
-       	        				addScore.textProperty().addListener(new ChangeListener<String>() 
-       	        				{
+       	        				addScore.textProperty().addListener(new ChangeListener<String>() {
        	        			        @Override
-       	        			        public void changed(ObservableValue<? extends String> observable , String oldValue , String newValue ) 
-       	        			        {
-       	        			            if ( !newValue.matches( "\\d*") )
-       	        			            {
-       	        			            	addScore.setText( newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
+       	        			        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+       	        			            if (!newValue.matches("\\d*")) {
+       	        			            	addScore.setText(newValue.replaceAll("[^\\d]", "1234"));
        	        			            }
        	        			        }
-       	        			    } ) ;
-       	        				//Poll
+       	        			    });
         		        		final TextField addPoll = new TextField() ;
         		        		addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
         		        		addPoll.setPromptText( "Poll" ) ;
-        		        		// force the field to be numeric only
-        		        		addPoll.textProperty().addListener( new ChangeListener<String>() 
-        		        		{
+        		        		addPoll.textProperty().addListener(new ChangeListener<String>() {
        	        			        @Override
-       	        			        public void changed( ObservableValue<? extends String> observable , String oldValue , String newValue ) 
-       	        			        {
-       	        			            if ( !newValue.matches( "\\d*") )
-       	        			            {
-       	        			            	addPoll.setText(newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
+       	        			        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+       	        			            if (!newValue.matches("\\d*")) {
+       	        			            	addPoll.setText(newValue.replaceAll("[^\\d]", "1234"));
        	        			            }
        	        			        }
-       	        			    } ) ;
-        		        		//URL
+       	        			    });
         		        		final TextField addUrl = new TextField() ;
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         		        		addUrl.setPromptText( "Url" ) ;
@@ -293,6 +273,8 @@ public class Main extends Application
         				        				addPoll.getText() ,
         				        				addUrl.getText()
         				        				) ) ;
+        				        		table.setItems( data ) ;
+        				        		
         				        		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
         			    				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
         			    				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
@@ -313,26 +295,22 @@ public class Main extends Application
         				        					) 
             				        			) ;
         				        			
-        				        			data = bdd.getFromBDD() ;
-            		        				table.setItems( data ) ;
-        				        			
-        				        			addImg.clear() ;
-            		        				addTitle.clear() ;
-            		        				addRecipe.clear() ;
-            		        				addIng.clear() ;
-            		        				addScore.clear() ;
-            		        				addPoll.clear() ;
-            		        				addUrl.clear() ;
+        				        				addImg.clear() ;
+            		        					addTitle.clear() ;
+            		        					addRecipe.clear() ;
+            		        					addIng.clear() ;
+            		        					addScore.clear() ;
+            		        					addPoll.clear() ;
+            		        					addUrl.clear() ;
         			            	       } 
         			    				   else
         			    				   {
         			    					   label.setText("You have to complete everything!");
         			    				   }
         				        		
+        				        		
         		        			}
         				        } ) ;
-        				        
-        				        
         				        
         				        hb = new HBox() ;
         				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , addButton ) ;
@@ -342,7 +320,7 @@ public class Main extends Application
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
                                 vbbox.getChildren().addAll( table , hb , label ) ;
         		        		
-                                mainContainer.createMainContainer( stage , menuBar , vbbox) ;
+                                mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
                        } ) ;
         			} ;
@@ -350,6 +328,7 @@ public class Main extends Application
     	    } ;
         } ) ;
         menuRecipe.getItems().add( menuItemRecipe ) ;
+        data.clear() ;
         // --- Menu Plugin
         Menu menuPlugin = new Menu( "Plugin" ) ;
         MenuItem menuItemPlugin = new MenuItem( "Plugin" ) ;
