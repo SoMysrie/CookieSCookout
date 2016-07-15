@@ -10,8 +10,6 @@ import java.util.logging.Logger ;
 import cookiescookout.ws.WsServer ;
 import javafx.application.Application ;
 import javafx.application.Platform ;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent ;
 import javafx.event.EventHandler ;
@@ -348,26 +346,9 @@ public class Main extends Application
         		  				final TextField addScore = new TextField() ;
         	      				addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
        	        				addScore.setPromptText( "Score");
-       	        				// force the field to be numeric only
-       	        				addScore.textProperty().addListener(new ChangeListener<String>() {
-       	        			        @Override
-       	        			        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-       	        			            if (!newValue.matches("\\d*")) {
-       	        			            	addScore.setText(newValue.replaceAll("[^\\d]", ""));
-       	        			            }
-       	        			        }
-       	        			    });
         		        		final TextField addPoll = new TextField() ;
         		        		addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
         		        		addPoll.setPromptText( "Poll" ) ;
-        		        		addPoll.textProperty().addListener(new ChangeListener<String>() {
-       	        			        @Override
-       	        			        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-       	        			            if (!newValue.matches("\\d*")) {
-       	        			            	addPoll.setText(newValue.replaceAll("[^\\d]", ""));
-       	        			            }
-       	        			        }
-       	        			    });
         		        		final TextField addUrl = new TextField() ;
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         		        		addUrl.setPromptText( "Url" ) ;
