@@ -145,9 +145,16 @@ public class Main extends Application
                 chklocal.setOnAction( e -> handleButtonAction( e ) ) ;
                 
                 //attach click-method to all 2 buttons
-                btsearch.setOnAction( e -> handleButtonSearch( e ) ) ;
+                btsearch.setOnAction( new EventHandler<ActionEvent>() 
+                {
+                	@Override
+            	    public void handle( ActionEvent e )
+                	{
+            	         //TO DO
+            	     } ;
+            	} ) ;
                 
-                btclear.setOnAction( e -> handleButtonClear( e ) ) ;
+                btclear.setOnAction( e -> handleButtonClear(e) ) ;
                 
                 vball.getChildren().addAll( menuBar , vbchecks , vblabels , vbtext , vbbutton ) ;
                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
@@ -198,12 +205,17 @@ public class Main extends Application
         				    {
         				    	table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
                                 
+        				    	//Image
         		        		addImg.setMaxWidth( imgCol.getPrefWidth( ) ) ;
+        		        		//Title
         		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
+        		        		//Recipe
         		        		addRecipe.setMaxWidth( recipeCol.getPrefWidth( ) ) ;
+        		  				//Ingredient
         		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
+        		        		//Score
         		        		addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
-        		        		// force the field to be numeric only
+       	        				// force the field to be numeric only
        	        				addScore.textProperty().addListener(new ChangeListener<String>() 
        	        				{
        	        			        @Override
@@ -215,7 +227,8 @@ public class Main extends Application
        	        			            }
        	        			        }
        	        			    } ) ;
-       	        				addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
+       	        				//Poll
+        		        		addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
         		        		// force the field to be numeric only
         		        		addPoll.textProperty().addListener( new ChangeListener<String>() 
         		        		{
@@ -228,10 +241,15 @@ public class Main extends Application
        	        			            }
        	        			        }
        	        			    } ) ;
+        		        		//URL
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
         				        
-        		        		//Button action on click
-        				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
+        				        btadd.setOnAction( new EventHandler<ActionEvent>()
+        				        {
+        				        	@Override
+        				        	
+        				        } ) ;
+        				        
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        
         				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , btadd , btdel ) ;
@@ -345,16 +363,7 @@ public class Main extends Application
         lbllist.setText( choices ) ;
      } ;
      
-    private void handleButtonSearch( ActionEvent e )
-    {
-    	//TO DO
-    }
-     
-    /**
-     * 
-     * @param e
-     */
-    private void handleButtonAddBdd( ActionEvent e )
+    private void handle( ActionEvent e )
  	{
  		data.add( new Recipe(
  				addImg.getText() ,
@@ -403,10 +412,6 @@ public class Main extends Application
  		
 	} ;
      
-	/**
-	 * 
-	 * @param e
-	 */
     private void handleButtonDelBdd( ActionEvent e )
 	{
 		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
@@ -423,10 +428,6 @@ public class Main extends Application
 		}
 	} ;
      
-	/**
-	 * 
-	 * @param e
-	 */
     private void handleButtonClear( ActionEvent e )
     {
     	chkmarmiton.setSelected( false ) ;
@@ -438,12 +439,7 @@ public class Main extends Application
         lbllist.setText( "None" ) ;
         search.clear( ) ;
     } ;
-    
-    /**
-     * 
-     * @param e
-     * @param stage
-     */
+     
     private void handleButtonOpenFile( ActionEvent e , Stage stage)
 	{
 		 File file = fileChooser.showOpenDialog( stage ) ;

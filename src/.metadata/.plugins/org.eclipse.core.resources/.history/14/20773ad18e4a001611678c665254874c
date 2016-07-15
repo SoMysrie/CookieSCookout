@@ -34,25 +34,13 @@ import javafx.stage.Stage ;
 public class Main extends Application 
 {
 	//controls needed for app:
-    CheckBox chkmarmiton = new CheckBox( "Website Marmiton" ) , chkcuisineaz = new CheckBox( "Website Cuisineaz" ) , 
-    		chkaufeminin = new CheckBox( "Website auFeminin" ) , chkbdd = new CheckBox( "Website Cookie's Cookout" ) , 
-    		chklocal = new CheckBox( "Local" ) ;
-    Label label = new Label(), lbltotal = new Label() , 
-    		lbllist = new Label() , lblMenu = new Label() , 
-    		lblFile = new Label() , lblPlugin = new Label() , 
-    		lblHelp = new Label() ;
-    Button  btsearch = new Button( "Search" ) , btclear = new Button( "Clear" ) , 
-    		btadd = new Button( "Add" ) , btdel = new Button( "Delete" ) , 
-    		btopen = new Button( "Choose a File..." ) ;
-    TextField search = new TextField() , addImg = new TextField() , 
-    		addTitle = new TextField() , addRecipe = new TextField() , 
-    		addIng = new TextField() , addScore = new TextField() , 
-    		addPoll = new TextField() , addUrl = new TextField() ;
+    CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkbdd , chklocal = new CheckBox("") ;
+    Label label, lbltotal , lbllist , lblMenu , lblFile , lblPlugin , lblHelp = new Label("") ;
+    Button btsubmit , btclear , btsearch , btadd , btdel , btopen= new Button("") ;
+    TextField search , addImg, addTitle , addRecipe , addIng , addScore, addPoll, addUrl = new TextField("") ;
     
     //VBoxes and Hboxes for the labels and checkboxes 
-    VBox vbchecks = new VBox() , vblabels = new VBox() , 
-    		vbbutton = new VBox() , vbtext = new VBox() , 
-    		vball = new VBox() , vbbox = new VBox() ;
+    VBox vbchecks , vblabels , vbbutton , vbtext , vball, vbbox = new VBox() ;
     HBox hb = new HBox() ;
     
     //Desktop needed for searching a file
@@ -111,6 +99,13 @@ public class Main extends Application
                 //vbox for buttons
                 vbbutton.setSpacing(10) ;
                 vbbutton.setPadding(new Insets(20)) ;
+                 
+                //make 5 checkboxes
+                chkmarmiton = new CheckBox( "Website Marmiton" );
+                chkcuisineaz = new CheckBox( "Website Cuisineaz" ) ;
+                chkaufeminin = new CheckBox( "Website auFeminin" ) ;
+                chkbdd = new CheckBox( "Website Cookie's Cookout" ) ;
+                chklocal = new CheckBox( "Local" ) ;
      		   
                 //setSelected on true for all 5 checkboxes
                 chkmarmiton.setSelected( true ) ;
@@ -130,6 +125,11 @@ public class Main extends Application
                 //textfield
      		    search.setPromptText( "What do you want to search?" ) ;
      		    search.setMaxWidth( 195 ) ;
+                
+                //Defining the Submit button
+                btsearch.setText( "Search" ) ;
+            	//Defining the Clear button
+                btclear.setText( "Clear" ) ;
 
                 //add all things to vboxes
                 vbchecks.getChildren().addAll( chkmarmiton , chkcuisineaz , chkaufeminin , chkbdd , chklocal ) ;
@@ -145,10 +145,33 @@ public class Main extends Application
                 chklocal.setOnAction( e -> handleButtonAction( e ) ) ;
                 
                 //attach click-method to all 2 buttons
-                btsearch.setOnAction( e -> handleButtonSearch( e ) ) ;
+                btsearch.setOnAction( new EventHandler<ActionEvent>() 
+                {
+                	@Override
+            	    public void handle( ActionEvent e )
+                	{
+            	         //TO DO
+            	     } ;
+            	} ) ;
                 
-                btclear.setOnAction( e -> handleButtonClear( e ) ) ;
-                
+                btclear.setOnAction( e -> handleButtonClear(e) ) ;
+                /*
+                btclear.setOnAction( new EventHandler<ActionEvent>() 
+                {
+                	@Override
+            	    public void handle( ActionEvent e ) 
+            		{
+                		chkmarmiton.setSelected( false ) ;
+                        chkcuisineaz.setSelected( false ) ;
+                        chkaufeminin.setSelected( false ) ;
+                        chkbdd.setSelected( false ) ;
+                        chklocal.setSelected( false ) ;
+                        lbltotal.setText( "Website chosen: 0" ) ;
+                        lbllist.setText( "None" ) ;
+                        search.clear( ) ;
+            	    } ;
+            	} ) ;
+                */
                 vball.getChildren().addAll( menuBar , vbchecks , vblabels , vbtext , vbbutton ) ;
                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
             } ;
@@ -198,12 +221,22 @@ public class Main extends Application
         				    {
         				    	table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
                                 
+        				    	//Image
+        		        		addImg.setPromptText( "Image" ) ;
         		        		addImg.setMaxWidth( imgCol.getPrefWidth( ) ) ;
+        		        		//Title
+        		        		addTitle.setPromptText( "Title" ) ;
         		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
+        		        		//Recipe
+        		        		addRecipe.setPromptText( "Recipe" ) ;
         		        		addRecipe.setMaxWidth( recipeCol.getPrefWidth( ) ) ;
+        		  				//Ingredient
+        		        		addIng.setPromptText( "Ingredient" ) ;
         		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
+        		        		//Score
+        		        		addScore.setPromptText( "Score");
         		        		addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
-        		        		// force the field to be numeric only
+       	        				// force the field to be numeric only
        	        				addScore.textProperty().addListener(new ChangeListener<String>() 
        	        				{
        	        			        @Override
@@ -215,7 +248,9 @@ public class Main extends Application
        	        			            }
        	        			        }
        	        			    } ) ;
-       	        				addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
+       	        				//Poll
+        		        		addPoll.setPromptText( "Poll" ) ;
+        		        		addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
         		        		// force the field to be numeric only
         		        		addPoll.textProperty().addListener( new ChangeListener<String>() 
         		        		{
@@ -228,11 +263,85 @@ public class Main extends Application
        	        			            }
        	        			        }
        	        			    } ) ;
+        		        		//URL
+        		        		addUrl.setPromptText( "Url" ) ;
         		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
+        		        		//Buttons
+        				        btadd.setText( "Add" ) ;
+        				        btdel.setText( "Delete" ) ;
         				        
-        		        		//Button action on click
-        				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
-        				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
+        				        btadd.setOnAction( new EventHandler<ActionEvent>()
+        				        {
+        				        	@Override
+        				        	public void handle( ActionEvent e )
+        				        	{
+        				        		data.add( new Recipe(
+        				        				addImg.getText() ,
+        				        				addTitle.getText() ,
+        				        				addRecipe.getText() ,
+        				        				addIng.getText() ,
+        				        				addScore.getText() ,
+        				        				addPoll.getText() ,
+        				        				addUrl.getText()
+        				        				) ) ;
+        				        		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
+        			    				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
+        			    				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
+        			    				  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
+        			    				  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
+        			    				  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
+        			    				  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
+        				        		   )
+        				        		{
+        				        			label.setText( bdd.saveInBDD( 
+        				        					addImg.getText() , 
+        				        					addTitle.getText() , 
+        				        					addRecipe.getText() , 
+        				        					addIng.getText() , 
+        				        					Integer.parseInt(addScore.getText() ) , 
+        				        					Integer.parseInt(addPoll.getText() ) , 
+        				        					addUrl.getText() 
+        				        					) 
+            				        			) ;
+        				        			
+        				        			data = bdd.getFromBDD() ;
+            		        				table.setItems( data ) ;
+        				        			
+        				        			addImg.clear() ;
+            		        				addTitle.clear() ;
+            		        				addRecipe.clear() ;
+            		        				addIng.clear() ;
+            		        				addScore.clear() ;
+            		        				addPoll.clear() ;
+            		        				addUrl.clear() ;
+        			            	       } 
+        			    				   else
+        			    				   {
+        			    					   label.setText("You have to complete everything!");
+        			    				   }
+        				        		
+        		        			}
+        				        } ) ;
+        				        
+        				        btdel.setOnAction( new EventHandler<ActionEvent>()
+        				        {
+        				        	@Override
+        				        	public void handle( ActionEvent e )
+        				        	{
+        				        		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
+        				        		
+        				        		if ( recipe2 != null )
+        				        		{
+        				        			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
+        				        			data = bdd.getFromBDD() ;
+            		        				table.setItems( data ) ;
+        				        		}
+        				        		else
+        				        		{
+        				        			label.setText( "You have to select a row in order to delete it!" ) ;
+        				        		}
+        				        	}
+        				        } ) ;
         				        
         				        hb.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl , btadd , btdel ) ;
                                 hb.setSpacing( 3 ) ;
@@ -249,7 +358,6 @@ public class Main extends Application
     	    } ;
         } ) ;
         menuRecipe.getItems().add( menuItemRecipe ) ;
-        
         // --- Menu Plugin
         Menu menuPlugin = new Menu( "Plugin" ) ;
         MenuItem menuItemPlugin = new MenuItem( "Plugin" ) ;
@@ -258,7 +366,22 @@ public class Main extends Application
              @Override
              public void handle( ActionEvent event ) 
              {
-                 btopen.setOnAction( e -> handleButtonOpenFile( e , stage ) ) ;
+            	 final FileChooser fileChooser = new FileChooser() ;
+                 btopen.setText( "Choose a File..." ) ;
+          
+                 btopen.setOnAction(new EventHandler<ActionEvent>()
+                 {
+                	 @Override
+                     public void handle( final ActionEvent e )
+                	 {
+                		 File file = fileChooser.showOpenDialog( stage ) ;
+                		 if ( file != null )
+                		 {
+                			 openFile( file ) ;
+                         }
+                     } ;
+                 } ) ;
+                 
                  mainContainer.createMainContainer( stage , menuBar , btopen ) ;
              } ;
         } ) ;
@@ -345,88 +468,6 @@ public class Main extends Application
         lbllist.setText( choices ) ;
      } ;
      
-    private void handleButtonSearch( ActionEvent e )
-    {
-    	//TO DO
-    }
-     
-    /**
-     * 
-     * @param e
-     */
-    private void handleButtonAddBdd( ActionEvent e )
- 	{
- 		data.add( new Recipe(
- 				addImg.getText() ,
- 				addTitle.getText() ,
- 				addRecipe.getText() ,
- 				addIng.getText() ,
- 				addScore.getText() ,
- 				addPoll.getText() ,
- 				addUrl.getText()
- 				) ) ;
- 		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
-			  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
-			  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
-			  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
-			  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
-			  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
-			  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
- 		   )
- 		{
- 			label.setText( bdd.saveInBDD( 
- 					addImg.getText() , 
- 					addTitle.getText() , 
- 					addRecipe.getText() , 
- 					addIng.getText() , 
- 					Integer.parseInt(addScore.getText() ) , 
- 					Integer.parseInt(addPoll.getText() ) , 
- 					addUrl.getText() 
- 					) 
-     			) ;
- 			
- 			data = bdd.getFromBDD() ;
-				table.setItems( data ) ;
- 			
- 			addImg.clear() ;
-				addTitle.clear() ;
-				addRecipe.clear() ;
-				addIng.clear() ;
-				addScore.clear() ;
-				addPoll.clear() ;
-				addUrl.clear() ;
- 	    } 
- 		else
- 		{
- 			label.setText("You have to complete everything!");
-		}
- 		
-	} ;
-     
-	/**
-	 * 
-	 * @param e
-	 */
-    private void handleButtonDelBdd( ActionEvent e )
-	{
-		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
-		
-		if ( recipe2 != null )
-		{
-			label.setText( bdd.deleteInBDD( recipe2.getTitle() ) ) ; 
-			data = bdd.getFromBDD() ;
-			table.setItems( data ) ;
-		}
-		else
-		{
-			label.setText( "You have to select a row in order to delete it!" ) ;
-		}
-	} ;
-     
-	/**
-	 * 
-	 * @param e
-	 */
     private void handleButtonClear( ActionEvent e )
     {
     	chkmarmiton.setSelected( false ) ;
@@ -437,22 +478,8 @@ public class Main extends Application
         lbltotal.setText( "Website chosen: 0" ) ;
         lbllist.setText( "None" ) ;
         search.clear( ) ;
-    } ;
-    
-    /**
-     * 
-     * @param e
-     * @param stage
-     */
-    private void handleButtonOpenFile( ActionEvent e , Stage stage)
-	{
-		 File file = fileChooser.showOpenDialog( stage ) ;
-		 if ( file != null )
-		 {
-			 openFile( file ) ;
-        }
-    } ;
-    
+    }
+     
   	/**
   	 * Open a file
   	 * @param file
