@@ -135,7 +135,7 @@ public class Main extends Application
                 //textfield
                 search = new TextField() ;
      		    search.setPromptText( "What do you want to search?" ) ;
-     		    search.setMinWidth( 195 ) ;
+     		    search.setMaxWidth( 250 ) ;
      		    
      		    //buttons
      		    btsearch = new Button( "Search" ) ;

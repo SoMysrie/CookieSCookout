@@ -42,7 +42,7 @@ public class Main extends Application
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
     VBox vbchecks , vblabels , vbbutton , vbtext , vball , vbbox ;
-    HBox hbadd , hball , hbbutton;
+    HBox hbadd , hblabels , hbbutton;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
@@ -135,7 +135,7 @@ public class Main extends Application
                 //textfield
                 search = new TextField() ;
      		    search.setPromptText( "What do you want to search?" ) ;
-     		    search.setMinWidth( 195 ) ;
+     		    search.setMaxWidth( 195 ) ;
      		    
      		    //buttons
      		    btsearch = new Button( "Search" ) ;
@@ -158,11 +158,8 @@ public class Main extends Application
                 btsearch.setOnAction( e -> handleButtonSearch( e ) ) ;
                 btclear.setOnAction( e -> handleButtonClear( e ) ) ;
                 
-                hball = new HBox() ;
-                hball.getChildren().addAll( vbchecks , vblabels , vbtext ) ;
-                
                 vball = new VBox() ;
-                vball.getChildren().addAll( menuBar , hball , hbbutton ) ;
+                vball.getChildren().addAll( menuBar , vbchecks , hblabels , vbtext , hbbutton ) ;
                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
             } ;
         } ) ;

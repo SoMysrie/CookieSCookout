@@ -135,7 +135,7 @@ public class Main extends Application
                 //textfield
                 search = new TextField() ;
      		    search.setPromptText( "What do you want to search?" ) ;
-     		    search.setMinWidth( 195 ) ;
+     		    search.setMaxWidth( 195 ) ;
      		    
      		    //buttons
      		    btsearch = new Button( "Search" ) ;
@@ -158,7 +158,7 @@ public class Main extends Application
                 btsearch.setOnAction( e -> handleButtonSearch( e ) ) ;
                 btclear.setOnAction( e -> handleButtonClear( e ) ) ;
                 
-                hball = new HBox() ;
+                hball= new HBox() ;
                 hball.getChildren().addAll( vbchecks , vblabels , vbtext ) ;
                 
                 vball = new VBox() ;
