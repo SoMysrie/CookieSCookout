@@ -36,7 +36,7 @@ public class MainContainer
     /**
     * @param stage
     * @param menuBar
-    * @param vbbox
+    * @param vblabels
     */
    public void createMainContainer(Stage stage, MenuBar menuBar, VBox vbox)
    {

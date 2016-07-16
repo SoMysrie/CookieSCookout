@@ -72,24 +72,6 @@ public class MainContainer
         stage.show();
     }
     
-    /**
-     * 
-     * @param stage
-     * @param menuBar
-     * @param button
-     */
-    public void createMainContainer(Stage stage, MenuBar menuBar, Button button)
-    {
-    	//create main container
-        VBox root = new VBox();
-        root.getChildren().addAll(menuBar, button);
-        menuBar.prefWidthProperty().bind(stage.widthProperty());
-        Scene scene = new Scene(root, 750, 750);
-        scene.getStylesheets().add("/application/static/css/style.css");
-        stage.setTitle("CookiesCookout");
-        stage.setScene(scene);
-        stage.show();
-    }
     
     /**
      * 

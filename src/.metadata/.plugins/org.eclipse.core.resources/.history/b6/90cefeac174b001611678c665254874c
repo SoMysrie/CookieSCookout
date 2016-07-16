@@ -109,8 +109,7 @@ public class Main extends Application
                 //vbox for buttons
                 hbbutton = new HBox() ;
                 hbbutton.setSpacing( 10 ) ;
-     		    hbbutton.setPadding( new Insets( 20 ) ) ;
-     		    
+     		    hbbutton.setPadding( new Insets( 20 ) ) ;	
                 //checkboxes
                 chkmarmiton = new CheckBox( "Website Marmiton" ) ;
                 chkcuisineaz = new CheckBox( "Website Cuisineaz" ) ;
@@ -321,18 +320,10 @@ public class Main extends Application
              @Override
              public void handle( ActionEvent event ) 
              {
-            	 fileChooser = new FileChooser() ; 
-            	 
-            	 label = new Label( "Please a file ending by .java!" ) ;
             	 btopen = new Button( "Choose a File..." ) ;
-            	 
-            	 vbbox = new VBox() ;
-            	 vbbox.setSpacing( 10 ) ;
-            	 vbbox.setPadding( new Insets( 20 ) ) ;
-                 vbbox.getChildren().addAll( label , btopen ) ;
-                 
+            	 fileChooser = new FileChooser() ; 
                  btopen.setOnAction( e -> handleButtonOpenFile( e , stage ) ) ;
-                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+                 mainContainer.createMainContainer( stage , menuBar , btopen ) ;
              } ;
         } ) ;
         menuPlugin.getItems().add( menuItemPlugin ) ;
