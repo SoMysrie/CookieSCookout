@@ -40,10 +40,10 @@ import javafx.stage.Stage ;
 public class Main extends Application 
 {
 	//controls needed for app:
-    CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkbddRecipe , chklocal ;
+    CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
     Button  btsearch , btclear , btaddImg , btadd , btdel , btedit , btsave , btopen ;
-    TextField search , addImg , addTitle , addRecipe  , addIng , addScore  , addPoll , addUrl ;
+    TextField search , addImg , addTitle , addContent  , addIng , addScore  , addPoll , addUrl ;
     Alert alert ;
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
@@ -55,29 +55,29 @@ public class Main extends Application
     FileChooser fileChooser , pictureChooser ;
     ImageView imageView ;
     
-    //TableView for bddRecipe
-    private TableView<Recipe> table ;
-    private TableColumn<Recipe, String> imgCol = new TableColumn<Recipe, String>( "Image" ) ;
-    private TableColumn<Recipe, String> titleCol = new TableColumn<Recipe, String>( "Title" ) ;
-    private TableColumn<Recipe, String> recipeCol = new TableColumn<Recipe, String>( "Recipe" ) ;
-    private TableColumn<Recipe, String> ingCol = new TableColumn<Recipe, String>( "Ingredients" ) ;
-    private TableColumn<Recipe, String> scoreCol = new TableColumn<Recipe, String>( "Score" ) ;
-    private TableColumn<Recipe, String> pollCol = new TableColumn<Recipe, String>( "Poll" ) ;
-    private TableColumn<Recipe, String> urlCol = new TableColumn<Recipe, String>( "URL" ) ;
-    private ObservableList<Recipe> data ;
+    //TableView for dbRecipe
+    private TableView<Recipe> tableRecipe ;
+    private TableColumn<Recipe,String> imgCol 	  = new TableColumn<Recipe,String>( "IMAGE"  ) ;
+    private TableColumn<Recipe,String> titleCol   = new TableColumn<Recipe,String>( "TITLE"  ) ;
+    private TableColumn<Recipe,String> contentCol = new TableColumn<Recipe,String>( "CONTENT") ;
+    private TableColumn<Recipe,String> scoreCol   = new TableColumn<Recipe,String>( "SCORE"  ) ;
+    private TableColumn<Recipe,String> pollCol	  = new TableColumn<Recipe,String>( "POLL"   ) ;
+    private TableColumn<Recipe,String> urlCol     = new TableColumn<Recipe,String>( "URL"    ) ;
+    private ObservableList<Recipe> dataRecipe ;
     
-  //TableView for bddRecipe
-    private TableView<Ingredients> tableIng ;
-    private TableColumn<Recipe, String> titleRecCol = new TableColumn<Recipe, String>( "Title" ) ;
-    private TableColumn<Ingredients, String> ingrCol = new TableColumn<Ingredients, String>( "Ingredients" ) ;
-    private TableColumn<Ingredients, String> qtyCol = new TableColumn<Ingredients, String>( "Quantity" ) ;
-    private TableColumn<Ingredients, String> unitCol = new TableColumn<Ingredients, String>( "Unit" ) ;
-    private ObservableList<Ingredients> dataIng ;
+    /*
+    //TableView for dbRecipe
+    private TableView<Ingredient> tableIngredient;
+    private TableColumn<Ingredient, String> nameIngredientCol = new TableColumn<Ingredient, String>( "Name" 	) ;
+    private TableColumn<Ingredient, String> qtyIngredientCol  = new TableColumn<Ingredient, String>( "Quantity" ) ;
+    private TableColumn<Ingredient, String> noteIngredientCol = new TableColumn<Ingredient, String>( "Note"	    ) ;
+    private ObservableList<Ingredient> dataIngredient ;
+    */
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
-    BddRecipe bddRecipe = new BddRecipe() ;
-    BddIng bddIng = new BddIng() ;
+    DBRecipe dbRecipe = new DBRecipe() ;
+    DBIng bddIngredient = new DBIng() ;
     
     /**
      * Main class
@@ -131,14 +131,14 @@ public class Main extends Application
                 chkmarmiton = new CheckBox( "Website Marmiton" ) ;
                 chkcuisineaz = new CheckBox( "Website Cuisineaz" ) ;
                 chkaufeminin = new CheckBox( "Website auFeminin" ) ;
-                chkbddRecipe = new CheckBox( "Website Cookie's Cookout" ) ;
+                chkdbRecipe = new CheckBox( "Website Cookie's Cookout" ) ;
                 chklocal = new CheckBox( "Local" ) ;
                 
                 //setSelected on true for all 5 checkboxes
                 chkmarmiton.setSelected( true ) ;
                 chkcuisineaz.setSelected (true ) ;
                 chkaufeminin.setSelected( true ) ;
-                chkbddRecipe.setSelected( true ) ;
+                chkdbRecipe.setSelected( true ) ;
                 chklocal.setSelected( true ) ;
                  
                 //make 2 labels
@@ -159,7 +159,7 @@ public class Main extends Application
      		    btclear = new Button( "Clear" ) ;
 
                 //add all things to vboxes
-                vbchecks.getChildren().addAll( chkmarmiton , chkcuisineaz , chkaufeminin , chkbddRecipe , chklocal ) ;
+                vbchecks.getChildren().addAll( chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ) ;
                 vblabels.getChildren().addAll( lbltotal , lbllist ) ;
                 vbtext.getChildren().add( search ) ;
                 hbbutton.getChildren().addAll( btsearch , btclear ) ;
@@ -168,7 +168,7 @@ public class Main extends Application
                 chkmarmiton.setOnAction( e -> handleButtonAction( e ) ) ;
                 chkcuisineaz.setOnAction( e -> handleButtonAction( e ) ) ;
                 chkaufeminin.setOnAction( e -> handleButtonAction( e ) ) ;
-                chkbddRecipe.setOnAction( e -> handleButtonAction( e ) ) ;
+                chkdbRecipe.setOnAction( e -> handleButtonAction( e ) ) ;
                 chklocal.setOnAction( e -> handleButtonAction( e ) ) ;
                 
                 //attach click-method to all 2 buttons
@@ -199,27 +199,40 @@ public class Main extends Application
         			@Override
         			public void run()
         			{
-        				data = bddRecipe.getFromBDD() ;
-        				table = new TableView<Recipe>() ;
-            			table.setItems( data ) ;
+        				dataRecipe = dbRecipe.getFromDBRecipe() ;
         				
-                		table.setEditable( true ) ;
-                		table.setMaxSize( 700 , 600 ) ;
-                		
-                		imgCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "img" ) ) ;
-                        titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "title" ) ) ;
-                        recipeCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "recipe" ) ) ;
-                        ingCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "ing" ) ) ;
-                        scoreCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "score" ) ) ;
-                        pollCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "poll" ) ) ;
-                        urlCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "url" ) ) ;
+//        				for( int i = 0 ; i < dataRecipe.size() ; i++ )
+//        				{
+//        					System.out.println( i + ") " + dataRecipe.get(i).getIdRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getContentRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getImgRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getPollRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getScoreRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getTitleRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getUrlRecipe() );
+//	    					System.out.println();
+//        				}
+        				
+        				
+            			
+                		imgCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "imgRecipe" ) ) ;
+                        titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "titleRecipe" ) ) ;
+                        contentCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "contentRecipe" ) ) ;
+                        scoreCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "scoreRecipe" ) ) ;
+                        pollCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "pollRecipe" ) ) ;
+                        urlCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "urlRecipe" ) ) ;
+                        
+                        tableRecipe = new TableView<Recipe>() ;
+                        tableRecipe.setItems( dataRecipe ) ;
+                		tableRecipe.setEditable( true ) ;
+                		tableRecipe.setMaxSize( 700 , 600 ) ;
                         
                         Platform.runLater( new Runnable() 
                         {
         				    @SuppressWarnings( "unchecked" )
 							@Override public void run()
         				    {
-        				    	table.getColumns().addAll( imgCol , titleCol , recipeCol , ingCol , scoreCol , pollCol , urlCol ) ;
+        				    	tableRecipe.getColumns().addAll( imgCol , titleCol , contentCol , scoreCol , pollCol , urlCol ) ;
                                 
         				    	//IMG
         				    	addImg = new TextField() ;
@@ -235,14 +248,9 @@ public class Main extends Application
         		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
         		        		
         		        		//RECIPE
-        		        		addRecipe = new TextField() ;
-        		        		addRecipe.setPromptText( "Recipe" ) ;
-        		        		addRecipe.setMaxWidth( recipeCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//ING
-        		        		addIng = new TextField() ;
-        		        		addIng.setPromptText( "Ingredients" ) ;
-        		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
+        		        		addContent = new TextField() ;
+        		        		addContent.setPromptText( "Recipe" ) ;
+        		        		addContent.setMaxWidth( contentCol.getPrefWidth( ) ) ;
         		        		
         		        		//SCORE
         		        		addScore = new TextField() ;
@@ -296,14 +304,14 @@ public class Main extends Application
         		        		btsave.setDisable( true ) ;
         		        		
         		        		//Button action on click
-        		        		btaddImg.setOnAction( e -> handleButtonAddImgBdd( e , stage ) ) ;
-        				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
-        				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
-        				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
-        				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
+        		        		btaddImg.setOnAction( e -> handleButtonAddImgdbRecipe( e , stage ) ) ;
+        				        btadd.setOnAction( e -> handleButtonAddDBRecipe( e ) ) ;
+        				        btdel.setOnAction( e -> handleButtonDeldbRecipe( e ) ) ;
+        				        btedit.setOnAction( e -> handleButtonEditdbRecipe( e ) ) ;
+        				        btsave.setOnAction( e -> handleButtonSavedbRecipe( e ) ) ;
         				        
         				        hbadd = new HBox() ;
-        				        hbadd.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl ) ;
+        				        hbadd.getChildren().addAll( addImg , addTitle , addContent , addScore , addPoll , addUrl ) ;
                                 hbadd.setSpacing( 3 ) ;
                                 
                                 hbbutton = new HBox() ;
@@ -313,7 +321,7 @@ public class Main extends Application
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hbadd , hbbutton , label ) ;
+                                vbbox.getChildren().addAll( tableRecipe , hbadd , hbbutton , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -330,103 +338,7 @@ public class Main extends Application
         	@Override
             public void handle( ActionEvent event ) 
             {
-        		/*
-        		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
-        		new Thread( new Runnable()
-        		{
-        			@Override
-        			public void run()
-        			{
-        				dataIng = bddIng.getFromBDD() ;
-        				tableIng = new TableView<Ingredients>() ;
-        				tableIng.setItems( data ) ;
-        				
-        				tableIng.setEditable( true ) ;
-        				tableIng.setMaxSize( 700 , 600 ) ;
-                		
-                        titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "title" ) ) ;
-                        ingCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "ing" ) ) ;
-                        qtyCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "qty" ) ) ;
-                        unitCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "unit" ) ) ;
-                        
-                        Platform.runLater( new Runnable() 
-                        {
-        				    @SuppressWarnings( "unchecked" )
-							@Override public void run()
-        				    {
-        				    	table.getColumns().addAll( titleCol , ingCol , qtyCol , unitCol ) ;
-                                 
-        		        		
-        		            	//Title
-        		        		addTitle = new TextField() ;
-        		        		addTitle.setPromptText( "Title" ) ;
-        		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//ING
-        		        		addIng = new TextField() ;
-        		        		addIng.setPromptText( "Ingredients" ) ;
-        		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//QTY
-        		        		addQty = new TextField() ;
-        		        		addQty.setPromptText( "Quantity");
-        		        		addQty.setMaxWidth( scoreQty.getPrefWidth( ) ) ;
-        		        		// force the field to be numeric only
-        		        		addQty.textProperty().addListener(new ChangeListener<String>() 
-       	        				{
-       	        			        @Override
-       	        			        public void changed(ObservableValue<? extends String> observable , String oldValue , String newValue ) 
-       	        			        {
-       	        			            if ( !newValue.matches( "\\d*") )
-       	        			            {
-       	        			            	addQty.setText( newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
-       	        			            }
-       	        			        }
-       	        			    } ) ;
-        		        		
-        		        		//URL
-        		        		addUnit = new TextField() ;
-        		        		addUnit.setPromptText( "Unit" ) ;
-        		        		addUnit.setMaxWidth( unitCol.getPrefWidth( ) ) ;
-
-        		        		//label
-        		        		label = new Label( "" ) ;
-        		        		
-        		        		//buttons
-        		        		btadd = new Button( "Add" ) ;
-        		        		btdel = new Button( "Delete" ) ;
-        		        		btedit = new Button( "Edit" ) ;
-        		        		btsave = new Button( "Save" ) ;
-        		        		
-        		        		btsave.setDisable( true ) ;
-        		        		
-        		        		//Button action on click
-        				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
-        				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
-        				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
-        				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
-        				        
-        				        hbadd = new HBox() ;
-        				        hbadd.getChildren().addAll( addTitle , addIng , addQty , addUnit ) ;
-                                hbadd.setSpacing( 3 ) ;
-                                
-                                hbbutton = new HBox() ;
-                                hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
-                                
-                                vbbox = new VBox() ;
-                                vbbox.setSpacing( 5 ) ;
-                                vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableIng , hbadd , hbbutton , label ) ;
-        		        		
-                                mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
-        				    } ;
-                       } ) ;
-        			} ;
-        		} ).start() ;
-        		
-            	*/
-        		mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+        		mainContainer.createMainContainer( stage , menuBar ) ;
             }
         } ) ;
         menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;
@@ -519,10 +431,10 @@ public class Main extends Application
             count++;
             choices += "- " + chkaufeminin.getText() + "\n" ;
         }
-        if( chkbddRecipe.isSelected( ) )
+        if( chkdbRecipe.isSelected( ) )
         {
             count++;
-            choices += "- " + chkbddRecipe.getText() + "\n" ;
+            choices += "- " + chkdbRecipe.getText() + "\n" ;
         }
         if( chklocal.isSelected( ) )
         {
@@ -556,7 +468,7 @@ public class Main extends Application
    	chkmarmiton.setSelected( false ) ;
        chkcuisineaz.setSelected( false ) ;
        chkaufeminin.setSelected( false ) ;
-       chkbddRecipe.setSelected( false ) ;
+       chkdbRecipe.setSelected( false ) ;
        chklocal.setSelected( false ) ;
        lbltotal.setText( "Website chosen: 0" ) ;
        lbllist.setText( "None" ) ;
@@ -564,11 +476,11 @@ public class Main extends Application
    } ;
    
    /**
-    * Button select 
+    * Button select picture
     * @param e
     * @param stage
     */
-   private void handleButtonAddImgBdd( ActionEvent e , Stage stage)
+   private void handleButtonAddImgdbRecipe( ActionEvent e , Stage stage)
    {
 	   alert = new Alert( AlertType.INFORMATION ) ;
 	   alert.setTitle( "Information Dialog" ) ;
@@ -596,47 +508,46 @@ public class Main extends Application
      * Button add in the database for the Recipes Tab
      * @param e
      */
-    private void handleButtonAddBdd( ActionEvent e )
+    private void handleButtonAddDBRecipe( ActionEvent e )
  	{
  		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
 			  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
-			  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
-			  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
+			  && ( addContent.getText() != null && !addContent.getText().isEmpty() ) 
 			  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
 			  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
 			  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
  		   )
  		{
- 			data.add( new Recipe(
+ 			dataRecipe.add( new Recipe
+ 				(
  					null, 
  					addImg.getText() ,
  	 				addTitle.getText() ,
- 	 				addRecipe.getText() ,
- 	 				addIng.getText() ,
+ 	 				addContent.getText() ,
  	 				addScore.getText() ,
  	 				addPoll.getText() ,
  	 				addUrl.getText()
- 	 				) ) ;
+ 	 			) 
+ 			) ;
  			
- 			label.setText( bddRecipe.saveInBDD(
+ 			label.setText( dbRecipe.saveInDBRecipe
+ 				(
  					addImg.getText() , 
  					addTitle.getText() , 
- 					addRecipe.getText() , 
- 					addIng.getText() , 
+ 					addContent.getText() ,
  					Integer.parseInt(addScore.getText() ) , 
  					Integer.parseInt(addPoll.getText() ) , 
  					addUrl.getText() 
- 					) 
-     			) ;
+ 				) 
+     		) ;
  			
- 			data = bddRecipe.getFromBDD() ;
-			table.setItems( data ) ;
+ 			dataRecipe = dbRecipe.getFromDBRecipe() ;
+			tableRecipe.setItems( dataRecipe ) ;
 			
 			addImg.clear() ;
 			addImg.setDisable( true ) ;
 			addTitle.clear() ;
-			addRecipe.clear() ;
-			addIng.clear() ;
+			addContent.clear() ;
 			addScore.clear() ;
 			addPoll.clear() ;
 			addUrl.clear() ;
@@ -651,9 +562,9 @@ public class Main extends Application
 	 * Button delete from the database for the Recipes Tab
 	 * @param e
 	 */
-    private void handleButtonDelBdd( ActionEvent e )
+    private void handleButtonDeldbRecipe( ActionEvent e )
 	{
-		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
+		Recipe recipe2 = tableRecipe.getSelectionModel().getSelectedItem() ;
 		
 		Alert alert = new Alert( AlertType.CONFIRMATION ) ;
 		alert.setTitle( "Confirmation Dialog") ;
@@ -665,9 +576,9 @@ public class Main extends Application
 			Optional<ButtonType> result = alert.showAndWait() ;
 			if ( result.get() == ButtonType.OK )
 			{
-				label.setText( bddRecipe.deleteInBDD( Integer.parseInt( recipe2.getId() ) , recipe2.getTitle() ) ) ; 
-				data = bddRecipe.getFromBDD() ;
-				table.setItems( data ) ;
+				label.setText( dbRecipe.deleteInDBRecipe( Integer.parseInt( recipe2.getIdRecipe() ) , recipe2.getTitleRecipe() ) ) ; 
+				dataRecipe = dbRecipe.getFromDBRecipe() ;
+				tableRecipe.setItems( dataRecipe ) ;
 			} 
 			else 
 			{
@@ -684,19 +595,18 @@ public class Main extends Application
 	 * Button edit from the database for the Recipes Tab
 	 * @param e
 	 */
-	private void handleButtonEditBdd( ActionEvent e )
+	private void handleButtonEditdbRecipe( ActionEvent e )
 	{
-		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
+		Recipe recipe2 = tableRecipe.getSelectionModel().getSelectedItem() ;
 		
 		if ( recipe2 != null )
 		{
-			addImg.setText( recipe2.getImg() ) ;
-			addTitle.setText( recipe2.getTitle() ) ;
-			addRecipe.setText( recipe2.getRecipe() ) ;
-			addIng.setText( recipe2.getIng() ) ;
-			addScore.setText( recipe2.getScore() ) ;
-			addPoll.setText( recipe2.getPoll() ) ;
-			addUrl.setText( recipe2.getUrl() ) ;
+			addImg.setText( recipe2.getImgRecipe() ) ;
+			addTitle.setText( recipe2.getTitleRecipe() ) ;
+			addContent.setText( recipe2.getContentRecipe() ) ;
+			addScore.setText( recipe2.getScoreRecipe() ) ;
+			addPoll.setText( recipe2.getPollRecipe() ) ;
+			addUrl.setText( recipe2.getUrlRecipe() ) ;
 			label.setText( "Once you are done with your editing click on the button save!" ) ;
 			
 			btsave.setDisable( false ) ;
@@ -714,50 +624,46 @@ public class Main extends Application
 	 * Button save in the datase for the Recipes Tab
 	 * @param e
 	 */
-	private void handleButtonSaveBdd( ActionEvent e )
+	private void handleButtonSavedbRecipe( ActionEvent e )
 	{
-		Recipe recipe2 = table.getSelectionModel().getSelectedItem() ;
+		Recipe recipe2 = tableRecipe.getSelectionModel().getSelectedItem() ;
 		
 		if ( ( addImg.getText() != null && !addImg.getText().isEmpty() ) 
 				  && ( addTitle.getText() != null && !addTitle.getText().isEmpty() )  
-				  && ( addRecipe.getText() != null && !addRecipe.getText().isEmpty() ) 
-				  && ( addIng.getText() != null && !addIng.getText().isEmpty() )
+				  && ( addContent.getText() != null && !addContent.getText().isEmpty() ) 
 				  && ( addScore.getText() != null && !addScore.getText().isEmpty() )
 				  && ( addPoll.getText() != null && !addPoll.getText().isEmpty() )
 				  && ( addUrl.getText() != null && !addUrl.getText().isEmpty() )
 	 		   )
 	 		{
-	 			data.add( new Recipe(
+	 			dataRecipe.add( new Recipe(
 	 					null, 
 	 	 				addImg.getText() ,
 	 	 				addTitle.getText() ,
-	 	 				addRecipe.getText() ,
-	 	 				addIng.getText() ,
+	 	 				addContent.getText() ,
 	 	 				addScore.getText() ,
 	 	 				addPoll.getText() ,
 	 	 				addUrl.getText()
 	 	 				) ) ;
 	 			
-	 			label.setText( bddRecipe.updateInBDD(
-	 					Integer.parseInt( recipe2.getId() ) ,
+	 			label.setText( dbRecipe.updateInDBRecipe(
+	 					Integer.parseInt( recipe2.getIdRecipe() ) ,
 	 					addImg.getText() , 
 	 					addTitle.getText() , 
-	 					addRecipe.getText() , 
-	 					addIng.getText() , 
+	 					addContent.getText() ,
 	 					Integer.parseInt(addScore.getText() ) , 
 	 					Integer.parseInt(addPoll.getText() ) , 
 	 					addUrl.getText() 
 	 					) 
 	     			) ;
 	 			
-	 			data = bddRecipe.getFromBDD() ;
-				table.setItems( data ) ;
+	 			dataRecipe = dbRecipe.getFromDBRecipe() ;
+				tableRecipe.setItems( dataRecipe ) ;
 				
 				addImg.clear() ;
 				addImg.setDisable( true ) ;
 				addTitle.clear() ;
-				addRecipe.clear() ;
-				addIng.clear() ;
+				addContent.clear() ;
 				addScore.clear() ;
 				addPoll.clear() ;
 				addUrl.clear() ;

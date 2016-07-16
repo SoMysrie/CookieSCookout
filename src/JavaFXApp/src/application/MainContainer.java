@@ -51,7 +51,6 @@ public class MainContainer
        stage.show();
    }
    
-    
     /**
      * 
      * @param stage
