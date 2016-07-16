@@ -8,9 +8,11 @@ import java.sql.Statement ;
 
 import javafx.collections.FXCollections ;
 import javafx.collections.ObservableList ;
+import javafx.scene.control.Label ;
 
 public class DBIng 
 {
+	Label label ;
 	String string ;
 	private ObservableList<Ingredient> dataIngredient ;
 	
@@ -79,13 +81,21 @@ public class DBIng
 			cn = getConnection() ;
 			st = cn.createStatement() ;
 			
-			String sql = "SELECT * FROM Ingredient NATURAL JOIN COMPOSE" ;
+			String sql = "SELECT * FROM Ingredient;" ;
 			rs = st.executeQuery( sql) ;
 			while( rs.next() )
 			{
 				Ingredient ingr = new Ingredient() ;
 				ingr.setIdIngredient(rs.getString( "idIngredient" ) ) ;
 				ingr.setNameIngredient( rs.getString( "nameIngredient" ) ) ;
+				dataIngredient.add( ingr ) ;
+			}
+			
+			String sql2 = "SELECT * FROM COMPOSE ;" ;
+			rs = st.executeQuery( sql2 ) ;
+			while( rs.next() )
+			{
+				Ingredient ingr = new Ingredient() ;
 				ingr.setQty( rs.getString( "qty" ) ) ;
 				ingr.setNote(  rs.getString( "note" ) ) ;
 				dataIngredient.add( ingr ) ;
@@ -117,15 +127,4 @@ public class DBIng
 		}
 		return dataIngredient ;
 	} ;
-	
-	public String updateInDIngredient( int idIngredient , String nameIngredient , String qty , String note )
-	{
-		string = null ;
-		
-		
-		
-		return string ;
-	} ;
-
-	
 } ;

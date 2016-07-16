@@ -125,7 +125,5 @@ public class DBIng
 		
 		
 		return string ;
-	} ;
-
-	
+	}
 } ;

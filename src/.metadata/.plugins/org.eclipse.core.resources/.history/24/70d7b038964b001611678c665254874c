@@ -79,7 +79,7 @@ public class Main extends Application
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
     DBRecipe dbRecipe = new DBRecipe() ;
-    DBIng dbIngredient = new DBIng() ;
+    DBIng bddIngredient = new DBIng() ;
     
     /**
      * Main class
@@ -332,7 +332,7 @@ public class Main extends Application
         			@Override
         			public void run()
         			{
-        				dataIngredient = dbIngredient.getFromDBIngredient() ;
+        				dataIngredient = bddIngredient.getFromDBIngredient() ;
             			
         				nameCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "nameIngredient" ) ) ;
                         qtyCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "qty" ) ) ;
@@ -370,6 +370,7 @@ public class Main extends Application
         		        		
         		        		//buttons
         		        		btadd = new Button( "Add" ) ;
+        		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		btsave = new Button( "Save" ) ;
         		        		
@@ -377,6 +378,7 @@ public class Main extends Application
         		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddDBIngredient( e ) ) ;
+        				        btdel.setOnAction( e -> handleButtonDelDBIngredient( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditDBIngredient( e ) ) ;
         				        btsave.setOnAction( e -> handleButtonSaveDBIngredient( e ) ) ;
         				        
@@ -386,7 +388,7 @@ public class Main extends Application
                                 
                                 hbbutton = new HBox() ;
                                 hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btedit , btsave ) ;
+                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
@@ -680,7 +682,7 @@ public class Main extends Application
 	} ;
 
 	/**
-	 * Button save in the database for the Recipes Tab
+	 * Button save in the datase for the Recipes Tab
 	 * @param e
 	 */
 	private void handleButtonSavedbRecipe( ActionEvent e )
@@ -743,36 +745,17 @@ public class Main extends Application
 	
 	} ;
 	
-	/**
-	 * Button edit from the database for the Ingredient Tab
-	 * @param e
-	 */
+	private void handleButtonDelDBIngredient( ActionEvent e )
+	{
+		
+	} ;
+	
+	
     private void handleButtonEditDBIngredient( ActionEvent e )
     {
-    	Ingredient ingredient2 = tableIngredient.getSelectionModel().getSelectedItem() ;
-		
-		if ( ingredient2 != null )
-		{
-			addName.setText( ingredient2.getNameIngredient() ) ;
-			addQty.setText( ingredient2.getQty() ) ;
-			addNote.setText( ingredient2.getNote() ) ;
-			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			
-			btsave.setDisable( false ) ;
-			btadd.setDisable( true ) ;
-			btdel.setDisable( true ) ;
-			btedit.setDisable( true ) ;
-		}
-		else
-		{
-			label.setText( "You have to select a row in order to edit it!" ) ;
-		}	
+    	
     } ;
     
-    /**
-     * Save in the DB Ingredient and Compose
-     * @param e
-     */
     private void handleButtonSaveDBIngredient( ActionEvent e )
     {
     	Ingredient ingredient2 = tableIngredient.getSelectionModel().getSelectedItem() ;
@@ -783,25 +766,32 @@ public class Main extends Application
 	 		   )
 	 		{
 	 			dataIngredient.add( new Ingredient(
-	 					null ,
 	 					addName.getText() ,
 	 					addQty.getText() ,
 	 					addNote.getText()
-	 	 		) ) ;
+	 	 				) ) ;
 	 			
-	 			label.setText( dbIngredient.updateInDIngredient(
-	 					Integer.parseInt( ingredient2.getIdIngredient() ) ,
-	 					addName.getText() , 
-	 					addQty.getText() , 
-	 					addNote.getText()
-	 			) ) ;
+	 			label.setText( dbRecipe.updateInDBRecipe(
+	 					Integer.parseInt( recipe2.getIdRecipe() ) ,
+	 					addImg.getText() , 
+	 					addTitle.getText() , 
+	 					addContent.getText() ,
+	 					Integer.parseInt(addScore.getText() ) , 
+	 					Integer.parseInt(addPoll.getText() ) , 
+	 					addUrl.getText() 
+	 					) 
+	     			) ;
 	 			
-	 			dataIngredient = dbIngredient.getFromDBIngredient() ;
-				tableIngredient.setItems( dataIngredient ) ;
+	 			dataRecipe = dbRecipe.getFromDBRecipe() ;
+				tableRecipe.setItems( dataRecipe ) ;
 				
-				addName.clear() ;
-				addQty.clear() ;
-				addNote.clear() ;
+				addImg.clear() ;
+				addImg.setDisable( true ) ;
+				addTitle.clear() ;
+				addContent.clear() ;
+				addScore.clear() ;
+				addPoll.clear() ;
+				addUrl.clear() ;
 				
 				btsave.setDisable( true ) ;
 				btadd.setDisable( false ) ;

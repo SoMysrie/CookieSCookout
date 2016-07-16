@@ -370,6 +370,7 @@ public class Main extends Application
         		        		
         		        		//buttons
         		        		btadd = new Button( "Add" ) ;
+        		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		btsave = new Button( "Save" ) ;
         		        		
@@ -377,6 +378,7 @@ public class Main extends Application
         		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddDBIngredient( e ) ) ;
+        				        btdel.setOnAction( e -> handleButtonDelDBIngredient( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditDBIngredient( e ) ) ;
         				        btsave.setOnAction( e -> handleButtonSaveDBIngredient( e ) ) ;
         				        
@@ -386,7 +388,7 @@ public class Main extends Application
                                 
                                 hbbutton = new HBox() ;
                                 hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btedit , btsave ) ;
+                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
@@ -680,7 +682,7 @@ public class Main extends Application
 	} ;
 
 	/**
-	 * Button save in the database for the Recipes Tab
+	 * Button save in the datase for the Recipes Tab
 	 * @param e
 	 */
 	private void handleButtonSavedbRecipe( ActionEvent e )
@@ -743,10 +745,37 @@ public class Main extends Application
 	
 	} ;
 	
-	/**
-	 * Button edit from the database for the Ingredient Tab
-	 * @param e
-	 */
+	private void handleButtonDelDBIngredient( ActionEvent e )
+	{
+		Ingredient ingredient2 = tableIngredient.getSelectionModel().getSelectedItem() ;
+		
+		Alert alert = new Alert( AlertType.CONFIRMATION ) ;
+		alert.setTitle( "Confirmation Dialog") ;
+		alert.setHeaderText( "Are you sure with this?" ) ;
+		alert.setContentText( "If you delete this ingredient, there are no turning back." ) ;
+
+		if ( ingredient2 != null )
+		{
+			Optional<ButtonType> result = alert.showAndWait() ;
+			if ( result.get() == ButtonType.OK )
+			{
+				label.setText( dbRecipe.deleteInDBRecipe( Integer.parseInt( ingredient2.getIdIngredient() ) , 
+						ingredient2.getNameIngredient() ) ) ; 
+				dataRecipe = dbRecipe.getFromDBIngredient() ;
+				tableRecipe.setItems( dataRecipe ) ;
+			} 
+			else 
+			{
+				label.setText( "Nothing was deleted!" ) ;
+			}
+		}
+		else
+		{
+			label.setText( "You have to select a row in order to delete it!" ) ;
+		}
+	} ;
+	
+	
     private void handleButtonEditDBIngredient( ActionEvent e )
     {
     	Ingredient ingredient2 = tableIngredient.getSelectionModel().getSelectedItem() ;

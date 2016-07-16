@@ -122,10 +122,6 @@ public class DBIng
 	{
 		string = null ;
 		
-		
-		
 		return string ;
-	} ;
-
-	
+	}
 } ;

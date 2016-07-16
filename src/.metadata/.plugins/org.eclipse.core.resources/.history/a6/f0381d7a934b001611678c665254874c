@@ -8,9 +8,11 @@ import java.sql.Statement ;
 
 import javafx.collections.FXCollections ;
 import javafx.collections.ObservableList ;
+import javafx.scene.control.Label ;
 
 public class DBIng 
 {
+	Label label ;
 	String string ;
 	private ObservableList<Ingredient> dataIngredient ;
 	
@@ -88,6 +90,7 @@ public class DBIng
 				ingr.setNameIngredient( rs.getString( "nameIngredient" ) ) ;
 				ingr.setQty( rs.getString( "qty" ) ) ;
 				ingr.setNote(  rs.getString( "note" ) ) ;
+				System.out.println(ingr);
 				dataIngredient.add( ingr ) ;
 			}
 			
@@ -117,15 +120,4 @@ public class DBIng
 		}
 		return dataIngredient ;
 	} ;
-	
-	public String updateInDIngredient( int idIngredient , String nameIngredient , String qty , String note )
-	{
-		string = null ;
-		
-		
-		
-		return string ;
-	} ;
-
-	
 } ;
