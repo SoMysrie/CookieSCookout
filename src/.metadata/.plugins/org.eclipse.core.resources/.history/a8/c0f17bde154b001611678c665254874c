@@ -40,9 +40,9 @@ public class Main extends Application
     Button  btsearch , btclear , btpicture, btadd , btdel , btedit , btsave , btopen ;
     TextField search , addImg , addTitle , addRecipe  , addIng , addScore  , addPoll , addUrl ;
     
-    //VBoxes and hbaddoxes for the labels and checkboxes 
+    //VBoxes and hbrecoxes for the labels and checkboxes 
     VBox vbchecks , vblabels , vbbutton , vbtext , vball , vbbox ;
-    HBox hbadd , hbbutton;
+    HBox hbrec , hbbutton;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
@@ -166,7 +166,7 @@ public class Main extends Application
         } ) ;
         menuHome.getItems().add( menuItemHome ) ;
         
-        // --- Menu Recipes and Ingredients
+        // --- Menu Recipes
         Menu menuRecipe = new Menu( "Recipes" ) ;
         MenuItem menuItemRecipe = new MenuItem( "Recipes" ) ;
         menuItemRecipe.setOnAction( new EventHandler<ActionEvent>() 
@@ -277,9 +277,11 @@ public class Main extends Application
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
         				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
         				        
-        				        hbadd = new HBox() ;
-        				        hbadd.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl ) ;
-                                hbadd.setSpacing( 3 ) ;
+        				        
+        				        
+        				        hbrec = new HBox() ;
+        				        hbrec.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl ) ;
+                                hbrec.setSpacing( 3 ) ;
                                 
                                 hbbutton = new HBox() ;
                                 hbbutton.setSpacing( 3 ) ;
@@ -288,7 +290,7 @@ public class Main extends Application
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( table , hbadd , hbbutton , label ) ;
+                                vbbox.getChildren().addAll( table , hbrec , hbbutton , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -297,18 +299,7 @@ public class Main extends Application
         		} ).start() ;
     	    } ;
         } ) ;
-        
-        MenuItem menuItemIng = new MenuItem( "Ingredients" ) ;
-        menuItemIng.setOnAction( new EventHandler<ActionEvent>()
-        {
-        	@Override
-            public void handle( ActionEvent event ) 
-            {
-            	label = new Label( "Coming soon!" ) ;
-            	mainContainer.createMainContainer( stage , menuBar , label ) ;
-            }
-        } ) ;
-        menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;
+        menuRecipe.getItems().add( menuItemRecipe ) ;
         
         // --- Menu Plugin
         Menu menuPlugin = new Menu( "Plugin" ) ;

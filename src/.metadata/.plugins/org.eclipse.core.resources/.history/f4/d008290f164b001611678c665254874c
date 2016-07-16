@@ -301,12 +301,7 @@ public class Main extends Application
         MenuItem menuItemIng = new MenuItem( "Ingredients" ) ;
         menuItemIng.setOnAction( new EventHandler<ActionEvent>()
         {
-        	@Override
-            public void handle( ActionEvent event ) 
-            {
-            	label = new Label( "Coming soon!" ) ;
-            	mainContainer.createMainContainer( stage , menuBar , label ) ;
-            }
+        	
         } ) ;
         menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;
         
