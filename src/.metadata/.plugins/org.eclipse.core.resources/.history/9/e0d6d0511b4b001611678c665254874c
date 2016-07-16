@@ -282,7 +282,7 @@ public class Main extends Application
         		        		btsave.setDisable( true ) ;
         		        		
         		        		//Button action on click
-        		        		addImg.setOnAction( e -> handleButtonAddImgBdd( e , stage ) ) ;
+        		        		addImg.setOnAction( e -> handleButtonAddImgBdd( e ) ) ;
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
@@ -458,7 +458,7 @@ public class Main extends Application
     * Button choose a picture 
     * @param e
     */
-   private void handleButtonAddImgBdd( ActionEvent e , Stage stage)
+   private void handleButtonAddImgBdd( ActionEvent e )
    {
 	   alert = new Alert( AlertType.INFORMATION ) ;
 	   alert.setTitle( "Information Dialog" ) ;
@@ -466,12 +466,6 @@ public class Main extends Application
 	   alert.setContentText( "Please, choose a picture ending either by \n.PNG \n.JPEG \n.JPG"
 	   		+ "\n\n Thank you! " ) ;
 	   alert.showAndWait();
-	   
-	   File file = fileChooser.showOpenDialog( stage ) ;
-		 if ( file != null )
-		 {
-			 openFile( file ) ;
-		 }
    }
    
     /**
@@ -539,7 +533,7 @@ public class Main extends Application
 		Alert alert = new Alert( AlertType.CONFIRMATION ) ;
 		alert.setTitle( "Confirmation Dialog") ;
 		alert.setHeaderText( "Are you sure with this?" ) ;
-		alert.setContentText( "If you delete this recipe, there are no turning back." ) ;
+		alert.setContentText( "If you delete this recipes, there are no turning back." ) ;
 
 		if ( recipe2 != null )
 		{
@@ -559,6 +553,7 @@ public class Main extends Application
 		{
 			label.setText( "You have to select a row in order to delete it!" ) ;
 		}
+		
 	} ;
     
 	/**
@@ -664,7 +659,7 @@ public class Main extends Application
 		 if ( file != null )
 		 {
 			 openFile( file ) ;
-		 }
+        }
     } ;
     
   	/**

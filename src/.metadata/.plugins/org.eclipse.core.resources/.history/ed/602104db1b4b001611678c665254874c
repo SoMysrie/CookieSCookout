@@ -282,7 +282,7 @@ public class Main extends Application
         		        		btsave.setDisable( true ) ;
         		        		
         		        		//Button action on click
-        		        		addImg.setOnAction( e -> handleButtonAddImgBdd( e , stage ) ) ;
+        		        		addImg.setOnAction( e -> handleButtonAddImgBdd( e ) ) ;
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
