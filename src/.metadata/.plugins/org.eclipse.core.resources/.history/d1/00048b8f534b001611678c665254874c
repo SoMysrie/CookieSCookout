@@ -330,7 +330,6 @@ public class Main extends Application
         	@Override
             public void handle( ActionEvent event ) 
             {
-        		/*
         		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
         		new Thread( new Runnable()
         		{
@@ -412,12 +411,12 @@ public class Main extends Application
                                 
                                 hbbutton = new HBox() ;
                                 hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
+                                hbbutton.getChildren().addAll( btaddImg , btadd , btdel , btedit , btsave ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableIng , hbadd , hbbutton , label ) ;
+                                vbbox.getChildren().addAll( table , hbadd , hbbutton , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -425,8 +424,8 @@ public class Main extends Application
         			} ;
         		} ).start() ;
         		
-            	*/
-        		mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+            	
+            	
             }
         } ) ;
         menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;

@@ -330,7 +330,6 @@ public class Main extends Application
         	@Override
             public void handle( ActionEvent event ) 
             {
-        		/*
         		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
         		new Thread( new Runnable()
         		{
@@ -344,8 +343,8 @@ public class Main extends Application
         				tableIng.setEditable( true ) ;
         				tableIng.setMaxSize( 700 , 600 ) ;
                 		
-                        titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "title" ) ) ;
-                        ingCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "ing" ) ) ;
+                        titleCol.setCellValueFactory( new PropertyValueFactory<Ingredients,String>( "title" ) ) ;
+                        ingCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "ing" ) ) ;
                         qtyCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "qty" ) ) ;
                         unitCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "unit" ) ) ;
                         
@@ -355,44 +354,74 @@ public class Main extends Application
 							@Override public void run()
         				    {
         				    	table.getColumns().addAll( titleCol , ingCol , qtyCol , unitCol ) ;
-                                 
+                                
+        				    	//IMG
+        				    	addImg = new TextField() ;
+        				    	addImg.setPromptText( "Click on the button below" ) ;
+        				    	addImg.setDisable( true ) ;
+        		        		addImg.setMinWidth( 170 ) ;
+        				    	fileChooser = new FileChooser() ;
+        				    	imageView = new ImageView(); 
         		        		
-        		            	//Title
+        		            	 //Title
         		        		addTitle = new TextField() ;
         		        		addTitle.setPromptText( "Title" ) ;
         		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
+        		        		
+        		        		//RECIPE
+        		        		addRecipe = new TextField() ;
+        		        		addRecipe.setPromptText( "Recipe" ) ;
+        		        		addRecipe.setMaxWidth( recipeCol.getPrefWidth( ) ) ;
         		        		
         		        		//ING
         		        		addIng = new TextField() ;
         		        		addIng.setPromptText( "Ingredients" ) ;
         		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
         		        		
-        		        		//QTY
-        		        		addQty = new TextField() ;
-        		        		addQty.setPromptText( "Quantity");
-        		        		addQty.setMaxWidth( scoreQty.getPrefWidth( ) ) ;
+        		        		//SCORE
+        		        		addScore = new TextField() ;
+        		        		addScore.setPromptText( "Score");
+        		        		addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
         		        		// force the field to be numeric only
-        		        		addQty.textProperty().addListener(new ChangeListener<String>() 
+       	        				addScore.textProperty().addListener(new ChangeListener<String>() 
        	        				{
        	        			        @Override
        	        			        public void changed(ObservableValue<? extends String> observable , String oldValue , String newValue ) 
        	        			        {
        	        			            if ( !newValue.matches( "\\d*") )
        	        			            {
-       	        			            	addQty.setText( newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
+       	        			            	addScore.setText( newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
+       	        			            }
+       	        			        }
+       	        			    } ) ;
+       	        				
+       	        				//POLL
+        		        		addPoll = new TextField() ;
+       	        				addPoll.setPromptText( "Poll");
+       	        				addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
+        		        		// force the field to be numeric only
+        		        		addPoll.textProperty().addListener( new ChangeListener<String>() 
+        		        		{
+       	        			        @Override
+       	        			        public void changed( ObservableValue<? extends String> observable , String oldValue , String newValue ) 
+       	        			        {
+       	        			            if ( !newValue.matches( "\\d*") )
+       	        			            {
+       	        			            	addPoll.setText(newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
        	        			            }
        	        			        }
        	        			    } ) ;
         		        		
         		        		//URL
-        		        		addUnit = new TextField() ;
-        		        		addUnit.setPromptText( "Unit" ) ;
-        		        		addUnit.setMaxWidth( unitCol.getPrefWidth( ) ) ;
+        		        		addUrl = new TextField() ;
+        		        		addUrl.setPromptText( "URL" ) ;
+        		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
 
         		        		//label
         		        		label = new Label( "" ) ;
         		        		
         		        		//buttons
+        		        		btaddImg = new Button( "Choose a Picture..." ) ;
         		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
@@ -401,23 +430,24 @@ public class Main extends Application
         		        		btsave.setDisable( true ) ;
         		        		
         		        		//Button action on click
+        		        		btaddImg.setOnAction( e -> handleButtonAddImgBdd( e , stage ) ) ;
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
         				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
         				        
         				        hbadd = new HBox() ;
-        				        hbadd.getChildren().addAll( addTitle , addIng , addQty , addUnit ) ;
+        				        hbadd.getChildren().addAll( addImg , addTitle , addRecipe , addIng , addScore , addPoll , addUrl ) ;
                                 hbadd.setSpacing( 3 ) ;
                                 
                                 hbbutton = new HBox() ;
                                 hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
+                                hbbutton.getChildren().addAll( btaddImg , btadd , btdel , btedit , btsave ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableIng , hbadd , hbbutton , label ) ;
+                                vbbox.getChildren().addAll( table , hbadd , hbbutton , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;
@@ -425,8 +455,8 @@ public class Main extends Application
         			} ;
         		} ).start() ;
         		
-            	*/
-        		mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+            	
+            	
             }
         } ) ;
         menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;

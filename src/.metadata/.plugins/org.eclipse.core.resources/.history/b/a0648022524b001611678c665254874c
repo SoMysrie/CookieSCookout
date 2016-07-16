@@ -2,7 +2,7 @@ package application ;
 
 import javafx.beans.property.SimpleStringProperty ;
 
-public class Recipe 
+public static class Recipe 
 {
 	private SimpleStringProperty id		;
 	private SimpleStringProperty img 	;

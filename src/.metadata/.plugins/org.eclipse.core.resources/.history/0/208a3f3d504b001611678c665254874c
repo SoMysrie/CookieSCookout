@@ -40,7 +40,7 @@ public class Recipe
     
     public void setId( SimpleStringProperty id ) 
     {
-        this.id.set( id.get() ) ;
+        this.id.set( img.get() ) ;
     } ;
     
     public void setId( String id )

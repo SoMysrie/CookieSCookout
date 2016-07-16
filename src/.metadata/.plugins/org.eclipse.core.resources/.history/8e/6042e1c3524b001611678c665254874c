@@ -68,11 +68,11 @@ public class Main extends Application
     
   //TableView for bddRecipe
     private TableView<Ingredients> tableIng ;
-    private TableColumn<Recipe, String> titleRecCol = new TableColumn<Recipe, String>( "Title" ) ;
+    private TableColumn<Ingredients, String> titleRecCol = new TableColumn<Ingredients, String>( "Title" ) ;
     private TableColumn<Ingredients, String> ingrCol = new TableColumn<Ingredients, String>( "Ingredients" ) ;
     private TableColumn<Ingredients, String> qtyCol = new TableColumn<Ingredients, String>( "Quantity" ) ;
     private TableColumn<Ingredients, String> unitCol = new TableColumn<Ingredients, String>( "Unit" ) ;
-    private ObservableList<Ingredients> dataIng ;
+    private ObservableList<Recipe> dataIng ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -330,103 +330,8 @@ public class Main extends Application
         	@Override
             public void handle( ActionEvent event ) 
             {
-        		/*
-        		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
-        		new Thread( new Runnable()
-        		{
-        			@Override
-        			public void run()
-        			{
-        				dataIng = bddIng.getFromBDD() ;
-        				tableIng = new TableView<Ingredients>() ;
-        				tableIng.setItems( data ) ;
-        				
-        				tableIng.setEditable( true ) ;
-        				tableIng.setMaxSize( 700 , 600 ) ;
-                		
-                        titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "title" ) ) ;
-                        ingCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "ing" ) ) ;
-                        qtyCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "qty" ) ) ;
-                        unitCol.setCellValueFactory(new PropertyValueFactory<Ingredients,String>( "unit" ) ) ;
-                        
-                        Platform.runLater( new Runnable() 
-                        {
-        				    @SuppressWarnings( "unchecked" )
-							@Override public void run()
-        				    {
-        				    	table.getColumns().addAll( titleCol , ingCol , qtyCol , unitCol ) ;
-                                 
-        		        		
-        		            	//Title
-        		        		addTitle = new TextField() ;
-        		        		addTitle.setPromptText( "Title" ) ;
-        		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//ING
-        		        		addIng = new TextField() ;
-        		        		addIng.setPromptText( "Ingredients" ) ;
-        		        		addIng.setMaxWidth( ingCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//QTY
-        		        		addQty = new TextField() ;
-        		        		addQty.setPromptText( "Quantity");
-        		        		addQty.setMaxWidth( scoreQty.getPrefWidth( ) ) ;
-        		        		// force the field to be numeric only
-        		        		addQty.textProperty().addListener(new ChangeListener<String>() 
-       	        				{
-       	        			        @Override
-       	        			        public void changed(ObservableValue<? extends String> observable , String oldValue , String newValue ) 
-       	        			        {
-       	        			            if ( !newValue.matches( "\\d*") )
-       	        			            {
-       	        			            	addQty.setText( newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
-       	        			            }
-       	        			        }
-       	        			    } ) ;
-        		        		
-        		        		//URL
-        		        		addUnit = new TextField() ;
-        		        		addUnit.setPromptText( "Unit" ) ;
-        		        		addUnit.setMaxWidth( unitCol.getPrefWidth( ) ) ;
-
-        		        		//label
-        		        		label = new Label( "" ) ;
-        		        		
-        		        		//buttons
-        		        		btadd = new Button( "Add" ) ;
-        		        		btdel = new Button( "Delete" ) ;
-        		        		btedit = new Button( "Edit" ) ;
-        		        		btsave = new Button( "Save" ) ;
-        		        		
-        		        		btsave.setDisable( true ) ;
-        		        		
-        		        		//Button action on click
-        				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
-        				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
-        				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
-        				        btsave.setOnAction( e -> handleButtonSaveBdd( e ) ) ;
-        				        
-        				        hbadd = new HBox() ;
-        				        hbadd.getChildren().addAll( addTitle , addIng , addQty , addUnit ) ;
-                                hbadd.setSpacing( 3 ) ;
-                                
-                                hbbutton = new HBox() ;
-                                hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
-                                
-                                vbbox = new VBox() ;
-                                vbbox.setSpacing( 5 ) ;
-                                vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableIng , hbadd , hbbutton , label ) ;
-        		        		
-                                mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
-        				    } ;
-                       } ) ;
-        			} ;
-        		} ).start() ;
-        		
-            	*/
-        		mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+            	label = new Label( "Coming soon!" ) ;
+            	mainContainer.createMainContainer( stage , menuBar , label ) ;
             }
         } ) ;
         menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;

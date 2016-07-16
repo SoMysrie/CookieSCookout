@@ -330,7 +330,6 @@ public class Main extends Application
         	@Override
             public void handle( ActionEvent event ) 
             {
-        		/*
         		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
         		new Thread( new Runnable()
         		{
@@ -425,8 +424,8 @@ public class Main extends Application
         			} ;
         		} ).start() ;
         		
-            	*/
-        		mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+            	
+            	
             }
         } ) ;
         menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;
