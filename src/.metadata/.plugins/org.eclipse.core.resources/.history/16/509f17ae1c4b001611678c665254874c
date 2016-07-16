@@ -1,7 +1,6 @@
 package application ;
 
 import java.awt.Desktop ;
-import java.awt.image.BufferedImage;
 import java.io.File ;
 import java.io.IOException ;
 import java.sql.SQLException ;
@@ -9,15 +8,12 @@ import java.util.Optional;
 import java.util.logging.Level ;
 import java.util.logging.Logger ;
 
-import javax.imageio.ImageIO;
-
 import cookiescookout.ws.WsServer ;
 import javafx.application.Application ;
 import javafx.application.Platform ;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent ;
 import javafx.event.EventHandler ;
 import javafx.geometry.Insets ;
@@ -34,7 +30,6 @@ import javafx.scene.control.TableColumn ;
 import javafx.scene.control.TableView ;
 import javafx.scene.control.TextField ;
 import javafx.scene.control.cell.PropertyValueFactory ;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
@@ -471,28 +466,15 @@ public class Main extends Application
 	   alert = new Alert( AlertType.INFORMATION ) ;
 	   alert.setTitle( "Information Dialog" ) ;
 	   alert.setHeaderText( null ) ;
-	   alert.setContentText( "Please, choose a picture ending either by \n.PNG \n.JPG"
+	   alert.setContentText( "Please, choose a picture ending either by \n.PNG \n.JPEG \n.JPG"
 	   		+ "\n\n Thank you! " ) ;
 	   alert.showAndWait();
-       
-       //Set extension filter
-       FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter( "JPG files (*.jpg)" , "*.JPG" ) ; 
-       FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter( "PNG files (*.png)" , "*.PNG" ) ;
-       fileChooser.getExtensionFilters().addAll( extFilterJPG , extFilterPNG ) ;
-         
-       //Show open file dialog
-       File file = fileChooser.showOpenDialog( null ) ;
-                  
-       try 
-       {
-           BufferedImage bufferedImage = ImageIO.read(file);
-           Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-           imageView.setImage(image);
-       } 
-       catch ( IOException ex ) 
-       {
-           Logger.getLogger( Main.class.getName() ).log( Level.SEVERE , null , ex ) ;
-       }
+	   
+	   File file = fileChooser.showOpenDialog( stage ) ;
+		 if ( file != null )
+		 {
+			 openFile( file ) ;
+		 }
    }
    
     /**
