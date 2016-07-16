@@ -42,12 +42,8 @@ public class Main extends Application
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
-    Button  btsearch , btclear , 
-    	btaddImg , btadd , btdel , btedit , btsave , 
-    	btopen ;
-    TextField search , 
-    	addImg , addTitle , addContent  , addIng , addScore  , addPoll , addUrl ,
-    	addName , addQty , addNote ;
+    Button  btsearch , btclear , btaddImg , btadd , btdel , btedit , btsave , btopen ;
+    TextField search , addImg , addTitle , addContent  , addIng , addScore  , addPoll , addUrl ;
     Alert alert ;
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
@@ -71,9 +67,9 @@ public class Main extends Application
     
     //TableView for dbRecipe
     private TableView<Ingredient> tableIngredient;
-    private TableColumn<Ingredient, String> nameCol = new TableColumn<Ingredient, String>( "NAME" 	) ;
-    private TableColumn<Ingredient, String> qtyCol  = new TableColumn<Ingredient, String>( "QUANTITY" ) ;
-    private TableColumn<Ingredient, String> noteCol = new TableColumn<Ingredient, String>( "NOTE"	    ) ;
+    private TableColumn<Ingredient, String> nameIngredientCol = new TableColumn<Ingredient, String>( "NAME" 	) ;
+    private TableColumn<Ingredient, String> qtyIngredientCol  = new TableColumn<Ingredient, String>( "QUANTITY" ) ;
+    private TableColumn<Ingredient, String> noteIngredientCol = new TableColumn<Ingredient, String>( "NOTE"	    ) ;
     private ObservableList<Ingredient> dataIngredient ;
     
     //Calling Methods
@@ -332,69 +328,115 @@ public class Main extends Application
         			@Override
         			public void run()
         			{
-        				dataIngredient = bddIngredient.getFromDBIngredient() ;
+        				dataRecipe = dbRecipe.getFromDBRecipe() ;
             			
-        				nameCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "nameIngredient" ) ) ;
-                        qtyCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "qtyIngredient" ) ) ;
-                        noteCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "noteIngredient" ) ) ;
+                		imgCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "imgRecipe" ) ) ;
+                        titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "titleRecipe" ) ) ;
+                        contentCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "contentRecipe" ) ) ;
+                        scoreCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "scoreRecipe" ) ) ;
+                        pollCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "pollRecipe" ) ) ;
+                        urlCol.setCellValueFactory(new PropertyValueFactory<Recipe,String>( "urlRecipe" ) ) ;
                         
-                        tableIngredient = new TableView<Ingredient>() ;
-                        tableIngredient.setItems( dataIngredient ) ;
-                		tableIngredient.setEditable( true ) ;
-                		tableIngredient.setMaxSize( 700 , 600 ) ;
+                        tableRecipe = new TableView<Recipe>() ;
+                        tableRecipe.setItems( dataRecipe ) ;
+                		tableRecipe.setEditable( true ) ;
+                		tableRecipe.setMaxSize( 700 , 600 ) ;
                         
                         Platform.runLater( new Runnable() 
                         {
         				    @SuppressWarnings( "unchecked" )
 							@Override public void run()
         				    {
-        				    	tableIngredient.getColumns().addAll( nameCol , qtyCol , noteCol ) ;
+        				    	tableRecipe.getColumns().addAll( imgCol , titleCol , contentCol , scoreCol , pollCol , urlCol ) ;
+                                
+        				    	//IMG
+        				    	addImg = new TextField() ;
+        				    	addImg.setPromptText( "Click on the button below" ) ;
+        				    	addImg.setDisable( true ) ;
+        		        		addImg.setMinWidth( 170 ) ;
+        				    	fileChooser = new FileChooser() ;
+        				    	imageView = new ImageView(); 
         		        		
-        		        		//Name
-        		        		addName = new TextField() ;
-        		        		addName.setPromptText( "Name");
-        		        		addName.setMaxWidth( nameCol.getPrefWidth( ) ) ;
+        		            	 //Title
+        		        		addTitle = new TextField() ;
+        		        		addTitle.setPromptText( "Title" ) ;
+        		        		addTitle.setMaxWidth( titleCol.getPrefWidth( ) ) ;
+        		        		
+        		        		//RECIPE
+        		        		addContent = new TextField() ;
+        		        		addContent.setPromptText( "Recipe" ) ;
+        		        		addContent.setMaxWidth( contentCol.getPrefWidth( ) ) ;
+        		        		
+        		        		//SCORE
+        		        		addScore = new TextField() ;
+        		        		addScore.setPromptText( "Score");
+        		        		addScore.setMaxWidth( scoreCol.getPrefWidth( ) ) ;
+        		        		// force the field to be numeric only
+       	        				addScore.textProperty().addListener(new ChangeListener<String>() 
+       	        				{
+       	        			        @Override
+       	        			        public void changed(ObservableValue<? extends String> observable , String oldValue , String newValue ) 
+       	        			        {
+       	        			            if ( !newValue.matches( "\\d*") )
+       	        			            {
+       	        			            	addScore.setText( newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
+       	        			            }
+       	        			        }
+       	        			    } ) ;
        	        				
-       	        				//QUANTITY
-        		        		addQty = new TextField() ;
-        		        		addQty.setPromptText( "Poll");
-        		        		addQty.setMaxWidth( qtyCol.getPrefWidth( ) ) ;
+       	        				//POLL
+        		        		addPoll = new TextField() ;
+       	        				addPoll.setPromptText( "Poll");
+       	        				addPoll.setMaxWidth( pollCol.getPrefWidth( ) ) ;
+        		        		// force the field to be numeric only
+        		        		addPoll.textProperty().addListener( new ChangeListener<String>() 
+        		        		{
+       	        			        @Override
+       	        			        public void changed( ObservableValue<? extends String> observable , String oldValue , String newValue ) 
+       	        			        {
+       	        			            if ( !newValue.matches( "\\d*") )
+       	        			            {
+       	        			            	addPoll.setText(newValue.replaceAll( "[^\\d]" , "1234" ) ) ;
+       	        			            }
+       	        			        }
+       	        			    } ) ;
         		        		
-        		        		//NOTE
-        		        		addNote = new TextField() ;
-        		        		addNote.setPromptText( "Note" ) ;
-        		        		addNote.setMaxWidth( noteCol.getPrefWidth( ) ) ;
+        		        		//URL
+        		        		addUrl = new TextField() ;
+        		        		addUrl.setPromptText( "URL" ) ;
+        		        		addUrl.setMaxWidth( urlCol.getPrefWidth( ) ) ;
 
         		        		//label
         		        		label = new Label( "" ) ;
         		        		
         		        		//buttons
+        		        		btaddImg = new Button( "Choose a Picture..." ) ;
         		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		btsave = new Button( "Save" ) ;
         		        		
         		        		btsave.setDisable( true ) ;
-        		        		/*
+        		        		
         		        		//Button action on click
         		        		btaddImg.setOnAction( e -> handleButtonAddImgdbRecipe( e , stage ) ) ;
         				        btadd.setOnAction( e -> handleButtonAddDBRecipe( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDeldbRecipe( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditdbRecipe( e ) ) ;
         				        btsave.setOnAction( e -> handleButtonSavedbRecipe( e ) ) ;
-        				        */
+        				        
         				        hbadd = new HBox() ;
-        				        hbadd.getChildren().addAll( addName , addQty , addNote ) ;
+        				        hbadd.getChildren().addAll( addImg , addTitle , addContent , addScore , addPoll , addUrl ) ;
                                 hbadd.setSpacing( 3 ) ;
                                 
                                 hbbutton = new HBox() ;
                                 hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
+                                hbbutton.getChildren().addAll( btaddImg , btadd , btdel , btedit , btsave ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
                                 vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableIngredient , hbadd , hbbutton , label ) ;
+                                vbbox.getChildren().addAll( tableRecipe , hbadd , hbbutton , label ) ;
         		        		
                                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
         				    } ;

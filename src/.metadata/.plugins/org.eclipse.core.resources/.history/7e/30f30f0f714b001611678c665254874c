@@ -42,12 +42,8 @@ public class Main extends Application
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
-    Button  btsearch , btclear , 
-    	btaddImg , btadd , btdel , btedit , btsave , 
-    	btopen ;
-    TextField search , 
-    	addImg , addTitle , addContent  , addIng , addScore  , addPoll , addUrl ,
-    	addName , addQty , addNote ;
+    Button  btsearch , btclear , btaddImg , btadd , btdel , btedit , btsave , btopen ;
+    TextField search , addImg , addTitle , addContent  , addIng , addScore  , addPoll , addUrl ;
     Alert alert ;
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
@@ -69,12 +65,14 @@ public class Main extends Application
     private TableColumn<Recipe,String> urlCol     = new TableColumn<Recipe,String>( "URL"    ) ;
     private ObservableList<Recipe> dataRecipe ;
     
+    /*
     //TableView for dbRecipe
     private TableView<Ingredient> tableIngredient;
-    private TableColumn<Ingredient, String> nameCol = new TableColumn<Ingredient, String>( "NAME" 	) ;
-    private TableColumn<Ingredient, String> qtyCol  = new TableColumn<Ingredient, String>( "QUANTITY" ) ;
-    private TableColumn<Ingredient, String> noteCol = new TableColumn<Ingredient, String>( "NOTE"	    ) ;
+    private TableColumn<Ingredient, String> nameIngredientCol = new TableColumn<Ingredient, String>( "Name" 	) ;
+    private TableColumn<Ingredient, String> qtyIngredientCol  = new TableColumn<Ingredient, String>( "Quantity" ) ;
+    private TableColumn<Ingredient, String> noteIngredientCol = new TableColumn<Ingredient, String>( "Note"	    ) ;
     private ObservableList<Ingredient> dataIngredient ;
+    */
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -202,6 +200,20 @@ public class Main extends Application
         			public void run()
         			{
         				dataRecipe = dbRecipe.getFromDBRecipe() ;
+        				
+//        				for( int i = 0 ; i < dataRecipe.size() ; i++ )
+//        				{
+//        					System.out.println( i + ") " + dataRecipe.get(i).getIdRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getContentRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getImgRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getPollRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getScoreRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getTitleRecipe() );
+//	    					System.out.println( i + ") " + dataRecipe.get(i).getUrlRecipe() );
+//	    					System.out.println();
+//        				}
+        				
+        				
             			
                 		imgCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "imgRecipe" ) ) ;
                         titleCol.setCellValueFactory( new PropertyValueFactory<Recipe,String>( "titleRecipe" ) ) ;
@@ -326,81 +338,7 @@ public class Main extends Application
         	@Override
             public void handle( ActionEvent event ) 
             {
-        		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
-        		new Thread( new Runnable()
-        		{
-        			@Override
-        			public void run()
-        			{
-        				dataIngredient = bddIngredient.getFromDBIngredient() ;
-            			
-        				nameCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "nameIngredient" ) ) ;
-                        qtyCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "qtyIngredient" ) ) ;
-                        noteCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "noteIngredient" ) ) ;
-                        
-                        tableIngredient = new TableView<Ingredient>() ;
-                        tableIngredient.setItems( dataIngredient ) ;
-                		tableIngredient.setEditable( true ) ;
-                		tableIngredient.setMaxSize( 700 , 600 ) ;
-                        
-                        Platform.runLater( new Runnable() 
-                        {
-        				    @SuppressWarnings( "unchecked" )
-							@Override public void run()
-        				    {
-        				    	tableIngredient.getColumns().addAll( nameCol , qtyCol , noteCol ) ;
-        		        		
-        		        		//Name
-        		        		addName = new TextField() ;
-        		        		addName.setPromptText( "Name");
-        		        		addName.setMaxWidth( nameCol.getPrefWidth( ) ) ;
-       	        				
-       	        				//QUANTITY
-        		        		addQty = new TextField() ;
-        		        		addQty.setPromptText( "Poll");
-        		        		addQty.setMaxWidth( qtyCol.getPrefWidth( ) ) ;
-        		        		
-        		        		//NOTE
-        		        		addNote = new TextField() ;
-        		        		addNote.setPromptText( "Note" ) ;
-        		        		addNote.setMaxWidth( noteCol.getPrefWidth( ) ) ;
-
-        		        		//label
-        		        		label = new Label( "" ) ;
-        		        		
-        		        		//buttons
-        		        		btadd = new Button( "Add" ) ;
-        		        		btdel = new Button( "Delete" ) ;
-        		        		btedit = new Button( "Edit" ) ;
-        		        		btsave = new Button( "Save" ) ;
-        		        		
-        		        		btsave.setDisable( true ) ;
-        		        		/*
-        		        		//Button action on click
-        		        		btaddImg.setOnAction( e -> handleButtonAddImgdbRecipe( e , stage ) ) ;
-        				        btadd.setOnAction( e -> handleButtonAddDBRecipe( e ) ) ;
-        				        btdel.setOnAction( e -> handleButtonDeldbRecipe( e ) ) ;
-        				        btedit.setOnAction( e -> handleButtonEditdbRecipe( e ) ) ;
-        				        btsave.setOnAction( e -> handleButtonSavedbRecipe( e ) ) ;
-        				        */
-        				        hbadd = new HBox() ;
-        				        hbadd.getChildren().addAll( addName , addQty , addNote ) ;
-                                hbadd.setSpacing( 3 ) ;
-                                
-                                hbbutton = new HBox() ;
-                                hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
-                                
-                                vbbox = new VBox() ;
-                                vbbox.setSpacing( 5 ) ;
-                                vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableIngredient , hbadd , hbbutton , label ) ;
-        		        		
-                                mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
-        				    } ;
-                       } ) ;
-        			} ;
-        		} ).start() ;
+        		mainContainer.createMainContainer( stage , menuBar ) ;
             }
         } ) ;
         menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;
