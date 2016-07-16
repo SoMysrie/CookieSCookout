@@ -16,8 +16,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent ;
 import javafx.event.EventHandler ;
 import javafx.geometry.Insets ;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button ;
 import javafx.scene.control.CheckBox ;
 import javafx.scene.control.Label ;
@@ -39,9 +37,8 @@ public class Main extends Application
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkbdd , chklocal ;
     Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
-    Button  btsearch , btclear , btadd , btdel , btedit , btsave , btopen , addImg;
+    Button  btsearch , btclear , btpicture, btadd , btdel , btedit , btsave , btopen , addImg;
     TextField search , addTitle , addRecipe  , addIng , addScore  , addPoll , addUrl ;
-    Alert alert ;
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
     VBox vbchecks , vblabels , vbbutton , vbtext , vball , vbbox ;
@@ -212,7 +209,6 @@ public class Main extends Application
         				    	//addImg = new TextField() ;
         				    	//addImg.setPromptText( "Image" ) ;
         		        		//addImg.setMaxWidth( imgCol.getPrefWidth( ) ) ;
-        				    	fileChooser = new FileChooser() ; 
         				    	addImg = new Button( "Choose a Picture..." ) ;
         		        		
         		            	 //Title
@@ -280,7 +276,6 @@ public class Main extends Application
         		        		btsave.setDisable( true ) ;
         		        		
         		        		//Button action on click
-        		        		addImg.setOnAction( e -> handleButtonAddImgBdd( e ) ) ;
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
@@ -452,21 +447,7 @@ public class Main extends Application
        search.clear( ) ;
    } ;
    
-   /**
-    * Button choose a picture 
-    * @param e
-    */
-   private void handleButtonAddImgBdd( ActionEvent e )
-   {
-	   alert = new Alert( AlertType.INFORMATION ) ;
-	   alert.setTitle( "Information Dialog" ) ;
-	   alert.setHeaderText( null ) ;
-	   alert.setContentText( "Please, choose a picture ending either by \n.PNG \n.JPEG \n.JPG"
-	   		+ "\n\n Thank you! " ) ;
-
-	   alert.showAndWait();
-   }
-   
+    
     /**
      * Button add in the database for the Recipes Tab
      * @param e
@@ -507,7 +488,7 @@ public class Main extends Application
  			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
 			
-			//addImg.clear() ;
+			addImg.clear() ;
 			addTitle.clear() ;
 			addRecipe.clear() ;
 			addIng.clear() ;
@@ -614,7 +595,7 @@ public class Main extends Application
 	 			data = bdd.getFromBDD() ;
 				table.setItems( data ) ;
 				
-				//addImg.clear() ;
+				addImg.clear() ;
 				addTitle.clear() ;
 				addRecipe.clear() ;
 				addIng.clear() ;

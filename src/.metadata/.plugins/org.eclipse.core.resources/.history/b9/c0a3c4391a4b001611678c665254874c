@@ -461,7 +461,7 @@ public class Main extends Application
 	   alert = new Alert( AlertType.INFORMATION ) ;
 	   alert.setTitle( "Information Dialog" ) ;
 	   alert.setHeaderText( null ) ;
-	   alert.setContentText( "Please, choose a picture ending either by \n.PNG \n.JPEG \n.JPG"
+	   alert.setContentText( "Please, choose a picture ending either by \n.PNG \n.JPEG \n.JPG ."
 	   		+ "\n\n Thank you! " ) ;
 
 	   alert.showAndWait();

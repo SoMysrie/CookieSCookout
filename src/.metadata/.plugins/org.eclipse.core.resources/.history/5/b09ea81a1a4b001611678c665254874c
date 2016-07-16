@@ -459,10 +459,9 @@ public class Main extends Application
    private void handleButtonAddImgBdd( ActionEvent e )
    {
 	   alert = new Alert( AlertType.INFORMATION ) ;
-	   alert.setTitle( "Information Dialog" ) ;
-	   alert.setHeaderText( null ) ;
-	   alert.setContentText( "Please, choose a picture ending either by \n.PNG \n.JPEG \n.JPG"
-	   		+ "\n\n Thank you! " ) ;
+	   alert.setTitle("Information Dialog");
+	   alert.setHeaderText("Look, an Information Dialog");
+	   alert.setContentText("I have a great message for you!");
 
 	   alert.showAndWait();
    }
