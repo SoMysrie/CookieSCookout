@@ -219,10 +219,10 @@ public class Main extends Application
                                 
         				    	//IMG
         				    	addImg = new TextField() ;
-        				    	addImg.setPromptText( "Click on the button below" ) ;
-        				    	addImg.setDisable( true ) ;
-        		        		addImg.setMinWidth( 170 ) ;
-        				    	fileChooser = new FileChooser() ;
+        				    	addImg.setPromptText( "Image" ) ;
+        		        		addImg.setMaxWidth( imgCol.getPrefWidth( ) ) ;
+        				    	fileChooser = new FileChooser() ; 
+        				    	btnaddImg = new Button( "Choose a Picture..." ) ;
         				    	imageView = new ImageView(); 
         		        		
         		            	 //Title
@@ -283,16 +283,14 @@ public class Main extends Application
         		        		label = new Label( "" ) ;
         		        		
         		        		//buttons
-        		        		btaddImg = new Button( "Choose a Picture..." ) ;
         		        		btadd = new Button( "Add" ) ;
         		        		btdel = new Button( "Delete" ) ;
         		        		btedit = new Button( "Edit" ) ;
         		        		btsave = new Button( "Save" ) ;
-        		        		
         		        		btsave.setDisable( true ) ;
         		        		
         		        		//Button action on click
-        		        		btaddImg.setOnAction( e -> handleButtonAddImgBdd( e , stage ) ) ;
+        		        		addImg.setOnAction( e -> handleButtonAddImgBdd( e , stage ) ) ;
         				        btadd.setOnAction( e -> handleButtonAddBdd( e ) ) ;
         				        btdel.setOnAction( e -> handleButtonDelBdd( e ) ) ;
         				        btedit.setOnAction( e -> handleButtonEditBdd( e ) ) ;
@@ -304,7 +302,7 @@ public class Main extends Application
                                 
                                 hbbutton = new HBox() ;
                                 hbbutton.setSpacing( 3 ) ;
-                                hbbutton.getChildren().addAll( btaddImg , btadd , btdel , btedit , btsave ) ;
+                                hbbutton.getChildren().addAll( btadd , btdel , btedit , btsave ) ;
                                 
                                 vbbox = new VBox() ;
                                 vbbox.setSpacing( 5 ) ;
@@ -465,9 +463,8 @@ public class Main extends Application
    } ;
    
    /**
-    * 
+    * Button choose a picture 
     * @param e
-    * @param stage
     */
    private void handleButtonAddImgBdd( ActionEvent e , Stage stage)
    {
@@ -486,12 +483,17 @@ public class Main extends Application
        //Show open file dialog
        File file = fileChooser.showOpenDialog( null ) ;
                   
-       if ( file != null )
+       try 
        {
-           addImg.setDisable( false ) ;
-           addImg.setText( file.getAbsolutePath() ) ;
+           BufferedImage bufferedImage = ImageIO.read( file ) ;
+           Image image = SwingFXUtils.toFXImage( bufferedImage , null ) ;
+           imageView.setImage( image ) ;
+       } 
+       catch ( IOException ex ) 
+       {
+           Logger.getLogger( Main.class.getName() ).log( Level.SEVERE , null , ex ) ;
        }
-   } ;
+   }
    
     /**
      * Button add in the database for the Recipes Tab
@@ -510,7 +512,7 @@ public class Main extends Application
  		{
  			data.add( new Recipe(
  					null, 
- 					addImg.getText() ,
+ 					imageView.getAbsolutePath() ,
  	 				addTitle.getText() ,
  	 				addRecipe.getText() ,
  	 				addIng.getText() ,
@@ -533,8 +535,7 @@ public class Main extends Application
  			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
 			
-			addImg.clear() ;
-			addImg.setDisable( true ) ;
+			//addImg.clear() ;
 			addTitle.clear() ;
 			addRecipe.clear() ;
 			addIng.clear() ;
@@ -654,8 +655,7 @@ public class Main extends Application
 	 			data = bdd.getFromBDD() ;
 				table.setItems( data ) ;
 				
-				addImg.clear() ;
-				addImg.setDisable( true ) ;
+				//addImg.clear() ;
 				addTitle.clear() ;
 				addRecipe.clear() ;
 				addIng.clear() ;
@@ -685,13 +685,13 @@ public class Main extends Application
 		 if ( file != null )
 		 {
 			 try 
-		     {
-				 desktop.open( file ) ;
-		     } 
-		     catch (IOException ex) 
-		     {
-		    	 Logger.getLogger( Main.class.getName() ).log(Level.SEVERE, null, ex ) ;
-		     }
+		        {
+		            desktop.open( file ) ;
+		        } 
+		        catch (IOException ex) 
+		        {
+		            Logger.getLogger( Main.class.getName() ).log(Level.SEVERE, null, ex ) ;
+		        }
 		 }
     } ;
     

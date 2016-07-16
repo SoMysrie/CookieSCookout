@@ -465,9 +465,8 @@ public class Main extends Application
    } ;
    
    /**
-    * 
+    * Button choose a picture 
     * @param e
-    * @param stage
     */
    private void handleButtonAddImgBdd( ActionEvent e , Stage stage)
    {
@@ -533,8 +532,7 @@ public class Main extends Application
  			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
 			
-			addImg.clear() ;
-			addImg.setDisable( true ) ;
+			//addImg.clear() ;
 			addTitle.clear() ;
 			addRecipe.clear() ;
 			addIng.clear() ;
@@ -654,8 +652,7 @@ public class Main extends Application
 	 			data = bdd.getFromBDD() ;
 				table.setItems( data ) ;
 				
-				addImg.clear() ;
-				addImg.setDisable( true ) ;
+				//addImg.clear() ;
 				addTitle.clear() ;
 				addRecipe.clear() ;
 				addIng.clear() ;

@@ -654,8 +654,7 @@ public class Main extends Application
 	 			data = bdd.getFromBDD() ;
 				table.setItems( data ) ;
 				
-				addImg.clear() ;
-				addImg.setDisable( true ) ;
+				//addImg.clear() ;
 				addTitle.clear() ;
 				addRecipe.clear() ;
 				addIng.clear() ;

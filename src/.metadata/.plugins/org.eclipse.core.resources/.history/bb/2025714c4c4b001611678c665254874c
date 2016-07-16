@@ -221,7 +221,7 @@ public class Main extends Application
         				    	addImg = new TextField() ;
         				    	addImg.setPromptText( "Click on the button below" ) ;
         				    	addImg.setDisable( true ) ;
-        		        		addImg.setMinWidth( 170 ) ;
+        		        		addImg.setMaxWidth( 170 ) ;
         				    	fileChooser = new FileChooser() ;
         				    	imageView = new ImageView(); 
         		        		
@@ -465,9 +465,8 @@ public class Main extends Application
    } ;
    
    /**
-    * 
+    * Button choose a picture 
     * @param e
-    * @param stage
     */
    private void handleButtonAddImgBdd( ActionEvent e , Stage stage)
    {
@@ -486,12 +485,17 @@ public class Main extends Application
        //Show open file dialog
        File file = fileChooser.showOpenDialog( null ) ;
                   
-       if ( file != null )
+       try 
        {
-           addImg.setDisable( false ) ;
-           addImg.setText( file.getAbsolutePath() ) ;
+           BufferedImage bufferedImage = ImageIO.read( file ) ;
+           Image image = SwingFXUtils.toFXImage( bufferedImage , null ) ;
+           imageView.setImage( image ) ;
+       } 
+       catch ( IOException ex ) 
+       {
+           Logger.getLogger( Main.class.getName() ).log( Level.SEVERE , null , ex ) ;
        }
-   } ;
+   }
    
     /**
      * Button add in the database for the Recipes Tab
@@ -533,8 +537,7 @@ public class Main extends Application
  			data = bdd.getFromBDD() ;
 			table.setItems( data ) ;
 			
-			addImg.clear() ;
-			addImg.setDisable( true ) ;
+			//addImg.clear() ;
 			addTitle.clear() ;
 			addRecipe.clear() ;
 			addIng.clear() ;
@@ -654,8 +657,7 @@ public class Main extends Application
 	 			data = bdd.getFromBDD() ;
 				table.setItems( data ) ;
 				
-				addImg.clear() ;
-				addImg.setDisable( true ) ;
+				//addImg.clear() ;
 				addTitle.clear() ;
 				addRecipe.clear() ;
 				addIng.clear() ;
@@ -685,13 +687,13 @@ public class Main extends Application
 		 if ( file != null )
 		 {
 			 try 
-		     {
-				 desktop.open( file ) ;
-		     } 
-		     catch (IOException ex) 
-		     {
-		    	 Logger.getLogger( Main.class.getName() ).log(Level.SEVERE, null, ex ) ;
-		     }
+		        {
+		            desktop.open( file ) ;
+		        } 
+		        catch (IOException ex) 
+		        {
+		            Logger.getLogger( Main.class.getName() ).log(Level.SEVERE, null, ex ) ;
+		        }
 		 }
     } ;
     
