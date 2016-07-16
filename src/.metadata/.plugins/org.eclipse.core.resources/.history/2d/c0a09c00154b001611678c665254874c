@@ -517,11 +517,9 @@ public class Main extends Application
 			addPoll.setText( recipe2.getPoll() ) ;
 			addUrl.setText( recipe2.getUrl() ) ;
 			label.setText( "Once you are done with your editing click on the button save!" ) ;
-			
 			btsave.setDisable( false ) ;
-			btadd.setDisable( true ) ;
 			btdel.setDisable( true ) ;
-			btedit.setDisable( true ) ;
+			btadd.setDisable( true ) ;
 		}
 		else
 		{
@@ -579,11 +577,9 @@ public class Main extends Application
 				addScore.clear() ;
 				addPoll.clear() ;
 				addUrl.clear() ;
-				
 				btsave.setDisable( true ) ;
-				btadd.setDisable( false ) ;
 				btdel.setDisable( false ) ;
-				btedit.setDisable( false ) ;
+				btadd.setDisable( false ) ;
 	 	    } 
 	 		else
 	 		{
