@@ -13,6 +13,7 @@ import javafx.application.Application ;
 import javafx.application.Platform ;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent ;
 import javafx.event.EventHandler ;
@@ -22,7 +23,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button ;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox ;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label ;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Menu ;
 import javafx.scene.control.MenuBar ;
 import javafx.scene.control.MenuItem ;
@@ -35,15 +39,18 @@ import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
+import javafx.util.StringConverter;
 
 
 public class Main extends Application 
 {
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ;
-    Label label , lbltotal , lbllist , lblMenu , lblDB , lblPlugin  , lblHelp ;
+    Label label , lbltotal , lbllist , 
+    	lblNameRecipe , lblIng ,
+    	lblMenu , lblDB , lblPlugin  , lblHelp ;
     Button  btsearch , btclear , 
-    	btaddImg , btadd , btdel , btedit , btsave , 
+    	btaddImg , btadd , btdel , btedit , btsave ,
     	btopen ;
     TextField search , 
     	addImg , addTitle , addContent  , addIng , addScore  , addPoll , addUrl ,
@@ -51,8 +58,8 @@ public class Main extends Application
     Alert alert ;
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
-    VBox vbchecks , vblabels , vbbutton , vbtext , vball , vbbox ;
-    HBox hbadd , hball , hbbutton;
+    VBox vbchecks , vblabels , vbbutton , vbtext , vball  , vbRecipe ;
+    HBox hbadd , hball , hbbutton , hblist ;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
@@ -69,10 +76,16 @@ public class Main extends Application
     private TableColumn<Recipe,String> urlCol     = new TableColumn<Recipe,String>( "URL"    ) ;
     private ObservableList<Recipe> dataRecipe ;
     
-    //TableView for dbRecipe
+    //TableView for dbIngredient
     private TableView<Ingredient> tableIngredient;
-    private TableColumn<Ingredient, String> nameCol = new TableColumn<Ingredient, String>( "NAME" 	) ;
+    private TableColumn<Ingredient, String> nameCol = new TableColumn<Ingredient, String>( "NAME" ) ;
     private ObservableList<Ingredient> dataIngredient ;
+    
+    //ComboBox
+    ComboBox<String> cbRecipe ;
+    
+    //ListView
+    ListView<String> listIngredient , listToRecipe ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -186,7 +199,7 @@ public class Main extends Application
         menuHome.getItems().add( menuItemHome ) ;
         
         // --- Menu DB
-        Menu menuRecipe = new Menu( "DataBase" ) ;
+        Menu menuDB = new Menu( "DataBase" ) ;
         MenuItem menuItemRecipe = new MenuItem( "Recipes" ) ;
         menuItemRecipe.setOnAction( new EventHandler<ActionEvent>() 
         {
@@ -304,12 +317,12 @@ public class Main extends Application
                                 hbbutton.setSpacing( 3 ) ;
                                 hbbutton.getChildren().addAll( btaddImg , btadd , btdel , btedit , btsave ) ;
                                 
-                                vbbox = new VBox() ;
-                                vbbox.setSpacing( 5 ) ;
-                                vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableRecipe , hbadd , hbbutton , label ) ;
+                                vball = new VBox() ;
+                                vball.setSpacing( 5 ) ;
+                                vball.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
+                                vball.getChildren().addAll( tableRecipe , hbadd , hbbutton , label ) ;
         		        		
-                                mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+                                mainContainer.createMainContainer( stage , menuBar , vball ) ;
         				    } ;
                        } ) ;
         			} ;
@@ -349,7 +362,7 @@ public class Main extends Application
         		        		//Name
         		        		addName = new TextField() ;
         		        		addName.setPromptText( "Name");
-        		        		addName.setMaxWidth( nameCol.getPrefWidth( ) ) ;
+        		        		addName.setMinWidth( 200 ) ;
 
         		        		//label
         		        		label = new Label( "" ) ;
@@ -374,19 +387,86 @@ public class Main extends Application
                                 hbbutton.setSpacing( 3 ) ;
                                 hbbutton.getChildren().addAll( btadd , btedit , btsave ) ;
                                 
-                                vbbox = new VBox() ;
-                                vbbox.setSpacing( 5 ) ;
-                                vbbox.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
-                                vbbox.getChildren().addAll( tableIngredient , hbadd , hbbutton , label ) ;
+                                vball = new VBox() ;
+                                vball.setSpacing( 5 ) ;
+                                vball.setPadding( new Insets( 10 , 0 , 0 , 10 ) ) ;
+                                vball.getChildren().addAll( tableIngredient , hbadd , hbbutton , label ) ;
         		        		
-                                mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+                                mainContainer.createMainContainer( stage , menuBar , vball ) ;
         				    } ;
                        } ) ;
         			} ;
         		} ).start() ;
             }
         } ) ;
-        menuRecipe.getItems().addAll( menuItemRecipe , menuItemIng ) ;
+        menuDB.getItems().addAll( menuItemRecipe , menuItemIng ) ;
+        
+        // --- Menu Form
+        MenuItem menuItemForm = new MenuItem( "Form" ) ;
+        menuItemForm.setOnAction( new EventHandler<ActionEvent>() 
+        {
+             @Override
+             public void handle( ActionEvent event ) 
+             {
+            	 //Labels
+            	 lblNameRecipe = new Label( "Please, select the recipe you wish to add some ingrdients.\n\n" ) ;
+            	 lblIng = new Label( "\nSelect the ingredient on the left you want to add on the list on the right.\n"
+             	 		+ "Or select the ingredient on the right you want to delete.\n\n" ) ;
+            	 
+            	 //Recipe
+            	 dataRecipe = dbRecipe.getFromDBRecipe() ;
+            	 cbRecipe = new ComboBox<String>() ;
+            	 cbRecipe.setMinWidth( 200 ) ;
+            	 
+            	 for( int i = 0 ; i < dataRecipe.size() ; i++ )
+            	 {
+            		 cbRecipe.getItems().add( dataRecipe.get( i ).getTitleRecipe() ) ;
+            	 }
+            	 
+            	 vbRecipe = new VBox();
+            	 vbRecipe.setSpacing( 5 ) ;
+            	 vbRecipe.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
+            	 vbRecipe.getChildren().addAll( lblNameRecipe , cbRecipe , lblIng ) ;
+            	 
+            	 //list
+            	 dataIngredient = dbIngredient.getFromDBIngredient() ;
+            	 listIngredient = new ListView<String>();
+            	 listToRecipe = new ListView<String>();
+            	 
+            	 for( int i = 0 ; i < dataIngredient.size() ; i++ )
+            	 {
+            		 listIngredient.getItems().add( dataIngredient.get( i ).getNameIngredient() ) ;
+            	 }
+            	 
+            	 //buttons
+            	 btadd = new Button( "Add" ) ;
+            	 btadd.setMinWidth( 75 ) ;
+            	 btdel = new Button( "Delete" ) ;
+            	 btdel.setMinWidth( 75 ) ;
+            	 
+            	 //Button action on click
+            	 btadd.setOnAction( e -> handleButtonAddToRecipe( e ) ) ;
+            	 btdel.setOnAction( e -> handleButtonDelFromRecipe( e ) ) ;
+            	 
+            	 vbbutton = new VBox() ;
+            	 vbbutton.setSpacing( 5 ) ;
+            	 vbbutton.setPadding( new Insets( 175 , 10 , 10 , 10 ) ) ;
+            	 vbbutton.getChildren().addAll( btadd , btdel ) ;
+            	 
+            	 hblist = new HBox();
+            	 hblist.setSpacing( 3 ) ;
+            	 hblist.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
+            	 hblist.getChildren().addAll( listIngredient , vbbutton , listToRecipe ) ;		 
+                 
+            	 vball = new VBox();
+            	 vball.setSpacing( 5 ) ;
+            	 vball.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
+            	 vball.getChildren().addAll( vbRecipe , hblist ) ;	
+            	 
+                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
+             } ;
+        } ) ;
+        menuDB.getItems().add( menuItemForm ) ;
         
         // --- Menu Plugin
         Menu menuPlugin = new Menu( "Plugin" ) ;
@@ -401,14 +481,14 @@ public class Main extends Application
             	 label = new Label( "Please a file ending by .java!" ) ;
             	 btopen = new Button( "Choose a File..." ) ;
             	 
-            	 vbbox = new VBox() ;
-            	 vbbox.setSpacing( 10 ) ;
-            	 vbbox.setPadding( new Insets( 20 ) ) ;
-                 vbbox.getChildren().addAll( label , btopen ) ;
+            	 vball = new VBox() ;
+            	 vball.setSpacing( 10 ) ;
+            	 vball.setPadding( new Insets( 20 ) ) ;
+                 vball.getChildren().addAll( label , btopen ) ;
                  
                  btopen.setOnAction( e -> handleButtonOpenFile( e , stage ) ) ;
                  
-                 mainContainer.createMainContainer( stage , menuBar , vbbox ) ;
+                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
              } ;
         } ) ;
         menuPlugin.getItems().add( menuItemPlugin ) ;
@@ -450,7 +530,7 @@ public class Main extends Application
         } ) ;
         menuHelp.getItems().add( menuItemHelp ) ;
     	
-        menuBar.getMenus().addAll( menuHome , menuRecipe , menuPlugin , menuHelp ) ;
+        menuBar.getMenus().addAll( menuHome , menuDB , menuPlugin , menuHelp ) ;
         mainContainer.createMainContainer( stage , menuBar ) ;
     } ;
     
@@ -794,10 +874,20 @@ public class Main extends Application
 	 	} 
 		else
 	 	{
-			label.setText("You have to complete everything!");
+			label.setText("You cannot let the name null!");
 		}
     } ;
 	
+    private void handleButtonAddToRecipe( ActionEvent e )
+    {
+    	
+    }
+    
+    private void handleButtonDelFromRecipe( ActionEvent e )
+    {
+    	
+    }
+    
     /**
      * Button open file for the Plugin Tab
      * @param e
