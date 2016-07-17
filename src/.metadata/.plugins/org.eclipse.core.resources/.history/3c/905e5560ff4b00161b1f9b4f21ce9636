@@ -36,17 +36,17 @@ public class DBIng
  			st = cn.createStatement() ;
  			String sql = "INSERT INTO Ingredient ( nameIngredient ) VALUES (\" " + nameIngredient + "\");" ;
  			st.executeUpdate( sql ) ;
- 			string = new String( nameIngredient + " was successfuly saved in DB!" ) ;
+ 			string = new String( nameIngredient + " was successfuly saved in BDD!" ) ;
  		}
  		catch( SQLException e )
  		{
  			e.printStackTrace() ;
- 			string = new String( "Error! Cannot saved in DB!" ) ;
+ 			string = new String( "Error! Cannot saved in BDD!" ) ;
  		}
  		catch(ClassNotFoundException e)
  		{
  			e.printStackTrace() ;
- 			string = new String( "Error! Cannot saved in DB!" ) ;
+ 			string = new String( "Error! Cannot saved in BDD!" ) ;
  		}
  		finally
  		{
@@ -63,7 +63,7 @@ public class DBIng
  		}
 		return string ;
  	} ;
- 	
+	
 	/**
 	 * Get from DB Ingredient and COMPOSE
 	 */
@@ -79,13 +79,15 @@ public class DBIng
 			cn = getConnection() ;
 			st = cn.createStatement() ;
 			
-			String sql = "SELECT * FROM Ingredient" ;
+			String sql = "SELECT * FROM Ingredient NATURAL JOIN COMPOSE" ;
 			rs = st.executeQuery( sql) ;
 			while( rs.next() )
 			{
 				Ingredient ingr = new Ingredient() ;
 				ingr.setIdIngredient(rs.getString( "idIngredient" ) ) ;
 				ingr.setNameIngredient( rs.getString( "nameIngredient" ) ) ;
+				ingr.setQty( rs.getString( "qty" ) ) ;
+				ingr.setNote(  rs.getString( "note" ) ) ;
 				dataIngredient.add( ingr ) ;
 			}
 			
@@ -116,44 +118,14 @@ public class DBIng
 		return dataIngredient ;
 	} ;
 	
-	public String updateInDIngredient( int idIngredient , String nameIngredient )
+	public String updateInDIngredient( int idIngredient , String nameIngredient , String qty , String note )
 	{
-		Connection cn = null ;
- 		Statement st = null ;
- 		
- 		try
- 		{
- 			cn = getConnection() ;
- 			st = cn.createStatement() ;
- 			String sql = "UPDATE Ingredient SET "
- 					+ "nameIngredient = \"" + nameIngredient + "\" "
- 					+ " where idIngredient = " + idIngredient + ";" ;
- 			st.executeUpdate( sql ) ;
- 			string = new String( nameIngredient + " was successfuly updated in DB!" ) ;
- 		}
- 		catch( SQLException e )
- 		{
- 			e.printStackTrace() ;
- 			string = new String( "Error! Cannot updated in DB!" ) ;
- 		}
- 		catch(ClassNotFoundException e)
- 		{
- 			e.printStackTrace() ;
- 			string = new String( "Error! Cannot updated in DB!" ) ;
- 		}
- 		finally
- 		{
- 			try
- 			{
- 				cn.close() ;
- 				st.close() ;
- 			}
- 			catch( SQLException e )
- 			{
- 				e.printStackTrace() ;
- 				string = new String( "Error! Cannot close!" ) ;
- 			}
- 		}
+		string = null ;
+		
+		
+		
 		return string ;
 	} ;
+
+	
 } ;

@@ -333,6 +333,8 @@ public class Main extends Application
         				dataIngredient = dbIngredient.getFromDBIngredient() ;
             			
         				nameCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "nameIngredient" ) ) ;
+                        qtyCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "qty" ) ) ;
+                        noteCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "note" ) ) ;
                         
                         tableIngredient = new TableView<Ingredient>() ;
                         tableIngredient.setItems( dataIngredient ) ;
@@ -344,12 +346,22 @@ public class Main extends Application
         				    @SuppressWarnings( "unchecked" )
 							@Override public void run()
         				    {
-        				    	tableIngredient.getColumns().addAll( nameCol ) ;
+        				    	tableIngredient.getColumns().addAll( nameCol , qtyCol , noteCol ) ;
         		        		
         		        		//Name
         		        		addName = new TextField() ;
         		        		addName.setPromptText( "Name");
         		        		addName.setMaxWidth( nameCol.getPrefWidth( ) ) ;
+       	        				
+       	        				//QUANTITY
+        		        		addQty = new TextField() ;
+        		        		addQty.setPromptText( "Quantity");
+        		        		addQty.setMaxWidth( qtyCol.getPrefWidth( ) ) ;
+        		        		
+        		        		//NOTE
+        		        		addNote = new TextField() ;
+        		        		addNote.setPromptText( "Note" ) ;
+        		        		addNote.setMaxWidth( noteCol.getPrefWidth( ) ) ;
 
         		        		//label
         		        		label = new Label( "" ) ;
@@ -360,6 +372,8 @@ public class Main extends Application
         		        		btsave = new Button( "Save" ) ;
         		        		
         		        		btsave.setDisable( true ) ;
+        		        		addQty.setDisable( true ) ;
+        		        		addNote.setDisable( true ) ;
         		        		
         		        		//Button action on click
         				        btadd.setOnAction( e -> handleButtonAddDBIngredient( e ) ) ;
@@ -367,7 +381,7 @@ public class Main extends Application
         				        btsave.setOnAction( e -> handleButtonSaveDBIngredient( e ) ) ;
         				        
         				        hbadd = new HBox() ;
-        				        hbadd.getChildren().add( addName ) ;
+        				        hbadd.getChildren().addAll( addName , addQty , addNote ) ;
                                 hbadd.setSpacing( 3 ) ;
                                 
                                 hbbutton = new HBox() ;
