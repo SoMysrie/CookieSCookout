@@ -41,7 +41,7 @@ public class Main extends Application
 {
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ;
-    Label label , lbltotal , lbllist , lblMenu , lblDB , lblPlugin  , lblHelp ;
+    Label label , lbltotal , lbllist , lblMenu , lblFile , lblPlugin  , lblHelp ;
     Button  btsearch , btclear , 
     	btaddImg , btadd , btdel , btedit , btsave , 
     	btopen ;
@@ -446,19 +446,18 @@ public class Main extends Application
                  		+ "		Websites: Marmiton, Cuisineaz, auFeminin \n"
                  		+ "		Even on our website Cookie's Cookout \n"
                  		+ "		Or locally. \n" ) ;
-                 lblDB = new Label( "DataBase \n"
-                 		+ "		Recipes\n"
-                 		+ "			You can add, delete, edit and a recipe \n"
-                 		+ "			and any changes will be saved in the database.\n\n" 
-                 		+ "		Ingredients\n"
-                 		+ "			You can add, delete, edit and an ingredient \n"
-                 		+ "			and any changes will be saved in the database.\n\n" ) ;
+                 lblFile = new Label( "File \n"
+                 		+ "	You can add any new recipe with these following information: \n"
+                 		+ "		- Title\n"
+                 		+ "		- Picture\n"
+                 		+ "		- Ingredients\n"
+                 		+ "		- Steps\n" ) ;
                  lblPlugin = new Label( "Plugin \n"
                  		+ "	You can add any new plugin.\n" ) ;
                  lblHelp = new Label( "Help \n"
                  		+ "	You can see this list of information.\n" ) ;
                  
-                 vblabels.getChildren().addAll( lblMenu , lblDB , lblPlugin , lblHelp ) ;
+                 vblabels.getChildren().addAll( lblMenu , lblFile , lblPlugin , lblHelp ) ;
                  mainContainer.createMainContainer( stage , menuBar , vblabels ) ;
              } ;
         } ) ;

@@ -447,12 +447,12 @@ public class Main extends Application
                  		+ "		Even on our website Cookie's Cookout \n"
                  		+ "		Or locally. \n" ) ;
                  lblDB = new Label( "DataBase \n"
-                 		+ "		Recipes\n"
-                 		+ "			You can add, delete, edit and a recipe \n"
-                 		+ "			and any changes will be saved in the database.\n\n" 
-                 		+ "		Ingredients\n"
-                 		+ "			You can add, delete, edit and an ingredient \n"
-                 		+ "			and any changes will be saved in the database.\n\n" ) ;
+                 		+ "Recipes\n"
+                 		+ "		You can add, delete, edit and a recipe \n"
+                 		+ "		and any changes will be saved in the database.\n\n" 
+                 		+ "Ingredients\n"
+                 		+ "		You can add, delete, edit and an ingredient \n"
+                 		+ "		and any changes will be saved in the database.\n\n" ) ;
                  lblPlugin = new Label( "Plugin \n"
                  		+ "	You can add any new plugin.\n" ) ;
                  lblHelp = new Label( "Help \n"
