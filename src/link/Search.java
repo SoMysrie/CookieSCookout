@@ -19,7 +19,7 @@ public class Search {
 	public static String confPath = "conf/link.xml";
 	ArrayList<String> keyWords = new ArrayList<String>();
 	ArrayList<String> exceptedIngredients = new ArrayList<String>();
-	String[] plugins = {};//"plugin.jar","plugin2.jar","plugin3.jar"};
+	String[] plugins = {/*"plugin.jar","plugin2.jar"*/};
 	PluginLoader pluginLoader = new PluginLoader(plugins);
 	ArrayList<ResearchPlugin> researchPlugins;
     ArrayList<NotedRecipes> resultSearch= new ArrayList<NotedRecipes>();
@@ -116,7 +116,6 @@ public class Search {
 			} catch (IllegalArgumentException e) {
 				System.out.println("Malformed URL :" + sites.get(i).searchSite);
 			} finally {
-
 				sites.get(i).reinitSearchSite(this.researcher);
 			}
 		}
@@ -132,6 +131,7 @@ public class Search {
 				try {
 					doc = Jsoup.connect(s.getUrls().get(i).getUrl()).get();
 					for (Element file : doc.select(s.divIngredients)) {
+
 						setIngredients(indexToRemove, s, i, file);
 					}
 					if (!indexToRemove.contains(i)) {
@@ -174,7 +174,7 @@ public class Search {
 			int i, Element file) {
 		String ingredients = file.outerHtml()
 				.replaceAll("<.*?>", "")
-				.replaceAll("[\r\n]", " ");
+				.replaceAll("[\r\n]", "-");
 		for (String str : exceptedIngredients) {
 			if (this.containIngredients(ingredients,str)) {
 				indexToRemove.add(i);
@@ -184,15 +184,15 @@ public class Search {
 				s.getUrls()
 						.get(i)
 						.setIngredients(
-								ingredients.split(" - "));
+								ingredients.split("-"));
 				for (int j = 0; j < s.getUrls().get(i)
 						.getIngredients().length; j++) {
 
 					s.getUrls().get(i).getIngredients()[j] = s
 							.getUrls().get(i).getIngredients()[j]
 							.replaceAll(" +", " ");
-		/*			System.out.println(s.getUrls().get(i)
-							.getIngredients()[j]);*/
+					System.out.println(s.getUrls().get(i)
+							.getIngredients()[j]);
 				}
 			}
 		}
@@ -200,7 +200,6 @@ public class Search {
 
 	private void setVote(Document doc, Site s, int i) {
 		for (Element file : doc.select(s.getDivVote())) {
-            System.out.println(s.getMainSite()+"    "+file);
             s.getUrls()
 					.get(i)
 					.setVote(
@@ -221,8 +220,6 @@ public class Search {
                     .setMark(
                             Float.valueOf(extractMark(file.toString().replace(",",".")
                                     ,s)));
-            System.out.println( s.getUrls()
-                    .get(i).getVote()+"     "+s.getUrls().get(i).getMark());
 
 
 
