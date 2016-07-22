@@ -1041,18 +1041,18 @@ public class Main extends Application
     private void handleButtonSaveDBIngredientComplet( ActionEvent e )
     {
     	Ingredient ingredient2 = tableIngredientComplet.getSelectionModel().getSelectedItem() ;
-    	int idRecipe = Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ;
+		Recipe recipe2 = null ;
 		
-		//dataIngredientCompose.add( new Ingredient(null , null , addQty.getText() , addNote.getText() ) ) ;
+		dataIngredientCompose.add( new Ingredient(null , null , addQty.getText() , addNote.getText() ) ) ;
 	 	
 		label.setText( dbIngredient.updateInDIngredientComplet(
-	 				idRecipe ,
+	 				Integer.parseInt( recipe2.getIdRecipe() ) ,
 	 				Integer.parseInt( ingredient2.getIdIngredient() ) ,
 	 				addQty.getText() ,
 	 				addNote.getText()
 	 		) ) ;
 	 		
-		dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( idRecipe ) ;
+		dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ) ;
 		tableIngredientComplet.setItems( dataIngredientCompose ) ;
 				
 		addQty.clear() ;

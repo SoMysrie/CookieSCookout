@@ -209,12 +209,6 @@ public class DBIng
 		return dataIngredient ;
 	} ;
 	
-	/**
-	 * Update ingredient
-	 * @param idIngredient
-	 * @param nameIngredient
-	 * @return
-	 */
 	public String updateInDIngredient( int idIngredient , String nameIngredient )
 	{
 		Connection cn = null ;
@@ -256,14 +250,7 @@ public class DBIng
 		return string ;
 	} ;
 	
-	/**
-	 * Update ingredient in recipe
-	 * @param idRecipe
-	 * @param qty
-	 * @param note
-	 * @return
-	 */
-	public String updateInDIngredientComplet ( int idRecipe , int idIngredient , String qty , String note )
+	public String updateInDIngredientComplet ( int idRecipe , String qty , String note )
 	{
 		Connection cn = null ;
  		Statement st = null ;
@@ -275,9 +262,9 @@ public class DBIng
  			String sql = "UPDATE COMPOSE SET "
  					+ "qty = \"" + qty + "\", "
  					+ "note = \"" + note + "\" "
- 					+ " where idRecipe = " + idRecipe
- 					+ " and idIngredient = " + idIngredient + ";" ;
+ 					+ " where idRecipe = " + idRecipe + ";" ;
  			st.executeUpdate( sql ) ;
+ 			string = new String( " was successfuly updated in DB!" ) ;
  		}
  		catch( SQLException e )
  		{
@@ -305,12 +292,6 @@ public class DBIng
 		return string ;
 	}
 
-	/**
-	 * Uodate ingredient in recipe
-	 * @param idRecipe
-	 * @param idIngredient
-	 * @return
-	 */
 	public String deleteFromDBIngredientAndCompose( int idRecipe , int idIngredient )
 	{
 		Connection cn = null ;

@@ -1040,25 +1040,33 @@ public class Main extends Application
      */
     private void handleButtonSaveDBIngredientComplet( ActionEvent e )
     {
-    	Ingredient ingredient2 = tableIngredientComplet.getSelectionModel().getSelectedItem() ;
-    	int idRecipe = Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ;
+    	/*Ingredient ingredient2 = tableIngredientComplet.getSelectionModel().getSelectedItem() ;
+		Recipe recipe2 = null ;
 		
-		//dataIngredientCompose.add( new Ingredient(null , null , addQty.getText() , addNote.getText() ) ) ;
-	 	
-		label.setText( dbIngredient.updateInDIngredientComplet(
-	 				idRecipe ,
+		if ( ( addQty.getText() != null && !addQty.getText().isEmpty() ) 
+				&&  ( addNote.getText() != null && !addNote.getText().isEmpty() ))
+	 	{
+			dataIngredientCompose.add( new Ingredient(null , null , addQty.getText() , addNote.getText() ) ) ;
+	 		
+			label.setText( dbIngredient.updateInDIngredientComplet(
+	 				Integer.parseInt( recipe2.getIdRecipe() ) ,
 	 				Integer.parseInt( ingredient2.getIdIngredient() ) ,
 	 				addQty.getText() ,
 	 				addNote.getText()
 	 		) ) ;
 	 		
-		dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( idRecipe ) ;
-		tableIngredientComplet.setItems( dataIngredientCompose ) ;
+			dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose() ;
+			tableIngredientComplet.setItems( dataIngredientCompose ) ;
 				
-		addQty.clear() ;
-		addNote.clear() ;
-		btsave.setDisable( true ) ;
-		btedit.setDisable( false ) ;
+			addQty.clear() ;
+			addNote.clear() ;
+			btsave.setDisable( true ) ;
+			btedit.setDisable( false ) ;
+	 	} 
+		else
+	 	{
+			label.setText("You cannot let the name null!");
+		}*/
     } ;
     
     /**
