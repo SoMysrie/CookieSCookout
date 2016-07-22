@@ -611,12 +611,8 @@ public class Main extends Application
                  		+ "			You can add, delete, edit and a recipe \n"
                  		+ "			and any changes will be saved in the database.\n\n" 
                  		+ "		Ingredients\n"
-                 		+ "			You can add, delete, edit and save an ingredient \n"
-                 		+ "			and any changes will be saved in the database.\n\n" 
-                 		+ "		Form\n"
-                 		+ "			You can add, delete an ingredient into a recipe. \n "
-                 		+ "			You also can edit and save changes for an ingredient' informations. \n"
-                 		+ "			Any changes will be saved in the database.\n\n" ) ;
+                 		+ "			You can add, delete, edit and an ingredient \n"
+                 		+ "			and any changes will be saved in the database.\n\n" ) ;
                  lblPlugin = new Label( "Plugin \n"
                  		+ "	You can add any new plugin.\n" ) ;
                  lblHelp = new Label( "Help \n"
@@ -903,10 +899,6 @@ public class Main extends Application
 			}
 	} ;
 	
-	/**
-	 * Button add ingredient
-	 * @param e
-	 */
 	private void handleButtonAddDBIngredient( ActionEvent e )
 	{
 		if ( addName.getText() != null && !addName.getText().isEmpty() )
@@ -980,10 +972,6 @@ public class Main extends Application
 		}
     } ;
 	
-    /**
-     * Button add ingredient into recipe
-     * @param e
-     */
     private void handleButtonAddToRecipe( ActionEvent e )
     {
     	Alert alert = new Alert( AlertType.ERROR ) ;
@@ -1003,10 +991,6 @@ public class Main extends Application
 		}
     }
     
-    /**
-     * Button delete ingredient in recipe
-     * @param e
-     */
     private void handleButtonDelFromRecipe( ActionEvent e )
     {
     	Alert alert = new Alert( AlertType.ERROR ) ;
