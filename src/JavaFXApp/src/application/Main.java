@@ -89,7 +89,7 @@ public class Main extends Application
     private ObservableList<Ingredient> dataIngredientCompose ;
     
     //ComboBox
-    ComboBox<String> cbRecipe ;
+    ComboBox<Recipe> cbRecipe ;
     
     //ListView
     ListView<String> listIngredient ;
@@ -428,12 +428,14 @@ public class Main extends Application
                    	 	
                    	 	//Recipe
                    	 	dataRecipe = dbRecipe.getFromDBRecipe() ;
-                   	 	cbRecipe = new ComboBox<String>() ;
+                   	 	cbRecipe = new ComboBox<Recipe>() ;
                    	 	cbRecipe.setMinWidth( 200 ) ;
                    	 
                    	 	for( int i = 0 ; i < dataRecipe.size() ; i++ )
-                   	 	 	cbRecipe.getItems().add( dataRecipe.get( i ).getTitleRecipe() ) ;
-              
+                   	 	{
+                   	 		cbRecipe.getItems().add( dataRecipe.get( i ) ) ;
+                   	 	}
+                   	 	
                    	 	btsubmit = new Button( "Submit" ) ;
                    	 	btsubmit.setMinWidth( 75 ) ;
                    	 	
@@ -1042,7 +1044,7 @@ public class Main extends Application
 		
     	if (cbRecipe.getSelectionModel().getSelectedItem() != null)
     	{
-    		dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().toString() ) ) ;
+    		dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ) ;
     		System.out.println(cbRecipe.getSelectionModel().getSelectedIndex() );
     		tableIngredientComplet.setItems( dataIngredientCompose ) ;
        	 	tableIngredientComplet.setEditable( true ) ;
