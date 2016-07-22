@@ -18,7 +18,7 @@
 		<divMark>span [class="value hidden-for-small"]</divMark>
 		<titleVote>>value vote</titleVote>
 		<titleMark>>value/5</titleMark>
-		<divIngredients>div [class="m_content_recette_ingredients m_avec_substitution"] </divIngredients>
+		<divIngredients>div [id="ingredients"]</divIngredients>
 	</site>
 	<site>
 		<mainSite>http://recette-de-cuisine.aufeminin.com</mainSite>
@@ -28,7 +28,7 @@
 		<divMark>span [class="average"] span</divMark>
 		<titleVote>title="value"</titleVote>
 		<titleMark>title="value"</titleMark>
-		<divIngredients>div [class="m_content_recette_ingredients m_avec_substitution"] </divIngredients>
+		<divIngredients>div [class="txtRecette m_recette_substitution"] ul</divIngredients>
 	</site>
-	
+
 </Sites>
