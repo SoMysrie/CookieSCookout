@@ -17,7 +17,7 @@ public class DBIng
 	public Connection getConnection() throws ClassNotFoundException, SQLException
 	{       
         Class.forName( "com.mysql.jdbc.Driver" ) ;
-        return DriverManager.getConnection( "jdbc:mysql://localhost:3306/CookieSCookout" , "root" , "root" ) ; 
+        return DriverManager.getConnection( "jdbc:mysql://localhost:3306/CookieSCookout?allowMultiQueries=true" , "root" , "root" ) ; 
 	} ;
 	
 	/**
@@ -63,6 +63,45 @@ public class DBIng
  		}
 		return string ;
  	} ;
+ 	
+ 	public String saveInComposeDB( int idRecipe , int idIngredient )
+ 	{
+ 		Connection cn = null ;
+ 		Statement st = null ;
+ 		
+ 		try
+ 		{
+ 			cn = getConnection() ;
+ 			st = cn.createStatement() ;
+ 			String sql = "INSERT INTO COMPOSE ( idRecipe, idIngredient, qty, note ) "
+ 					+ "VALUES (" + idRecipe + "," + idIngredient + ", null , null ) ;" ;
+ 			st.executeUpdate( sql ) ;
+		}
+		catch( SQLException e )
+		{
+			e.printStackTrace() ;
+			string = new String( "Error! Cannot saved in DB!" ) ;
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace() ;
+			string = new String( "Error! Cannot saved in DB!" ) ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch( SQLException e )
+			{
+				e.printStackTrace() ;
+				string = new String( "Error! Cannot close!" ) ;
+			}
+		}
+		return string ;
+ 	}
  	
  	/**
 	 * Get from DB Ingredient and COMPOSE
@@ -211,7 +250,7 @@ public class DBIng
 		return string ;
 	} ;
 	
-	public String updateInDIngredientComplet ( int IdRecipe , int IdIngredient , String qty , String note )
+	public String updateInDIngredientComplet ( int idRecipe , String qty , String note )
 	{
 		Connection cn = null ;
  		Statement st = null ;
@@ -222,8 +261,8 @@ public class DBIng
  			st = cn.createStatement() ;
  			String sql = "UPDATE COMPOSE SET "
  					+ "qty = \"" + qty + "\", "
- 					+ "note = \"" + note + "\"; ";
- 					//+ " where idIngredient = " + idIngredient + ";" ;
+ 					+ "note = \"" + note + "\" "
+ 					+ " where idRecipe = " + idRecipe + ";" ;
  			st.executeUpdate( sql ) ;
  			string = new String( " was successfuly updated in DB!" ) ;
  		}
@@ -252,4 +291,43 @@ public class DBIng
  		}
 		return string ;
 	}
+
+	public String deleteFromDBIngredientAndCompose( int idRecipe , int idIngredient )
+	{
+		Connection cn = null ;
+		Statement st = null ;
+				
+		try
+		{
+			cn = getConnection() ;
+			st = cn.createStatement() ;
+			String sql = "DELETE FROM COMPOSE WHERE idRecipe = " + idRecipe + " and idIngredient = " + idIngredient + " ;" ;
+			st.executeUpdate( sql ) ;
+		}
+		catch( SQLException e )
+		{
+			e.printStackTrace() ;
+			string = new String( "Error! Cannot delete!" ) ;
+		}
+		catch( ClassNotFoundException e )
+		{
+			e.printStackTrace() ;
+			string = new String( "Error! Cannot delete!" ) ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch( SQLException e )
+			{
+				e.printStackTrace() ;
+				string = new String( "Error! Cannot delete!" ) ;
+			}
+		}
+		
+		return string ;
+	} ;
 } ;

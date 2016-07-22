@@ -92,7 +92,7 @@ public class Main extends Application
     ComboBox<Recipe> cbRecipe ;
     
     //ListView
-    ListView<String> listIngredient ;
+    ListView<Ingredient> listIngredient ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -425,7 +425,8 @@ public class Main extends Application
          				lblNameRecipe = new Label( "Please, select the recipe you wish to add some ingrdients.\n\n" ) ;
                    	 	lblIng = new Label( "\nSelect the ingredient on the left you want to add on the list on the right.\n"
                     	 		+ "Or select the ingredient on the right you want to delete.\n\n" ) ;
-                   	 	
+		        		label = new Label( "" ) ;
+		        		
                    	 	//Recipe
                    	 	dataRecipe = dbRecipe.getFromDBRecipe() ;
                    	 	cbRecipe = new ComboBox<Recipe>() ;
@@ -456,13 +457,20 @@ public class Main extends Application
                    	 	btdel.setMinWidth( 75 ) ;
                    	 	btdel.setDisable( true ) ;
                    	 	
+                   	 	//table
+                   	 	nameIngCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "nameIngredient" ) ) ;
+                	 	qtyCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "qty" ) ) ;
+                	 	noteCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "note" ) ) ;
+                   	 	tableIngredientComplet = new TableView<Ingredient>() ;
+                   	 	
                    	 	//list
                    	 	dataIngredient = dbIngredient.getFromDBIngredient() ;
-                   	 	listIngredient = new ListView<String>();
+                   	 	listIngredient = new ListView<Ingredient>();
                    	 
                    	 	for( int i = 0 ; i < dataIngredient.size() ; i++ )
                    	 	{
-                   		 	listIngredient.getItems().add( dataIngredient.get( i ).getNameIngredient() ) ;
+                   		 	//listIngredient.getItems().add( dataIngredient.get( i ).getNameIngredient() ) ;
+                   	 		listIngredient.getItems().add(dataIngredient.get( i )) ;
                    	 	}
                    	 	
                    	 	listIngredient.setOnMouseClicked(new EventHandler<MouseEvent>() 
@@ -471,6 +479,7 @@ public class Main extends Application
                    	 		public void handle(MouseEvent event) 
                    	 		{
                              	btadd.setDisable(false);
+                             	btdel.setDisable(true);
                          	}
                    	 	} ) ;
                    	 	
@@ -479,11 +488,8 @@ public class Main extends Application
                    	 	vbbutton.setPadding( new Insets( 175 , 10 , 10 , 10 ) ) ;
                    	 	vbbutton.getChildren().addAll( btadd , btdel ) ;
                    	 	
-                   	 	nameIngCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "nameIngredient" ) ) ;
-                   	 	qtyCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "qty" ) ) ;
-                   	 	noteCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "note" ) ) ;
-                   	 	
-                   	 	tableIngredientComplet = new TableView<Ingredient>() ;
+                   	 	listIngredient.setDisable( true ) ;
+                	 	tableIngredientComplet.setDisable( true ) ;
                    	 	
                    	 	//Button action on click
                    	 	btadd.setOnAction( e -> handleButtonAddToRecipe( e ) ) ;
@@ -496,6 +502,7 @@ public class Main extends Application
                    	 		public void handle(MouseEvent event) 
                    	 		{
                              	btdel.setDisable(false);
+                             	btadd.setDisable(true);
                          	}
                    	 	} ) ;
                    	 	
@@ -523,9 +530,6 @@ public class Main extends Application
         		        		
         		        		btedit.setOnAction( e -> handleButtonEditDBIngredientComplet( e ) ) ;
         		        		btsave.setOnAction( e -> handleButtonSaveDBIngredientComplet( e ) ) ;
-        		        		
-        		        		//label
-        		        		label = new Label( "" ) ;
                    	 			
                    	 			hbadd = new HBox() ;
                    	 			hbadd.setSpacing( 3 ) ;
@@ -970,12 +974,41 @@ public class Main extends Application
 	
     private void handleButtonAddToRecipe( ActionEvent e )
     {
-    	btadd.setDisable(true);
+    	Alert alert = new Alert( AlertType.ERROR ) ;
+		alert.setTitle( "Error Dialog") ;
+		alert.setContentText( "Nothing is selected!" ) ;
+		
+		if( listIngredient.getSelectionModel().getSelectedItem() != null )
+		{
+			dbIngredient.saveInComposeDB(Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ,
+					Integer.valueOf( listIngredient.getSelectionModel().getSelectedItem().getIdIngredient() ) ) ;
+			dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose(Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ) ;
+			tableIngredientComplet.setItems( dataIngredientCompose ) ;
+		}
+		else
+		{
+			Optional<ButtonType> result = alert.showAndWait() ;
+		}
     }
     
     private void handleButtonDelFromRecipe( ActionEvent e )
     {
-    	btdel.setDisable(true);
+    	Alert alert = new Alert( AlertType.ERROR ) ;
+		alert.setTitle( "Error Dialog") ;
+		alert.setContentText( "Nothing is selected!" ) ;
+		
+		if( tableIngredientComplet.getSelectionModel().getSelectedItem() != null)
+		{
+			label.setText( dbIngredient.deleteFromDBIngredientAndCompose(
+					Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ,
+					Integer.valueOf( tableIngredientComplet.getSelectionModel().getSelectedItem().getIdIngredient() ) ) ) ;
+			dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ) ;
+			tableIngredientComplet.setItems( dataIngredientCompose ) ;
+		}
+		else
+		{
+			Optional<ButtonType> result = alert.showAndWait() ;
+		}
     }
     
     /**
@@ -1036,6 +1069,10 @@ public class Main extends Application
 		}*/
     } ;
     
+    /**
+     * Button submit a recipe to the tableView
+     * @param e
+     */
     private void handleButtonSelectedRecipe( ActionEvent e )
     {
     	Alert alert = new Alert( AlertType.ERROR ) ;
@@ -1045,10 +1082,12 @@ public class Main extends Application
     	if (cbRecipe.getSelectionModel().getSelectedItem() != null)
     	{
     		dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().getIdRecipe() ) ) ;
-    		System.out.println(cbRecipe.getSelectionModel().getSelectedIndex() );
     		tableIngredientComplet.setItems( dataIngredientCompose ) ;
        	 	tableIngredientComplet.setEditable( true ) ;
        	 	tableIngredientComplet.setMaxSize( 700 , 400 ) ;
+       	 	
+       	 	listIngredient.setDisable( false ) ;
+       	 	tableIngredientComplet.setDisable( false ) ;
     	}
     	else
     	{

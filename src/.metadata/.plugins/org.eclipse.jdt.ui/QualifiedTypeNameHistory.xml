@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javafx.event.EventHandler"/>
-<fullyQualifiedTypeName name="javafx.event.Event"/>
-<fullyQualifiedTypeName name="javafx.scene.text.FontPosture"/>
-<fullyQualifiedTypeName name="javafx.scene.text.FontWeight"/>
 <fullyQualifiedTypeName name="javafx.scene.text.TextFlow"/>
 <fullyQualifiedTypeName name="javafx.scene.text.Text"/>
 <fullyQualifiedTypeName name="javafx.scene.shape.Circle"/>
@@ -37,9 +33,7 @@
 <fullyQualifiedTypeName name="java.sql.Statement"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
 <fullyQualifiedTypeName name="java.sql.ResultSet"/>
-<fullyQualifiedTypeName name="javafx.scene.layout.HBox"/>
 <fullyQualifiedTypeName name="javafx.beans.value.ChangeListener"/>
-<fullyQualifiedTypeName name="javafx.collections.FXCollections"/>
 <fullyQualifiedTypeName name="javafx.scene.layout.VBox"/>
 <fullyQualifiedTypeName name="javafx.util.Callback"/>
 <fullyQualifiedTypeName name="javafx.scene.control.TableColumn.CellEditEvent"/>
@@ -60,4 +54,10 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="application.DBIng"/>
 <fullyQualifiedTypeName name="application.Ingredient"/>
+<fullyQualifiedTypeName name="javafx.scene.control.ListView"/>
+<fullyQualifiedTypeName name="javafx.collections.FXCollections"/>
+<fullyQualifiedTypeName name="javafx.scene.layout.HBox"/>
+<fullyQualifiedTypeName name="javafx.scene.control.ChoiceBox"/>
+<fullyQualifiedTypeName name="javafx.scene.control.ComboBox"/>
+<fullyQualifiedTypeName name="javafx.util.StringConverter"/>
 </qualifiedTypeNameHistroy>

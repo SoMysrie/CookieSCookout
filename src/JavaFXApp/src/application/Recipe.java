@@ -151,7 +151,7 @@ public class Recipe
     } ;
     
     /**
-     * On écrase la méthode hérité de la classe Object qui nous renvoi la référence et on retourne à la place le nom de la recette
+     * On écrase la méthode héritée de la classe Object qui nous renvoie la référence et on retourne à la place le nom de la recette
      * */
     @Override
     public String toString()

@@ -17,7 +17,7 @@ public class DBRecipe
 	public Connection getConnection() throws ClassNotFoundException, SQLException
 	{       
         Class.forName( "com.mysql.jdbc.Driver" ) ;
-        return DriverManager.getConnection( "jdbc:mysql://localhost:3306/CookieSCookout" , "root" , "root" ) ; 
+        return DriverManager.getConnection( "jdbc:mysql://localhost:3306/CookieSCookout?allowMultiQueries=true" , "root" , "root" ) ; 
 	} ;
 	
 	/**
@@ -209,8 +209,8 @@ public class DBRecipe
 		{
 			cn = getConnection() ;
 			st = cn.createStatement() ;
-			String sql = "DELETE FROM COMPOSE WHERE idRecipe = \"" + toDelete + "\";" 
-					   + "DELETE FROM Recipe  WHERE idRecipe = \"" + toDelete + "\";" ;
+			String sql = "DELETE FROM COMPOSE WHERE idRecipe = " + toDelete + " ; "
+							+ " DELETE FROM Recipe  WHERE idRecipe = " + toDelete + " ; " ;
 			st.executeUpdate( sql ) ;
 			string = new String( titleToDelete + " was successfuly deleted from BDD!" ) ;
 		}

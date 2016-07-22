@@ -1,0 +1,255 @@
+package application;
+
+import java.sql.Connection ;
+import java.sql.DriverManager ;
+import java.sql.ResultSet ;
+import java.sql.SQLException ;
+import java.sql.Statement ;
+
+import javafx.collections.FXCollections ;
+import javafx.collections.ObservableList ;
+
+public class DBIng 
+{
+	String string ;
+	private ObservableList<Ingredient> dataIngredient ;
+	
+	public Connection getConnection() throws ClassNotFoundException, SQLException
+	{       
+        Class.forName( "com.mysql.jdbc.Driver" ) ;
+        return DriverManager.getConnection( "jdbc:mysql://localhost:3306/CookieSCookout" , "root" , "root" ) ; 
+	} ;
+	
+	/**
+	 * Save in DB Ingredient
+	 * @param nameIngredient
+	 * @return
+	 */
+	public String saveInDBIngredient( String nameIngredient )
+	{
+ 		Connection cn = null ;
+ 		Statement st = null ;
+ 		
+ 		try
+ 		{
+ 			cn = getConnection() ;
+ 			st = cn.createStatement() ;
+ 			String sql = "INSERT INTO Ingredient ( nameIngredient ) VALUES (\" " + nameIngredient + "\");" ;
+ 			st.executeUpdate( sql ) ;
+ 			string = new String( nameIngredient + " was successfuly saved in DB!" ) ;
+ 		}
+ 		catch( SQLException e )
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot saved in DB!" ) ;
+ 		}
+ 		catch(ClassNotFoundException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot saved in DB!" ) ;
+ 		}
+ 		finally
+ 		{
+ 			try
+ 			{
+ 				cn.close() ;
+ 				st.close() ;
+ 			}
+ 			catch( SQLException e )
+ 			{
+ 				e.printStackTrace() ;
+ 				string = new String( "Error! Cannot close!" ) ;
+ 			}
+ 		}
+		return string ;
+ 	} ;
+ 	
+ 	/**
+	 * Get from DB Ingredient and COMPOSE
+	 */
+	public ObservableList<Ingredient> getFromDBIngredient()
+	{
+		dataIngredient = FXCollections.observableArrayList() ;
+		Connection cn = null ;
+		Statement st = null ;
+		ResultSet rs = null ;
+		
+		try
+		{
+			cn = getConnection() ;
+			st = cn.createStatement() ;
+			
+			String sql = "SELECT * FROM Ingredient" ;
+			rs = st.executeQuery( sql) ;
+			while( rs.next() )
+			{
+				Ingredient ingr = new Ingredient() ;
+				ingr.setIdIngredient(rs.getString( "idIngredient" ) ) ;
+				ingr.setNameIngredient( rs.getString( "nameIngredient" ) ) ;
+				dataIngredient.add( ingr ) ;
+			}
+			
+		}
+		catch( SQLException e )
+		{
+			e.printStackTrace() ;
+			System.out.println( "Error on Building Data" ) ;
+		}
+		catch( ClassNotFoundException e )
+		{
+			e.printStackTrace() ;
+			System.out.println( "Error on Building Data" ) ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+				System.out.println( "Error! Cannot close!" ) ;
+			}
+		}
+		return dataIngredient ;
+	} ;
+ 	
+	/**
+	 * Get from DB Ingredient and COMPOSE
+	 */
+	public ObservableList<Ingredient> getFromDBIngredientAndCompose( int idRecipe )
+	{
+		dataIngredient = FXCollections.observableArrayList() ;
+		Connection cn = null ;
+		Statement st = null ;
+		ResultSet rs = null ;
+		
+		try
+		{
+			cn = getConnection() ;
+			st = cn.createStatement() ;
+			
+			String sql = "SELECT * FROM Ingredient natural join COMPOSE WHERE idRecipe = " + idRecipe + " ; " ;
+			rs = st.executeQuery( sql) ;
+			while( rs.next() )
+			{
+				Ingredient ingr = new Ingredient() ;
+				ingr.setIdIngredient(rs.getString( "idIngredient" ) ) ;
+				ingr.setNameIngredient( rs.getString( "nameIngredient" ) ) ;
+				ingr.setQty( rs.getString( "qty" ) ) ;
+				ingr.setNote( rs.getString( "note" ) ) ;
+				dataIngredient.add( ingr ) ;
+			}
+			
+		}
+		catch( SQLException e )
+		{
+			e.printStackTrace() ;
+			System.out.println( "Error on Building Data" ) ;
+		}
+		catch( ClassNotFoundException e )
+		{
+			e.printStackTrace() ;
+			System.out.println( "Error on Building Data" ) ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+				System.out.println( "Error! Cannot close!" ) ;
+			}
+		}
+		return dataIngredient ;
+	} ;
+	
+	public String updateInDIngredient( int idIngredient , String nameIngredient )
+	{
+		Connection cn = null ;
+ 		Statement st = null ;
+ 		
+ 		try
+ 		{
+ 			cn = getConnection() ;
+ 			st = cn.createStatement() ;
+ 			String sql = "UPDATE Ingredient SET "
+ 					+ "nameIngredient = \"" + nameIngredient + "\" "
+ 					+ " where idIngredient = " + idIngredient + ";" ;
+ 			st.executeUpdate( sql ) ;
+ 			string = new String( nameIngredient + " was successfuly updated in DB!" ) ;
+ 		}
+ 		catch( SQLException e )
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot updated in DB!" ) ;
+ 		}
+ 		catch(ClassNotFoundException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot updated in DB!" ) ;
+ 		}
+ 		finally
+ 		{
+ 			try
+ 			{
+ 				cn.close() ;
+ 				st.close() ;
+ 			}
+ 			catch( SQLException e )
+ 			{
+ 				e.printStackTrace() ;
+ 				string = new String( "Error! Cannot close!" ) ;
+ 			}
+ 		}
+		return string ;
+	} ;
+	
+	public String updateInDIngredientComplet ( int IdRecipe , int IdIngredient , String qty , String note )
+	{
+		Connection cn = null ;
+ 		Statement st = null ;
+ 		
+ 		try
+ 		{
+ 			cn = getConnection() ;
+ 			st = cn.createStatement() ;
+ 			String sql = "UPDATE COMPOSE SET "
+ 					+ "qty = \"" + qty + "\", "
+ 					+ "note = \"" + note + "\"; ";
+ 					//+ " where idIngredient = " + idIngredient + ";" ;
+ 			st.executeUpdate( sql ) ;
+ 			string = new String( " was successfuly updated in DB!" ) ;
+ 		}
+ 		catch( SQLException e )
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot updated in DB!" ) ;
+ 		}
+ 		catch(ClassNotFoundException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot updated in DB!" ) ;
+ 		}
+ 		finally
+ 		{
+ 			try
+ 			{
+ 				cn.close() ;
+ 				st.close() ;
+ 			}
+ 			catch( SQLException e )
+ 			{
+ 				e.printStackTrace() ;
+ 				string = new String( "Error! Cannot close!" ) ;
+ 			}
+ 		}
+		return string ;
+	}
+} ;

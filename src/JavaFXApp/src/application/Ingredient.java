@@ -76,7 +76,7 @@ public class Ingredient
     
     public String getQty()
     {
-    	return nameIngredient.get() ;
+    	return qty.get() ;
     } ;
     
     //NOTE
@@ -93,5 +93,14 @@ public class Ingredient
     public String getNote()
     {
     	return note.get() ;
+    } ;
+    
+    /**
+     * On écrase la méthode héritée de la classe Object qui nous renvoie la référence et on retourne à la place le nom de la recette
+     * */
+    @Override
+    public String toString()
+    {
+    	return this.getNameIngredient() ;
     } ;
 } ;
