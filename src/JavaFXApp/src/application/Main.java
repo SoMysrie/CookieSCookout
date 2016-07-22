@@ -13,7 +13,6 @@ import javafx.application.Application ;
 import javafx.application.Platform ;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent ;
 import javafx.event.EventHandler ;
@@ -23,7 +22,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button ;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox ;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label ;
 import javafx.scene.control.ListView;
@@ -35,11 +33,11 @@ import javafx.scene.control.TableView ;
 import javafx.scene.control.TextField ;
 import javafx.scene.control.cell.PropertyValueFactory ;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
-import javafx.util.StringConverter;
 
 
 public class Main extends Application 
@@ -51,15 +49,17 @@ public class Main extends Application
     	lblMenu , lblDB , lblPlugin  , lblHelp ;
     Button  btsearch , btclear , 
     	btaddImg , btadd , btdel , btedit , btsave ,
+    	btsubmit ,
     	btopen ;
     TextField search , 
     	addImg , addTitle , addContent  , addIng , addScore  , addPoll , addUrl ,
-    	addName ;
+    	addName ,
+    	addQty , addNote ;
     Alert alert ;
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
-    VBox vbchecks , vblabels , vbbutton , vbtext , vball  , vbRecipe ;
-    HBox hbadd , hball , hbbutton , hblist ;
+    VBox vbchecks , vblabels , vbbutton , vbtext , vball  , vbRecipe , vbtable ;
+    HBox hbadd , hball , hbbutton , hblist , hbRecipe ;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
@@ -81,11 +81,18 @@ public class Main extends Application
     private TableColumn<Ingredient, String> nameCol = new TableColumn<Ingredient, String>( "NAME" ) ;
     private ObservableList<Ingredient> dataIngredient ;
     
+    //TableView for dbIngredient
+    private TableView<Ingredient> tableIngredientComplet;
+    private TableColumn<Ingredient, String> nameIngCol  = new TableColumn<Ingredient, String>( "NAME" 	  ) ;
+    private TableColumn<Ingredient, String> qtyCol 		= new TableColumn<Ingredient, String>( "QUANTITY" ) ;
+    private TableColumn<Ingredient, String> noteCol		= new TableColumn<Ingredient, String>( "NOTE" 	  ) ;
+    private ObservableList<Ingredient> dataIngredientCompose ;
+    
     //ComboBox
     ComboBox<String> cbRecipe ;
     
     //ListView
-    ListView<String> listIngredient , listToRecipe ;
+    ListView<String> listIngredient ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -408,62 +415,143 @@ public class Main extends Application
              @Override
              public void handle( ActionEvent event ) 
              {
-            	 //Labels
-            	 lblNameRecipe = new Label( "Please, select the recipe you wish to add some ingrdients.\n\n" ) ;
-            	 lblIng = new Label( "\nSelect the ingredient on the left you want to add on the list on the right.\n"
-             	 		+ "Or select the ingredient on the right you want to delete.\n\n" ) ;
-            	 
-            	 //Recipe
-            	 dataRecipe = dbRecipe.getFromDBRecipe() ;
-            	 cbRecipe = new ComboBox<String>() ;
-            	 cbRecipe.setMinWidth( 200 ) ;
-            	 
-            	 for( int i = 0 ; i < dataRecipe.size() ; i++ )
-            	 {
-            		 cbRecipe.getItems().add( dataRecipe.get( i ).getTitleRecipe() ) ;
-            	 }
-            	 
-            	 vbRecipe = new VBox();
-            	 vbRecipe.setSpacing( 5 ) ;
-            	 vbRecipe.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
-            	 vbRecipe.getChildren().addAll( lblNameRecipe , cbRecipe , lblIng ) ;
-            	 
-            	 //list
-            	 dataIngredient = dbIngredient.getFromDBIngredient() ;
-            	 listIngredient = new ListView<String>();
-            	 listToRecipe = new ListView<String>();
-            	 
-            	 for( int i = 0 ; i < dataIngredient.size() ; i++ )
-            	 {
-            		 listIngredient.getItems().add( dataIngredient.get( i ).getNameIngredient() ) ;
-            	 }
-            	 
-            	 //buttons
-            	 btadd = new Button( "Add" ) ;
-            	 btadd.setMinWidth( 75 ) ;
-            	 btdel = new Button( "Delete" ) ;
-            	 btdel.setMinWidth( 75 ) ;
-            	 
-            	 //Button action on click
-            	 btadd.setOnAction( e -> handleButtonAddToRecipe( e ) ) ;
-            	 btdel.setOnAction( e -> handleButtonDelFromRecipe( e ) ) ;
-            	 
-            	 vbbutton = new VBox() ;
-            	 vbbutton.setSpacing( 5 ) ;
-            	 vbbutton.setPadding( new Insets( 175 , 10 , 10 , 10 ) ) ;
-            	 vbbutton.getChildren().addAll( btadd , btdel ) ;
-            	 
-            	 hblist = new HBox();
-            	 hblist.setSpacing( 3 ) ;
-            	 hblist.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
-            	 hblist.getChildren().addAll( listIngredient , vbbutton , listToRecipe ) ;		 
-                 
-            	 vball = new VBox();
-            	 vball.setSpacing( 5 ) ;
-            	 vball.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
-            	 vball.getChildren().addAll( vbRecipe , hblist ) ;	
-            	 
-                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
+            	// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
+         		new Thread( new Runnable()
+         		{
+         			@Override
+         			public void run()
+         			{
+         				//Labels
+         				lblNameRecipe = new Label( "Please, select the recipe you wish to add some ingrdients.\n\n" ) ;
+                   	 	lblIng = new Label( "\nSelect the ingredient on the left you want to add on the list on the right.\n"
+                    	 		+ "Or select the ingredient on the right you want to delete.\n\n" ) ;
+                   	 	
+                   	 	//Recipe
+                   	 	dataRecipe = dbRecipe.getFromDBRecipe() ;
+                   	 	cbRecipe = new ComboBox<String>() ;
+                   	 	cbRecipe.setMinWidth( 200 ) ;
+                   	 
+                   	 	for( int i = 0 ; i < dataRecipe.size() ; i++ )
+                   	 	 	cbRecipe.getItems().add( dataRecipe.get( i ).getTitleRecipe() ) ;
+              
+                   	 	btsubmit = new Button( "Submit" ) ;
+                   	 	btsubmit.setMinWidth( 75 ) ;
+                   	 	
+                   	 	hbRecipe = new HBox() ;
+                   	 	hbRecipe.setSpacing( 3 ) ;
+                   	 	hbRecipe.getChildren().addAll( cbRecipe , btsubmit ) ;
+                   	 	
+                   	 	vbRecipe = new VBox() ;
+                   	 	vbRecipe.setSpacing( 5 ) ;
+                   	 	vbRecipe.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
+                   	 	vbRecipe.getChildren().addAll( lblNameRecipe , hbRecipe , lblIng ) ;
+                   	 
+                   	 	//buttons
+                   	 	btadd = new Button( "Add" ) ;
+                   	 	btadd.setMinWidth( 75 ) ;
+                   	 	btadd.setDisable( true ) ;
+                   	 	btdel = new Button( "Delete" ) ;
+                   	 	btdel.setMinWidth( 75 ) ;
+                   	 	btdel.setDisable( true ) ;
+                   	 	
+                   	 	//list
+                   	 	dataIngredient = dbIngredient.getFromDBIngredient() ;
+                   	 	listIngredient = new ListView<String>();
+                   	 
+                   	 	for( int i = 0 ; i < dataIngredient.size() ; i++ )
+                   	 	{
+                   		 	listIngredient.getItems().add( dataIngredient.get( i ).getNameIngredient() ) ;
+                   	 	}
+                   	 	
+                   	 	listIngredient.setOnMouseClicked(new EventHandler<MouseEvent>() 
+                   	 	{
+                   	 		@Override
+                   	 		public void handle(MouseEvent event) 
+                   	 		{
+                             	btadd.setDisable(false);
+                         	}
+                   	 	} ) ;
+                   	 	
+                   	 	vbbutton = new VBox() ;
+                   	 	vbbutton.setSpacing( 5 ) ;
+                   	 	vbbutton.setPadding( new Insets( 175 , 10 , 10 , 10 ) ) ;
+                   	 	vbbutton.getChildren().addAll( btadd , btdel ) ;
+                   	 	
+                   	 	nameIngCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "nameIngredient" ) ) ;
+                   	 	qtyCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "qty" ) ) ;
+                   	 	noteCol.setCellValueFactory( new PropertyValueFactory<Ingredient,String>( "note" ) ) ;
+                   	 	
+                   	 	tableIngredientComplet = new TableView<Ingredient>() ;
+                   	 	
+                   	 	//Button action on click
+                   	 	btadd.setOnAction( e -> handleButtonAddToRecipe( e ) ) ;
+                   	 	btdel.setOnAction( e -> handleButtonDelFromRecipe( e ) ) ;
+                   	 	btsubmit.setOnAction(e -> handleButtonSelectedRecipe( e ) ) ;
+                   	 	
+                   	 	tableIngredientComplet.setOnMouseClicked(new EventHandler<MouseEvent>() 
+                   	 	{
+                   	 		@Override
+                   	 		public void handle(MouseEvent event) 
+                   	 		{
+                             	btdel.setDisable(false);
+                         	}
+                   	 	} ) ;
+                   	 	
+                   	 	Platform.runLater( new Runnable() 
+                   	 	{
+                   	 		@SuppressWarnings( "unchecked" )
+							@Override public void run()
+                   	 		{
+                   	 			tableIngredientComplet.getColumns().addAll( nameIngCol , qtyCol , noteCol ) ;
+                   	 			
+                   	 			//Qty
+        		        		addQty = new TextField() ;
+        		        		addQty.setPromptText( "Quantity");
+        		        		addQty.setMaxWidth( 75 ) ;
+        		        		
+        		        		//Note
+        		        		addNote = new TextField() ;
+        		        		addNote.setPromptText( "Note");
+        		        		addNote.setMaxWidth( 75 ) ;
+        		        		
+        		        		//Button
+        		        		btedit = new Button( "Edit") ;
+        		        		btsave = new Button( "Save" ) ;
+        		        		btsave.setDisable( true ) ;
+        		        		
+        		        		btedit.setOnAction( e -> handleButtonEditDBIngredientComplet( e ) ) ;
+        		        		btsave.setOnAction( e -> handleButtonSaveDBIngredientComplet( e ) ) ;
+        		        		
+        		        		//label
+        		        		label = new Label( "" ) ;
+                   	 			
+                   	 			hbadd = new HBox() ;
+                   	 			hbadd.setSpacing( 3 ) ;
+                   	 			hbadd.getChildren().addAll( addQty , addNote , btedit , btsave ) ;
+                   	 			
+                   	 			vbtable = new VBox() ;
+                   	 			vbtable.setSpacing( 5 ) ;
+                   	 			vbtable.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
+                   	 			vbtable.getChildren().addAll( tableIngredientComplet , hbadd , label ) ;
+                   	 			
+                   	 			hbbutton = new HBox() ;
+               	 				hbbutton.setSpacing( 3 ) ;
+               	 				hbbutton.getChildren().addAll( vbbutton ) ;
+                   	 			
+               	 				hblist = new HBox() ;
+                   	 			hblist.setSpacing( 3 ) ;
+                   	 			hblist.getChildren().addAll( listIngredient , vbbutton , vbtable ) ;
+                   	 			
+                   	 			vball = new VBox();
+                   	 			vball.setSpacing( 5 ) ;
+                   	 			vball.setPadding( new Insets( 10 , 10 , 10 , 10 ) ) ;
+                   	 			vball.getChildren().addAll( vbRecipe , hblist ) ;	
+                       	 
+                   	 			mainContainer.createMainContainer( stage , menuBar , vball ) ;
+                   	 		}
+                   	 	} ) ;
+         			}
+         		} ).start() ;
              } ;
         } ) ;
         menuDB.getItems().add( menuItemForm ) ;
@@ -880,11 +968,90 @@ public class Main extends Application
 	
     private void handleButtonAddToRecipe( ActionEvent e )
     {
-    	
+    	btadd.setDisable(true);
     }
     
     private void handleButtonDelFromRecipe( ActionEvent e )
     {
+    	btdel.setDisable(true);
+    }
+    
+    /**
+	 * Button edit from the database for the Ingredient Tab
+	 * @param e
+	 */
+    private void handleButtonEditDBIngredientComplet( ActionEvent e )
+    {
+    	Ingredient ingredient2 = tableIngredientComplet.getSelectionModel().getSelectedItem() ;
+		
+		if ( ingredient2 != null )
+		{
+			addQty.setText( ingredient2.getQty() ) ;
+			addNote.setText( ingredient2.getNote() ) ;
+			label.setText( "Once you are done with your editing click on the button save!" ) ;
+			
+			btsave.setDisable( false ) ;
+			btedit.setDisable( true ) ;
+		}
+		else
+		{
+			label.setText( "You have to select a row in order to edit it!" ) ;
+		}
+    } ;
+    
+    /**
+     * Save in the DB Ingredient and Compose
+     * @param e
+     */
+    private void handleButtonSaveDBIngredientComplet( ActionEvent e )
+    {
+    	/*Ingredient ingredient2 = tableIngredientComplet.getSelectionModel().getSelectedItem() ;
+		Recipe recipe2 = null ;
+		
+		if ( ( addQty.getText() != null && !addQty.getText().isEmpty() ) 
+				&&  ( addNote.getText() != null && !addNote.getText().isEmpty() ))
+	 	{
+			dataIngredientCompose.add( new Ingredient(null , null , addQty.getText() , addNote.getText() ) ) ;
+	 		
+			label.setText( dbIngredient.updateInDIngredientComplet(
+	 				Integer.parseInt( recipe2.getIdRecipe() ) ,
+	 				Integer.parseInt( ingredient2.getIdIngredient() ) ,
+	 				addQty.getText() ,
+	 				addNote.getText()
+	 		) ) ;
+	 		
+			dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose() ;
+			tableIngredientComplet.setItems( dataIngredientCompose ) ;
+				
+			addQty.clear() ;
+			addNote.clear() ;
+			btsave.setDisable( true ) ;
+			btedit.setDisable( false ) ;
+	 	} 
+		else
+	 	{
+			label.setText("You cannot let the name null!");
+		}*/
+    } ;
+    
+    private void handleButtonSelectedRecipe( ActionEvent e )
+    {
+    	Alert alert = new Alert( AlertType.ERROR ) ;
+		alert.setTitle( "Error Dialog") ;
+		alert.setContentText( "Nothing is selected!" ) ;
+		
+    	if (cbRecipe.getSelectionModel().getSelectedItem() != null)
+    	{
+    		dataIngredientCompose = dbIngredient.getFromDBIngredientAndCompose( Integer.valueOf( cbRecipe.getSelectionModel().getSelectedItem().toString() ) ) ;
+    		System.out.println(cbRecipe.getSelectionModel().getSelectedIndex() );
+    		tableIngredientComplet.setItems( dataIngredientCompose ) ;
+       	 	tableIngredientComplet.setEditable( true ) ;
+       	 	tableIngredientComplet.setMaxSize( 700 , 400 ) ;
+    	}
+    	else
+    	{
+    		Optional<ButtonType> result = alert.showAndWait() ;
+    	}
     	
     }
     

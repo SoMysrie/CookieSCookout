@@ -64,7 +64,7 @@ public class DBIng
 		return string ;
  	} ;
  	
-	/**
+ 	/**
 	 * Get from DB Ingredient and COMPOSE
 	 */
 	public ObservableList<Ingredient> getFromDBIngredient()
@@ -86,6 +86,60 @@ public class DBIng
 				Ingredient ingr = new Ingredient() ;
 				ingr.setIdIngredient(rs.getString( "idIngredient" ) ) ;
 				ingr.setNameIngredient( rs.getString( "nameIngredient" ) ) ;
+				dataIngredient.add( ingr ) ;
+			}
+			
+		}
+		catch( SQLException e )
+		{
+			e.printStackTrace() ;
+			System.out.println( "Error on Building Data" ) ;
+		}
+		catch( ClassNotFoundException e )
+		{
+			e.printStackTrace() ;
+			System.out.println( "Error on Building Data" ) ;
+		}
+		finally
+		{
+			try
+			{
+				cn.close() ;
+				st.close() ;
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace() ;
+				System.out.println( "Error! Cannot close!" ) ;
+			}
+		}
+		return dataIngredient ;
+	} ;
+ 	
+	/**
+	 * Get from DB Ingredient and COMPOSE
+	 */
+	public ObservableList<Ingredient> getFromDBIngredientAndCompose( int idRecipe )
+	{
+		dataIngredient = FXCollections.observableArrayList() ;
+		Connection cn = null ;
+		Statement st = null ;
+		ResultSet rs = null ;
+		
+		try
+		{
+			cn = getConnection() ;
+			st = cn.createStatement() ;
+			
+			String sql = "SELECT * FROM Ingredient natural join COMPOSE WHERE idRecipe = " + idRecipe + " ; " ;
+			rs = st.executeQuery( sql) ;
+			while( rs.next() )
+			{
+				Ingredient ingr = new Ingredient() ;
+				ingr.setIdIngredient(rs.getString( "idIngredient" ) ) ;
+				ingr.setNameIngredient( rs.getString( "nameIngredient" ) ) ;
+				ingr.setQty( rs.getString( "qty" ) ) ;
+				ingr.setNote( rs.getString( "note" ) ) ;
 				dataIngredient.add( ingr ) ;
 			}
 			
@@ -156,4 +210,46 @@ public class DBIng
  		}
 		return string ;
 	} ;
+	
+	public String updateInDIngredientComplet ( int IdRecipe , int IdIngredient , String qty , String note )
+	{
+		Connection cn = null ;
+ 		Statement st = null ;
+ 		
+ 		try
+ 		{
+ 			cn = getConnection() ;
+ 			st = cn.createStatement() ;
+ 			String sql = "UPDATE COMPOSE SET "
+ 					+ "qty = \"" + qty + "\", "
+ 					+ "note = \"" + note + "\"; ";
+ 					//+ " where idIngredient = " + idIngredient + ";" ;
+ 			st.executeUpdate( sql ) ;
+ 			string = new String( " was successfuly updated in DB!" ) ;
+ 		}
+ 		catch( SQLException e )
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot updated in DB!" ) ;
+ 		}
+ 		catch(ClassNotFoundException e)
+ 		{
+ 			e.printStackTrace() ;
+ 			string = new String( "Error! Cannot updated in DB!" ) ;
+ 		}
+ 		finally
+ 		{
+ 			try
+ 			{
+ 				cn.close() ;
+ 				st.close() ;
+ 			}
+ 			catch( SQLException e )
+ 			{
+ 				e.printStackTrace() ;
+ 				string = new String( "Error! Cannot close!" ) ;
+ 			}
+ 		}
+		return string ;
+	}
 } ;

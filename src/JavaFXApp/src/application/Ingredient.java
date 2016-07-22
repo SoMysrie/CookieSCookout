@@ -6,17 +6,29 @@ public class Ingredient
 {
 	private SimpleStringProperty idIngredient 	;
 	private SimpleStringProperty nameIngredient ;
+	private SimpleStringProperty qty 			;
+	private SimpleStringProperty note 			;
 	
 	public Ingredient( )
 	{
 		this.idIngredient 	= new SimpleStringProperty( ) ;
 		this.nameIngredient = new SimpleStringProperty( ) ;
+		this.qty			= new SimpleStringProperty( ) ;
+		this.note			= new SimpleStringProperty( ) ;
 	} ;
 	
 	public Ingredient( String idIngredient , String nameIngredient )
 	{
 		this.idIngredient 	= new SimpleStringProperty( ) ;
-		this.nameIngredient= new SimpleStringProperty( ) ;
+		this.nameIngredient = new SimpleStringProperty( ) ;
+	} ;
+	
+	public Ingredient( String idIngredient , String nameIngredient , String qty , String note)
+	{
+		this.idIngredient 	= new SimpleStringProperty( ) ;
+		this.nameIngredient = new SimpleStringProperty( ) ;
+		this.qty 			= new SimpleStringProperty( ) ;
+		this.note 			= new SimpleStringProperty( ) ;
 	} ;
 	
 	//ID
@@ -49,5 +61,37 @@ public class Ingredient
     public String getNameIngredient()
     {
     	return nameIngredient.get() ;
+    } ;
+    
+    //QTY
+    public void setQty( SimpleStringProperty qty ) 
+    {
+        this.qty.set( qty.get() ) ;
+    } ;
+    
+    public void setQty( String qty )
+    {
+    	this.qty.set( qty ) ;
+    } ;
+    
+    public String getQty()
+    {
+    	return nameIngredient.get() ;
+    } ;
+    
+    //NOTE
+    public void setNote( SimpleStringProperty note ) 
+    {
+        this.note.set( note.get() ) ;
+    } ;
+    
+    public void setNote( String note )
+    {
+    	this.note.set( note ) ;
+    } ;
+    
+    public String getNote()
+    {
+    	return note.get() ;
     } ;
 } ;

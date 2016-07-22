@@ -150,4 +150,12 @@ public class Recipe
         return urlRecipe.get() ;
     } ;
     
+    /**
+     * On écrase la méthode hérité de la classe Object qui nous renvoi la référence et on retourne à la place le nom de la recette
+     * */
+    @Override
+    public String toString()
+    {
+    	return this.getTitleRecipe() ;
+    } ;
 } ;
