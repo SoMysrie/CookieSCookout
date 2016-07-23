@@ -9,6 +9,17 @@ public class Site {
     String divMark;
     String divURLS;
     String divIngredients;
+    String divRecipe;
+
+    public String getDivRecipe() {
+        return divRecipe;
+    }
+
+    public void setDivRecipe(String divRecipe) {
+        this.divRecipe = divRecipe;
+    }
+
+
 
     public String getTitleVote() {
         return titleVote;
@@ -109,7 +120,7 @@ public class Site {
 
 
     public Site(String mainSite, String searchSite, String divVote,
-                String divMark, String divURLS, String divIngredients, String titleVote, String titleMark) {
+                String divMark, String divURLS, String divIngredients, String titleVote, String titleMark, String divRecipe) {
         super();
         this.mainSite = mainSite;
         this.searchSite = searchSite;
@@ -119,6 +130,7 @@ public class Site {
         this.divIngredients= divIngredients;
         this.titleVote=titleVote;
         this.titleMark=titleMark;
+        this.divRecipe=divRecipe;
     }
 
 
