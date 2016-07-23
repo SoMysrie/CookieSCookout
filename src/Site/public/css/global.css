@@ -102,6 +102,17 @@ div.formulaire
     padding: 1em;
     border: 1px solid #CCC;
     border-radius: 1em;
+    margin-top: 45px;
+}
+
+div.formulaire2 
+{
+    margin: 0 auto;
+    width: 400px;
+    padding: 1em;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+    margin-top: 45px;
 }
 
 div.formulaire div + div 
@@ -137,7 +148,8 @@ div.formulaire textarea
 
 div.formulaire .button 
 {
-    padding-left: 90px;
+    padding-left: 50px;
+    padding-top: 20px;
 }
 
 div.formulaire button 
@@ -148,6 +160,48 @@ div.formulaire button
 div.formulaire table 
 {
     border-spacing: 5px;
+    width: 100px;
+}
+
+div.recipe.list
+{
+    padding:10px;
+    display:block;
+    position: relative;
+    margin: 15px auto ;
+    width: 80%;
+    min-height: 150px;
+    height: auto ;
+    overflow: hidden;
+    border-style: solid ;
+    border-width: 1px ;
+    border-radius: 15px;
+}
+
+div.recipe.list ul
+{
+    text-align: left;
+}
+
+div.recipe.list div
+{
+    display: block;
+    margin:0 auto;
+}
+
+div.recipe.list div.thumbs
+{
+    width: 250px ;
+    height: 150px ;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center; 
+    border-radius: 15px ;
+}
+
+div.recipe.list div:last-child
+{
+    text-align: justify;
 }
 
 /*****************************

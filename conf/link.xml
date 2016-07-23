@@ -9,6 +9,8 @@
 		<titleVote>title="value"</titleVote>
 		<titleMark>title="value"</titleMark>
 		<divIngredients>div [class="m_content_recette_ingredients m_avec_substitution"] </divIngredients>
+		<divRecipe>div [class="m_content_recette_todo"]</divRecipe>
+		<divImg>img[class][src][alt][title][width]</divImg>
 	</site>
 	<site>
 		<mainSite>http://www.cuisineaz.com</mainSite>
@@ -19,6 +21,8 @@
 		<titleVote>>value vote</titleVote>
 		<titleMark>>value/5</titleMark>
 		<divIngredients>div [id="ingredients"]</divIngredients>
+		<divRecipe>div [id="preparation"]</divRecipe>
+		<divImg>img[alt][src][class][id]</divImg>
 	</site>
 	<site>
 		<mainSite>http://recette-de-cuisine.aufeminin.com</mainSite>
@@ -29,6 +33,8 @@
 		<titleVote>title="value"</titleVote>
 		<titleMark>title="value"</titleMark>
 		<divIngredients>div [class="txtRecette m_recette_substitution"] ul</divIngredients>
+		<divRecipe> div [class="txtRecette m_recette_substitution"] span </divRecipe>
+		<divImg>img[src][alt][title][width][height][class] </divImg>
 	</site>
 
 </Sites>
