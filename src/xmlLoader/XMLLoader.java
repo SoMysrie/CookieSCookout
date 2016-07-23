@@ -57,10 +57,12 @@ public class XMLLoader {
 							.getElementsByTagName("titleMark").item(0);
 					final Element divRecipe = (Element) site
 							.getElementsByTagName("divRecipe").item(0);
-					if(mainSite==null || searchSite==null ||divURLS==null ||divVote==null ||divMark==null ||divIngredients==null || titleVote==null || titleMark==null ||divRecipe==null)
+					final Element divImg = (Element) site
+							.getElementsByTagName("divImg").item(0);
+					if(mainSite==null || searchSite==null ||divURLS==null ||divVote==null ||divMark==null ||divIngredients==null || titleVote==null || titleMark==null ||divRecipe==null || divImg==null)
 						throw new NullPointerException("An element is not in xml");
 					else
-						sites.add(new Site(mainSite.getTextContent(), searchSite.getTextContent(), divVote.getTextContent(), divMark.getTextContent(), divURLS.getTextContent(),divIngredients.getTextContent(),titleVote.getTextContent(),titleMark.getTextContent(),divRecipe.getTextContent()));
+						sites.add(new Site(mainSite.getTextContent(), searchSite.getTextContent(), divVote.getTextContent(), divMark.getTextContent(), divURLS.getTextContent(),divIngredients.getTextContent(),titleVote.getTextContent(),titleMark.getTextContent(),divRecipe.getTextContent(),divImg.getTextContent()));
 				}
 			}
 		} catch (final ParserConfigurationException e) {
