@@ -36,10 +36,30 @@
 			</div>
 		</section>
 		<section class="block" id="search">
-			Recherche
+			<div class="formulaire2">
+				<form action="#" method="post" id="searchform">
+	    			<div>
+	    				<label for="search">Recherche : </label>
+	        			<input type="text" id="search" />
+	    			</div>
+	    			<div class="radio">
+	        			<input id="ingredient" type="radio" name="searchcdt" value="ingredient">
+	    				<label for="ingredient">Ingredient</label>
+	    			</div>
+	    			<div class="radio">
+	    				<input id="recipe" type="radio" name="searchcdt" value="recipe" checked="true">
+	    				<label for="recipe">Recette</label>
+	    			</div>
+	    			<div class="button">
+	        			<button type="submit">Envoyer</button>
+	        			<button type="reset">Annuler</button>
+	    			</div>
+				</form>
+			</div>
+			<div id="searchresult"></div>
 		</section>
 		<section class="block" id="contact">
-			<form action="/#" method="post" id="contactform">
+			<form action="#" method="post" id="contactform">
     			<div class="formulaire">
     				<div>
         				<label for="nom">Nom :</label>
@@ -53,20 +73,10 @@
         				<label for="message">Message :</label>
       					<textarea id="message"></textarea>
     				</div>
-    				<table style="width:100%">
-    					<tr>
-    						<td>
-    							<div class="button">
-        							<button type="submit">Envoyer</button>
-    							</div>
-    						</td>
-    						<td>
-    							<div class="button">
-        							<button type="reset">Annuler</button>
-    							</div>
-    						</td>
-    					</tr>
-    				</table>
+    				<div class="button">
+        				<button type="submit">Envoyer</button>
+        				<button type="reset">Annuler</button>
+    				</div>
     			</div>
 			</form>
 		</section>
