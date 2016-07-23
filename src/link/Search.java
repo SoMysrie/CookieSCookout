@@ -136,6 +136,7 @@ public class Search {
 					}
 					if (!indexToRemove.contains(i)) {
                         System.out.println(s.getUrls().get(i).getUrl());
+						setRecipe(doc, s, i);
 						setVote(doc, s, i);
 						setMark(doc,s,i);
 					}
@@ -224,9 +225,24 @@ public class Search {
 
 
         }
-        if (doc.select(s.getDivVote()).size() == 0) {
-            s.getUrls().get(i).setVote(0);
-        }
+
+	}
+	private void setRecipe(Document doc, Site s, int i) {
+		for (Element file : doc.select(s.getDivRecipe())) {
+
+			String recipe =file.toString().replaceAll("<.*?>", "")
+					.replaceAll("[\r\n]", "");
+			System.out.println("RECETTE : "+ recipe);
+			s.getUrls()
+					.get(i)
+					.setRecipe(
+							recipe);
+
+
+
+
+		}
+
 	}
 	public String extractVote(String s,Site site) {
         String[] split=site.getTitleVote().split("value");
