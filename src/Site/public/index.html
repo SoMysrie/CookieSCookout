@@ -3,6 +3,7 @@
 		<title>CookieSCookout</title>
 		<link rel="stylesheet" type="text/css" href="css/fonts.css">
 		<link rel="stylesheet" type="text/css" href="css/global.css">
+		<link rel="stylesheet" type="text/css" href="css/toastr.min.css">
 	</head>
 	<body>
 		<header><img src="/img/LogoCookieSCookout.png" /></header>
@@ -38,7 +39,7 @@
 			Recherche
 		</section>
 		<section class="block" id="contact">
-			<form action="/#" method="post">
+			<form action="/#" method="post" id="contactform">
     			<div class="formulaire">
     				<div>
         				<label for="nom">Nom :</label>
@@ -56,12 +57,12 @@
     					<tr>
     						<td>
     							<div class="button">
-        							<button type="submit">Envoyer votre message</button>
+        							<button type="submit">Envoyer</button>
     							</div>
     						</td>
     						<td>
     							<div class="button">
-        							<button type="reset">Supprimer votre message</button>
+        							<button type="reset">Annuler</button>
     							</div>
     						</td>
     					</tr>
@@ -74,5 +75,6 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/js/jquery-2.2.3.min.js"></script>
 		<script src="/js/global.js"></script>
+		<script src="/js/toastr.min.js"></script>
 	</body>
 </html>

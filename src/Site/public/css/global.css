@@ -102,6 +102,7 @@ div.formulaire
     padding: 1em;
     border: 1px solid #CCC;
     border-radius: 1em;
+    margin-top: 45px;
 }
 
 div.formulaire div + div 
