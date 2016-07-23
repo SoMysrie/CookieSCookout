@@ -54,7 +54,7 @@ public class Search {
 	}
 
 	public void initKeyWords() {
-		String input = "citron oignon ^poulet";
+		String input = "poulet";
 		String[] tmpKeys = input.split(" ");
 		for (String s : tmpKeys) {
 			if (s.startsWith("^"))
@@ -126,19 +126,24 @@ public class Search {
 		Document doc;
 		ArrayList<Integer> indexToRemove = new ArrayList<Integer>();
 		for (Site s : this.sites) {
-			int size = s.getUrls().size();
-			for (int i = 0; i < size; i++) {
+
+			for (int i = 0; i < s.getUrls().size(); i++) {
 				try {
+					boolean present=false;
 					doc = Jsoup.connect(s.getUrls().get(i).getUrl()).get();
 					for (Element file : doc.select(s.divIngredients)) {
 
-						setIngredients(indexToRemove, s, i, file);
+						present=setIngredients( s, i, file);
 					}
-					if (!indexToRemove.contains(i)) {
+					if (!present) {
                         System.out.println(s.getUrls().get(i).getUrl());
 						setRecipe(doc, s, i);
 						setVote(doc, s, i);
 						setMark(doc,s,i);
+						setImg(doc,s,i);
+					}
+					else{
+						i--;
 					}
 
 				} catch (UnknownHostException e) {
@@ -151,7 +156,6 @@ public class Search {
 					e.printStackTrace();
 				}
 			}
-			this.updateLinks(s, indexToRemove);
 		}
 
 	}
@@ -171,16 +175,18 @@ public class Search {
         }
         return(result);
     }
-	public void setIngredients(ArrayList<Integer> indexToRemove, Site s,
+	public boolean setIngredients( Site s,
 			int i, Element file) {
+		boolean ret= false;
 		String ingredients = file.outerHtml()
 				.replaceAll("<.*?>", "")
-				.replaceAll("[\r\n]", "-");
+				.replaceAll("[\r\n]", "");
 		for (String str : exceptedIngredients) {
 			if (this.containIngredients(ingredients,str)) {
-				indexToRemove.add(i);
 				System.out.println("REMOVE : "
 						+ s.getUrls().get(i).getUrl());
+				s.getUrls().remove(i);
+				ret=true;
 			} else {
 				s.getUrls()
 						.get(i)
@@ -197,8 +203,16 @@ public class Search {
 				}
 			}
 		}
+		return ret;
 	}
 
+	private void setImg(Document doc, Site s, int i){
+		System.out.println("TEST : "+s.getDivImg());
+		for (Element file : doc.select(s.getDivImg())) {
+			System.out.println("IMAGE : "+file.attr("src"));
+			s.getUrls().get(i).setImage(file.attr("src"));
+		}
+	}
 	private void setVote(Document doc, Site s, int i) {
 		for (Element file : doc.select(s.getDivVote())) {
             s.getUrls()
@@ -256,11 +270,7 @@ public class Search {
         return res;
     }
 
-	void updateLinks(Site s, ArrayList<Integer> indexToRemove) {
-		for (Integer i : indexToRemove) {
-			s.getUrls().remove(i);
-		}
-	}
+
 
 	public void run() {
 		try {
