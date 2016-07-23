@@ -11,6 +11,15 @@ public class NotedRecipes implements Comparable {
     private float mark;
     private String[] ingredients;
     private String recipe;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public float getMark() {
 		return mark;
@@ -73,6 +82,7 @@ public class NotedRecipes implements Comparable {
     public void setVote(int vote) {
         this.vote = vote;
     }
+
 
     @Override
     public int compareTo(Object o) {
