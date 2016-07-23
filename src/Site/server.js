@@ -19,8 +19,7 @@ const createVirtualHost = function ( domainName , dirPath )
 } ;
 
 // Read settings file and launch server
-fs.readFile( __dirname + '/settings.json', 'utf8', function ( err ,setting ) 
-{
+fs.readFile( __dirname + '/settings.json', 'utf8', function ( err ,setting ) {
     if( err )
         return console.error( err ) ;
 
@@ -34,18 +33,15 @@ fs.readFile( __dirname + '/settings.json', 'utf8', function ( err ,setting )
     		throw new Error( 'Incomplete configuration file !' ) ;
 
 		app.use( bodyparser.json() );      // to support JSON-encoded bodies
-		app.use( bodyparser.urlencoded(
-			{   // to support URL-encoded bodies
-				extended: true
-			}
-		) ) ; 
+		app.use( bodyparser.urlencoded({   // to support URL-encoded bodies
+			extended: true
+		}) ) ; 
 
 		// Virtual host template
 		app.use( createVirtualHost( settings.HOST , settings.PUBDIR ) ) ;
 
 		// We start web server
-		const server = app.listen( process.env.PORT || setting.PORT || 8080 , function () 
-			{
+		const server = app.listen( process.env.PORT || setting.PORT || 8080 , function () {
 				const host = server.address().address ;
 				const port = server.address().port    ;
 
@@ -56,14 +52,12 @@ fs.readFile( __dirname + '/settings.json', 'utf8', function ( err ,setting )
 				( require( __dirname + '/inc/webservice.js' ) )({ app: app }) ;
 				( require( __dirname + '/inc/websocket.js'  ) )({ io: io   }) ;
 
-			console.log( 'Server are running at %s:%s', host, port) ;
-			}
-		) ;
+				console.log( 'Server are running at %s:%s', host, port) ;
+		}) ;
     }
     catch( e )
     {
     	console.log( e.message ) ;
     	process.exit(1) ;
     }
-}
-) ;
+}) ;

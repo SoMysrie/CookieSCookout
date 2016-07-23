@@ -1,0 +1,51 @@
+package application ;
+
+import javafx.event.ActionEvent;
+
+public class MyButtons 
+{
+
+    /**
+     * 
+     * @param e
+     */
+    private void handleButtonAction( ActionEvent e ) 
+    {
+        int count = 0 ;
+        String choices = "" ;
+        if( chkmarmiton.isSelected() )
+        {
+            count++ ;
+            choices += "- " + chkmarmiton.getText() + "\n" ;
+        }
+        if( chkcuisineaz.isSelected( ) )
+        {
+            count++;
+            choices += "- " + chkcuisineaz.getText() + "\n" ;
+        }
+        if( chkaufeminin.isSelected( ) )
+        {
+            count++;
+            choices += "- " + chkaufeminin.getText() + "\n" ;
+        }
+        if( chkbdd.isSelected( ) )
+        {
+            count++;
+            choices += "- " + chkbdd.getText() + "\n" ;
+        }
+        if( chklocal.isSelected( ) )
+        {
+            count++;
+            choices += "- " + chklocal.getText() + "\n" ;
+        }
+        if (count == 0 )
+        {
+        	lbltotal.setText( "Website chosen: 0" ) ;
+            lbllist.setText( "None" ) ;
+        }
+        lbltotal.setText( "Websites chosen: " + count ) ;
+        lbllist.setText( choices ) ;
+     } ;
+     
+     
+} ;

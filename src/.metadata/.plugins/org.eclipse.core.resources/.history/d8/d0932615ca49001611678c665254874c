@@ -1,0 +1,7 @@
+.root{
+    -fx-background-image: url("../img/LogoCookieSCookout.png");
+    -fx-background-position: center center; 
+    -fx-background-repeat: stretch;
+    -fx-background-color:rgba(255,0,0,0.5);
+}
+
