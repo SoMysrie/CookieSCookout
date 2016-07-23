@@ -7,6 +7,7 @@ const socketio   = require('socket.io')   ; // Realtime web socket framework
 const bodyparser = require('body-parser') ; // Body parsing middleware
 const fs         = require('fs')          ; // File I/O
 const path       = require('path')        ; // Utilities for handling and transforming file paths
+const mysql      = require('mysql')       ; // Mysql driver for node.js
 
 const app      = express()        ; // Instance of express
 const server   = http.Server(app) ; // Using express server 3/4
@@ -50,7 +51,7 @@ fs.readFile( __dirname + '/settings.json', 'utf8', function ( err ,setting ) {
 
 				// Web-Service & Web-Socket
 				( require( __dirname + '/inc/webservice.js' ) )({ app: app }) ;
-				( require( __dirname + '/inc/websocket.js'  ) )({ io: io   }) ;
+				( require( __dirname + '/inc/websocket.js'  ) )({ io: io , mysql: mysql }) ;
 
 				console.log( 'Server are running at %s:%s', host, port) ;
 		}) ;

@@ -1,23 +1,24 @@
 {
-  "name" : "CookieSCookout" ,
-  "version" : "0.0.1",
-  "description" : "Site culinaire",
-  "private" : false ,
-  "license" : "SEE LICENSE IN LICENSE.txt" ,
+  "name": "CookieSCookout",
+  "version": "0.0.1",
+  "description": "Site culinaire",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE.txt",
   "engines": {
     "node": ">=5.6.0"
   },
   "scripts": {
     "start": "node server.js"
   },
-  "repository" : {
-    "type" : "git" ,
-    "url" : "https://github.com/SoMysrie/CookieSCookout.git"
-  } ,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SoMysrie/CookieSCookout.git"
+  },
   "dependencies": {
-    "express"     : "4.13.3" ,
-    "vhost"       : "3.0.2"  ,
-    "body-parser" : "1.14.1" ,
-    "socket.io"   : "1.3.7"  
+    "body-parser": "1.14.1",
+    "express": "4.13.3",
+    "mysql": "^2.11.1",
+    "socket.io": "1.3.7",
+    "vhost": "3.0.2"
   }
 }

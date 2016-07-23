@@ -41,9 +41,12 @@ jQuery( document ).ready(function( $ ){
 		// Retourne un message d'erreur 
 		if( data.status || typeof data.length == 'undefined' )
 			return toastr.error( "Une erreur est survenue lors de votre recherche ! Merci de bien vouloir réitérer ultérieurement." ) ;
-	
-		// Affiche le nombre de recette trouvée
-		toastr.info( data.length + " recette(s) trouvée(s)" ) ;
+
+		if( data.length == 0 )
+			toastr.warning( "Aucunes recettes trouvées !" ) ;
+		else
+			// Affiche le nombre de recette trouvée
+			toastr.info( data.length + " recette(s) trouvée(s)" ) ;
 
 		// Block représentant la recette
 		var recipe = "<div class='recipe list'>{{titleRecipe}}<div class='thumbs'></div><div>{{nameIngredient}}<br />{{contentRecipe}}</div></div>" ;

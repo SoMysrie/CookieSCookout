@@ -2,7 +2,7 @@
 
 module.exports = function( obj )
 {
-	if( !obj.io )
+	if( !obj.io || !obj.mysql )
 		throw new Error( "Aucun websocket défini ! " ) ;
 
 	// Evenement qui se déclenche lors de la connection
@@ -27,34 +27,190 @@ module.exports = function( obj )
 			}
 		}) ;
 
-		// Evenement qui se déclenche lors de l'envoi de la rercherche
+		// Evenement qui se déclenche lors de l'envoi de la recherche
 		socket.on( 'sendsearch' , function( o ){
 			if( !o.search )
 				throw new Error("Le champ est vide ou incorrect !") ;
 
 			try
 			{	
-				// Signalement du succès à l'IHM
-				socket.emit( 'sendsearch' , [
-					{
-						'imgRecipe'		: 'https://teammangas.files.wordpress.com/2015/07/transforming_furikake_gohan_anime.png'         ,
-						'titleRecipe' 	: 'Titre de la première recette' ,
-						'nameIngredient': [ 'sel', 'sucre', 'poivre']	 ,
-						'contentRecipe'	: "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains." ,
-					} , 
-					{
-						'imgRecipe'		: 'https://blog.manga.tv/wp-content/uploads/2015/06/food-wars-shokugeki-no-soma-episode-10-manga-tv-streaming-anime-online-legal-gratuit-screenshot-27.jpg'         ,
-						'titleRecipe' 	: 'Titre de la deuxième recette' ,
-						'nameIngredient': [ 'sel', 'sucre', 'poivre']	 ,
-						'contentRecipe'	:  "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.",
-					} , 
-					{
-						'imgRecipe'		: 'http://ekladata.com/RTqwob7JakraQf-kDrvJeVzPJEM.png'         ,
-						'titleRecipe' 	: 'Titre de la troisième recette',
-						'nameIngredient': [ 'sel', 'sucre', 'poivre']	 ,
-						'contentRecipe'	:  "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.",
-					} 
-				] ) ;
+				var mySqlClient = obj.mysql.createConnection({
+				  host     : "localhost",
+				  user     : "root",
+				  password : "root",
+				  database : "CookieSCookout"
+				});
+
+				mySqlClient.connect();
+				
+				var sqlQuery ;
+
+				if( o.recipe )
+					// Requête pour récupérer les recettes en fonction du mot demandé pour la recette
+					sqlQuery = "SELECT * FROM Ingredient, COMPOSE, Recipe " 
+							 + "WHERE COMPOSE.idRecipe = Recipe.idRecipe "
+							 + "and Ingredient.idIngredient = COMPOSE.idIngredient "
+							 + "and Recipe.titleRecipe LIKE '%" + o.search + "%';" ; 	
+				else
+					// Requête pour récupérer l'id des recettes contenant l'ingrédient
+					sqlQuery = "SELECT * FROM Ingredient, COMPOSE, Recipe WHERE Ingredient.nameIngredient LIKE '%" + o.search +  "%' AND Ingredient.idIngredient = COMPOSE.idIngredient AND COMPOSE.idRecipe = Recipe.idRecipe ;" ; 	
+	
+				mySqlClient.query(
+					sqlQuery,
+					o.recipe
+					  ?
+						function select( error, results, fields ) {
+							if( error ) 
+							{
+							    mySqlClient.end();
+							    socket.emit( 'sendsearch' , { status: 'error' } ) ;
+							    throw error ;
+							}
+						 	
+							var recipes = [] ;
+
+						 	if ( results.length > 0 ) 
+						 	{ 
+						 		var recipe = null ;
+
+						    	for( var i = 0 ; i < results.length ; i++)
+						    	{
+						
+						    		if( recipe == null )
+						    		{
+						    			recipe = {
+						    				'idRecipe'      : results[i]['idRecipe'] ,
+											'imgRecipe'		: results[i]['imgRecipe'] ,
+											'titleRecipe' 	: results[i]['titleRecipe'] ,
+											'nameIngredient': [ ( results[i]['qty'] != null ? results[i]['qty'] + " -> " : "" ) + results[i]['nameIngredient'] + ( results[i]['note'] != null ? " -> " + results[i]['note'] : "" ) ] ,
+											'contentRecipe'	: results[i]['contentRecipe']
+										} ;
+
+										continue ; // saute la suite si recipe a bien été null
+									}
+
+									// permet de récupérer tous les ingrédients d'une recette
+									if( recipe.idRecipe == results[i]['idRecipe'] )
+									{
+										recipe.nameIngredient.push(
+											 ( results[i]['qty'] != null ? results[i]['qty'] + " -> " : "" ) + results[i]['nameIngredient'] + ( results[i]['note'] != null ? " -> " + results[i]['note'] : "" ) 
+										) ;
+
+										continue ; // saute la suite si l'id est bien correspondant
+									}
+
+									// ajoute une nouvelle recette à la liste
+									recipes.push( recipe ) ;
+
+									// met la recette courante en ligne une fois que tout est fini
+									recipe = null ;
+								} ;
+						    
+						    	// ajoute une nouvelle recette à la liste
+								recipes.push( recipe ) ;
+
+								// Envoi le résultat de la recherche à l'IHM
+								socket.emit( 'sendsearch' , recipes ) ;
+						    }
+						    else 
+						    	socket.emit( 'sendsearch' , [] ) ;
+						    
+							mySqlClient.end();
+						}
+					  :
+					    function select( error, results, fields ) {
+							if( error ) 
+							{
+							    mySqlClient.end();
+							    socket.emit( 'sendsearch' , { status: 'error' } ) ;
+							    throw error ;
+							}
+
+						 	if ( results.length > 0 ) 
+						 	{ 
+						 		var ids_query = "" ;
+						    	
+						    	// Ajoute chaque id de la recette trouvée avec le nom de l'ingrédient
+						    	for( var i = 0 ; i < results.length ; i++)
+						    	{
+						    		console.log(results[i]['idRecipe']);
+								    ids_query += "Recipe.idRecipe = " + results[i]['idRecipe'] ;
+
+				    				if( i+1 < results.length )
+				    					ids_query += " OR " ;
+								} ;
+
+								console.log("SELECT * FROM Ingredient, COMPOSE, Recipe " 
+								  + "WHERE COMPOSE.idRecipe = Recipe.idRecipe "
+								  + "and Ingredient.idIngredient = COMPOSE.idIngredient "
+								  + "and ( " + ids_query + " ) ;" );
+
+						    	mySqlClient.query(
+									"SELECT * FROM Ingredient, COMPOSE, Recipe " 
+								  + "WHERE COMPOSE.idRecipe = Recipe.idRecipe "
+								  + "and Ingredient.idIngredient = COMPOSE.idIngredient "
+								  + "and ( " + ids_query + " ) ;" ,
+									function select( error, results, fields ) {
+										if( error ) 
+										{
+										    mySqlClient.end();
+										    socket.emit( 'sendsearch' , { status: 'error' } ) ;
+										    throw error ;
+										}
+							
+										var recipes = [] ;
+
+									 	if ( results.length > 0 ) 
+									 	{ 
+									 		var recipe = null ;
+
+									    	for( var i = 0 ; i < results.length ; i++)
+									    	{
+									
+									    		if( recipe == null )
+									    		{
+									    			recipe = {
+									    				'idRecipe'      : results[i]['idRecipe'] ,
+														'imgRecipe'		: results[i]['imgRecipe'] ,
+														'titleRecipe' 	: results[i]['titleRecipe'] ,
+														'nameIngredient': [ ( results[i]['qty'] != null ? results[i]['qty'] + " -> " : "" ) + results[i]['nameIngredient'] + ( results[i]['note'] != null ? " -> " + results[i]['note'] : "" ) ] ,
+														'contentRecipe'	: results[i]['contentRecipe']
+													} ;
+
+													continue ;
+												}
+
+												if( recipe.idRecipe == results[i]['idRecipe'] )
+												{
+													recipe.nameIngredient.push(
+														 ( results[i]['qty'] != null ? results[i]['qty'] + " -> " : "" ) + results[i]['nameIngredient'] + ( results[i]['note'] != null ? " -> " + results[i]['note'] : "" ) 
+													) ;
+
+													continue ;
+												}
+
+												recipes.push( recipe ) ;
+
+												recipe = null ;
+											} ;
+									    
+											recipes.push( recipe ) ;
+
+											// Envoi du résultat de la recherche
+											socket.emit( 'sendsearch' , recipes ) ;
+									    }
+									    else 
+									    	socket.emit( 'sendsearch' , [] ) ;
+									}
+								) ;
+						    }
+						    else 
+						    	socket.emit( 'sendsearch' , [] ) ;
+						    
+							mySqlClient.end();
+
+					    }
+				) ;
 			}
 			catch( e )
 			{
