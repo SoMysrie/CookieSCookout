@@ -45,6 +45,26 @@ public class TestLoader extends TestCase implements ITestLoader {
 					"Div Ingredients has not been correctly initialized. Should be : divIngredients"
 							+ i + " instead of : " + site.getDivIngredients(), site
 							.getDivIngredients().equals("divIngredients" + i));
+			assertTrue(
+					"titleVote has not been correctly initialized. Should be : titleVote"
+							+ i + " instead of : " + site.getTitleVote(), site
+							.getTitleVote().equals("titleVote" + i));
+			assertTrue(
+					"titleMark has not been correctly initialized. Should be : titleMark"
+							+ i + " instead of : " + site.getTitleMark(), site
+							.getTitleMark().equals("titleMark" + i));
+			assertTrue(
+					"divRecipe has not been correctly initialized. Should be : divRecipe"
+							+ i + " instead of : " + site.getDivRecipe(), site
+							.getDivRecipe().equals("divRecipe" + i));
+			assertTrue(
+					"divTitle has not been correctly initialized. Should be : divTitle"
+							+ i + " instead of : " + site.getDivTitle(), site
+							.getDivTitle().equals("divTitle" + i));
+			assertTrue(
+					"divImg has not been correctly initialized. Should be : divImg"
+							+ i + " instead of : " + site.getDivImg(), site
+							.getDivImg().equals("divImg" + i));
 			i++;
 		}
 	}
@@ -54,7 +74,8 @@ public class TestLoader extends TestCase implements ITestLoader {
 		XMLLoader loader = new XMLLoader();
 		try {
 			loader.load("src/testJunit/xmlFiles/okButSmtNull.xml");
-			Assert.fail("Must catch exception");
+			fail("Must catch exception");
+
 		}
 		catch(Exception e){
 
@@ -69,7 +90,7 @@ public class TestLoader extends TestCase implements ITestLoader {
 		XMLLoader loader = new XMLLoader();
 		try {
 			loader.load("src/testJunit/xmlFiles/xmlIncomplete.xml");
-			Assert.fail("Exception hasn't been thrown");
+			fail("Exception hasn't been thrown");
 		} catch (Exception e) {
 		}
 	}
