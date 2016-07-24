@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Sites>
+	<site>
+		<mainSite>mainSite1</mainSite>
+		<searchSite>REPLACEWITHKEYWORDS1</searchSite>
+		<divURLS>divURLS1</divURLS>
+		<divVote>divVote1</divVote>
+		<divMark>divMark1</divMark>
+		<divIngredients>divIngredients1</divIngredients>
+	</site>
+	<site>
+		<mainSite>mainSite2</mainSite>
+		<searchSite>REPLACEWITHKEYWORDS2</searchSite>
+		<divURLS>divURLS2</divURLS>
+		<divVote>divVote2</divVote>
+		<divMark>divMark2</divMark>
+		<divIngredients>divIngredients2</divIngredients>
+	</site>
+	<site>
+		<mainSite>mainSite3</mainSite>
+		<searchSite>REPLACEWITHKEYWORDS3</searchSite>
+		<divURLS>divURLS3</divURLS>
+		<divVote>divVote3</divVote>
+		<divMark>divMark3</divMark>
+		<divIngredients>divIngredients3</divIngredients>
+	</site>
+	
+</Sites>

@@ -1,0 +1,163 @@
+package plugin;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.jar.JarFile;
+
+/**
+ * Created by Nicolas_Travail on 21/06/2016.
+ */
+public class PluginLoader {
+	private String[] files;
+
+	private ArrayList<Object> classResearchPlugin;
+
+	public PluginLoader() {
+		this.classResearchPlugin = new ArrayList<Object>();
+	}
+
+	public PluginLoader(String[] files) {
+		this();
+		this.files = files;
+	}
+
+	public void setFiles(String[] files) {
+		this.files = files;
+	}
+
+	public ArrayList<ResearchPlugin> loadResearchPlugin() throws Exception {
+
+		this.initializeLoader();
+		ArrayList<ResearchPlugin> tmp = new ArrayList<ResearchPlugin>();
+		for (int i = 0; i < this.classResearchPlugin.size(); i++) {
+			tmp.add((ResearchPlugin) ((Class) this.classResearchPlugin.get(i))
+					.newInstance());
+		}
+		return tmp;
+	}
+
+	private void initializeLoader() throws Exception {
+		if (this.files == null || this.files.length == 0
+				|| this.classResearchPlugin.size() != 0) {
+			return;
+		}
+
+		File[] f = new File[this.files.length];
+		URLClassLoader loader;
+		String tmp = "";
+		Enumeration enumeration;
+		Class tmpClass = null;
+
+		for (int index = 0; index < f.length; index++) {
+
+			f[index] = new File(this.files[index]);
+
+			if (!f[index].exists()) {
+				break;
+			}
+
+			URL u = f[index].toURI().toURL();
+
+			loader = new URLClassLoader(new URL[] { u });
+
+			JarFile jar = new JarFile(f[index].getAbsolutePath());
+
+			enumeration = jar.entries();
+
+			while (enumeration.hasMoreElements()) {
+
+				tmp = enumeration.nextElement().toString();
+
+				if (tmp.length() > 6 && tmp.endsWith(".class")) {
+
+					tmpClass = setClassName(loader, tmp);
+					if(tmpClass !=null){
+					for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
+						if (tmpClass.getInterfaces()[i].getName().equals(
+								"JavaFXApp.src.plugin.ResearchPlugin")) {
+							verifiyAndAddRessearchPlugin(tmpClass, i);
+						}
+
+					}
+					}
+
+				}
+			}
+
+		}
+
+	}
+
+	private void verifiyAndAddRessearchPlugin(Class tmpClass, int i) {
+		Boolean correct = true;
+		Method[] tmpClassIMethodes = tmpClass.getInterfaces()[i].getMethods();
+		for (int j = 0; j < tmpClassIMethodes.length && correct; j++) {
+			Boolean find = false;
+			for (int k = 0; k < tmpClass.getMethods().length && !find; k++) {
+				find = verifiyImplementations(tmpClass, tmpClassIMethodes, j,
+						find, k);
+
+			}
+			if(!find){
+				System.out.println(tmpClassIMethodes[i]);
+				correct = find;
+				break;
+			}
+		}
+		if (correct)
+			this.classResearchPlugin.add(tmpClass);
+	}
+
+	private Boolean verifiyImplementations(Class tmpClass,
+			Method[] tmpClassIMethodes, int j, Boolean find, int k) {
+		if (tmpClass.getMethods()[k].getName().equals(
+				tmpClassIMethodes[j].getName())
+				&& tmpClass.getMethods()[k].getReturnType().equals(
+						tmpClassIMethodes[j].getReturnType())) {
+			if (tmpClassIMethodes[j].getParameterTypes().length == 0
+					&& tmpClass.getMethods()[k].getParameterTypes().length == 0)
+				find = true;
+			find = checkParameters(tmpClass, tmpClassIMethodes, j, find, k);
+
+		}
+		return find;
+	}
+
+	private Boolean checkParameters(Class tmpClass, Method[] tmpClassIMethodes,
+			int j, Boolean find, int k) {
+		for (int ind = 0; ind < tmpClass.getMethods()[k]
+				.getParameterTypes().length && !find; ind++) {
+
+			for (int ind2 = 0; ind2 < tmpClassIMethodes[j]
+					.getParameterTypes().length && !find; ind2++) {
+				
+				if (tmpClass.getMethods()[k].getParameterTypes()[ind]
+						.equals(tmpClassIMethodes[j].getParameterTypes()[ind2]))
+					find = true;
+			}
+		}
+		return find;
+	}
+
+	private Class setClassName(URLClassLoader loader, String tmp) throws  ClassNotFoundException
+			 {
+		Class tmpClass=null;
+		tmp = tmp.substring(0, tmp.length() - 6);
+		tmp = tmp.replaceAll("/", ".");
+		try{
+		tmpClass = Class.forName(tmp, true, loader);	
+		}
+		catch(NoClassDefFoundError e){
+			System.out.println("erreur JavaFXApp.src.plugin");
+		}
+		
+		
+		return tmpClass;
+		
+	}
+
+}

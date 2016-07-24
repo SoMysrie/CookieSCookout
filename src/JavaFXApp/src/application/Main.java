@@ -38,10 +38,12 @@ import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
+import link.Search;
 
 
 public class Main extends Application 
 {
+	Search searcher = new Search();
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ;
     Label label , lbltotal , lbllist , 
@@ -618,7 +620,7 @@ public class Main extends Application
                  		+ "			You also can edit and save changes for an ingredient' informations. \n"
                  		+ "			Any changes will be saved in the database.\n\n" ) ;
                  lblPlugin = new Label( "Plugin \n"
-                 		+ "	You can add any new plugin.\n" ) ;
+                 		+ "	You can add any new JavaFXApp.src.plugin.\n" ) ;
                  lblHelp = new Label( "Help \n"
                  		+ "	You can see this list of information.\n" ) ;
                  
@@ -680,7 +682,7 @@ public class Main extends Application
      */
     private void handleButtonSearch( ActionEvent e )
     {
-    	//TO DO
+		searcher.run(chkmarmiton.isSelected(),chkcuisineaz.isSelected(),chkaufeminin.isSelected(),chklocal.isSelected(),search.getText());
     }
      
     /**
