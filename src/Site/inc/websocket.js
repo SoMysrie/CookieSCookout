@@ -40,69 +40,65 @@ module.exports = function( obj )
 		}) ;
 		
 		
-		// // Evenement qui se déclenche lors de l'envoi du message
-		// socket.on( 'printrecipe' , function( o ){
-		// 	try
-		// 	{	
-		// 		var mySqlClient = obj.mysql.createConnection({
-		// 			host     : "localhost",
-		// 			user     : "root",
-		// 			password : "root",
-		// 			database : "CookieSCookout"
-		// 		});
+		// Evenement qui se déclenche lors du scrolling pour récupérer les recettes de la bdd
+		socket.on( 'needrecipe' , function(data){
 
-		// 		mySqlClient.connect();
-					
-		// 		var selectQuery = "SELECT * FROM Recipe ;" ; 
- 
-		// 		mySqlClient.query(selectQuery,function select(error, results, fields) {
-		// 			if (error) 
-		// 			{
-		// 			    mySqlClient.end();
-		// 				socket.emit( 'printrecipe' , { status: 'error' } ) ;
-		// 				throw error ;
-		// 			}					 
-					
-		// 			if ( results.length > 0 )  
-		// 			{
-		// 				var recipe = null ;
+			// On vérifie que le nombre de recettes est un bien un nombre et non inférieur à 0
+			if( typeof data.recipeSize != 'number' || data.recipeSize < 0 )
+				return ;
 
-		// 				for( var i = 0 ; i < results.length ; i++)
-		// 				{
-		// 					if( recipe == null )
-		// 					{
-		// 						recipe = {
-		// 							'imgRecipe'	: results[i]['imgRecipe'] ,
-		// 			    			'idRecipe'	: results[i]['idRecipe']
-		// 			    		}
+			// On fixe à 12 le nombre de recette par défaut à retourner
+			var count = 12 ;
 
-		// 			    		continue ;
-		// 			    	}
-					    			
-		// 			    	recipes.push( recipe ) ;
-		// 					recipe = null ;
-		// 				}
-									    
-		// 				recipes.push( recipe ) ;
+			// On vérifie que le nombre de recettes qu'on veut récupérer est bien un nombre et qu'il n'est pas inférieur à 1
+			if( typeof data.count == 'number' && data.count >= 1 )
+				count = data.count ;
 
-		// 				// Envoi des recettes
-		// 				socket.emit( 'printrecipe' , recipes ) ;
-		// 			} 
-		// 			    else 
-		// 			    	socket.emit( 'printrecipe' , [] ) ;
-		// 			    mySqlClient.end();
-		// 		});
+			try
+			{
+				// Permet de se connecter à la bdd
+				var mySqlClient = obj.mysql.createConnection({
+					host     : "localhost",
+					user     : "root",
+					password : "root",
+					database : "CookieSCookout"
+				});
+
+				// Connection à la bdd
+				mySqlClient.connect(); 
 				
-		// 		// Signalement du succès à l'IHM
-		// 		socket.emit( 'printrecipe' , { status: 'success' } ) ;
-		// 	}
-		// 	catch( e )
-		// 	{
-		// 		// Signalement de l'échec à l'IHM
-		// 		socket.emit( 'printrecipe' , { status: 'error' } ) ;
-		// 	}	
-		// }) ;
+				// Execution de la requete et constitution d'une liste avec les recettes récupérées
+				mySqlClient.query( "SELECT idRecipe AS id, titleRecipe AS title, imgRecipe AS thumbs FROM Recipe LIMIT " + data.recipeSize + ", " + data.count + ";" , function select( error, results, fields ) {
+					if( error ) 
+					{
+					    mySqlClient.end() ;
+						socket.emit( 'needrecipe' , { status: 'error' } ) ;
+						return ;
+					}					 
+					
+					// création d'une liste vide
+					var recipes = [] ;
 
+					// remplissage de la liste
+					for( var i = 0 ; i < results.length ; i++ )
+						recipes.push({
+							id    : results[i]['id'] ,
+							title : results[i]['title'] ,
+							thumbs: results[i]['thumbs'] 
+						}) ;
+
+					// Envoi de la liste des recettes constituées
+					socket.emit('needrecipe',recipes) ;
+
+					// Arrêt de la connection à la bdd
+					mySqlClient.end() ;
+				});
+			}
+			catch( e )
+			{
+				socket.emit( 'needrecipe' , { status: 'error' } ) ;
+			}
+		}) ;
 	
 		// Evenement qui se déclenche lors de l'envoi de la recherche
 		socket.on( 'sendsearch' , function( o ){

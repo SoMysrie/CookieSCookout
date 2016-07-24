@@ -16,14 +16,6 @@ var   settings = {}               ; // Server settings
 
 // create reusable transporter object using the default SMTP transport 
 const transporter = nodemailer.createTransport('smtps://heltestergo%40gmail.com:testergonomique@smtp.gmail.com');
-// const transporter = nodemailer.createTransport({
-// 	service: 'Gmail',
-// 	auth: {
-// 	    user: 'heltestergo@gmail.com',
-// 	    pass: 'testergonomique'
-// 	}
-// 	});
-
 
 // Specify virtual host
 const createVirtualHost = function ( domainName , dirPath ) 

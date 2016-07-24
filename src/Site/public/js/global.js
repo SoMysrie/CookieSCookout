@@ -1,15 +1,49 @@
 jQuery( document ).ready(function( $ ){
 
+	// On boucle sur toutes les miniatures de recettes pour afficher la vignette 
+	function updateThumbs()
+	{
+		$('div.recipe').each(function(e){
+			$(this).css( 'background-image' , 'url(\'' + $(this).attr('data-background') + '\')' ) ;
+		});
+	} ;
+
+	// Fonction qui demande un nombre de recette 
+	function needRecipes( count , recipeSize )
+	{
+		if( typeof count != 'number' || count < 1 )
+			return ;
+
+		// Envoi du nombre de recettes qu'on veut ainsi que le nombre de recettes précédemment récupérées
+		socket.emit( 'needrecipe' , { count: 12 , recipeSize: recipeSize } ) ;
+	} ;
+
 	// Rajout de la barre de progression pour les alertes
 	toastr.options = {
 		"progressBar": true
 	} ;
 
-	// Indicateut montrant si on a déjà été déconnecté ou pas
+	// Indicateur montrant si on a déjà été déconnecté ou pas
 	var alreadyDisconnected = false ;
 
 	// Connection au serveur et récupération du socket
 	var socket = io('http://' + location.hostname + ( location.port == '' ? '' : ':' + location.port ) ) ;
+
+	var requestRecipe = false ;
+
+	needRecipes( 12 , 0 ) ;
+
+	// Scroll infinite
+	$( window ).scroll(function() {
+
+		// On vérifie si on est arrivé en bas de page ou pas (à 1000 pixels du bas)
+		if( requestRecipe || $( window ).height() - $( window ).scrollTop() > 1000 )
+	    	return ;
+
+		requestRecipe = true ;
+
+		needRecipes( 12 , $('div.recipe').length ) ;
+	}) ;
 
 	// Evenement qui se déclenche lors d'une connection
 	socket.on('connect', function( data ) {
@@ -21,6 +55,28 @@ jQuery( document ).ready(function( $ ){
 	socket.on('disconnect', function( data ) {
 		alreadyDisconnected = true ;
 	    toastr.warning( "Il semblerait que vous n'avez plus internet ! Merci de bien vouloir vous reconnecter pour pouvoir naviguer sur le site internet." ) ;
+	}) ;
+
+	// Evenement qui se déclenche lors du retour de la demande précédemment demandée
+	socket.on('needrecipe', function( data ){
+
+		requestRecipe = false ;
+
+		if( typeof data.length != 'number' )
+		{
+			toastr.error( "Une erreur est survenue durant la récupération des articles suivants..." ) ;
+			return ;
+		}
+
+		if( data.length > 0 )
+			toastr.success( data.length + " recette(s) récupérées" ) ;
+
+		// Permet d'ajouter les recettes reçus à la suite de celle déjà présente sur la page
+		for( var i = 0 ; i < data.length ; i++ )
+			$( 'section#recipes' ).append( '<div class="recipe" id="recipe-' + data[i].id + '" data-background="' + data[i].thumbs + '"><h1>' + data[i].title + '</h1></div>' ) ;
+	
+		// Affiche les minatures
+		updateThumbs() ;
 	}) ;
 
 	// Evenement qui se déclenche lors de l'envoi d'un email
@@ -75,11 +131,6 @@ jQuery( document ).ready(function( $ ){
 			$( 'div#searchresult div.recipe.list:last-child div.thumbs' ).css( 'background-image' , "url('" + data[i]['imgRecipe'] + "')" ) ;
 		} ;
 	}) ;
-
-	// On boucle sur toutes les miniatures de recettes pour afficher la vignette 
-	$('div.recipe').each(function(e){
-		$(this).css( 'background-image' , 'url(\'' + $(this).attr('data-background') + '\')' ) ;
-	});
 
 	$('section#menu a').click(function(){
 		$('section.block').hide() ;
