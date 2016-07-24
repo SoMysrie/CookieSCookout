@@ -1112,11 +1112,7 @@ public class Main extends Application
 		 File file = fileChooser.showOpenDialog( stage ) ;
 		 if ( file != null )
 		 {
-
 				searcher.plugins.add(file.getName());
-
-
-
 		 }
     } ;
     

@@ -7,7 +7,12 @@
 		<divURLS>divURLS1</divURLS>
 		<divVote>divVote1</divVote>
 		<divMark>divMark1</divMark>
+		<titleVote>titleVote1</titleVote>
+		<titleMark>titleMark1</titleMark>
 		<divIngredients>divIngredients1</divIngredients>
+		<divRecipe>divRecipe1</divRecipe>
+		<divImg>divImg1</divImg>
+		<divTitle>divTitle1</divTitle>
 	</site>
 	<site>
 		<mainSite>mainSite2</mainSite>
@@ -15,7 +20,12 @@
 		<divURLS>divURLS2</divURLS>
 		<divVote>divVote2</divVote>
 		<divMark>divMark2</divMark>
+		<titleVote>titleVote2</titleVote>
+		<titleMark>titleMark2</titleMark>
 		<divIngredients>divIngredients2</divIngredients>
+		<divRecipe>divRecipe2</divRecipe>
+		<divImg>divImg2</divImg>
+		<divTitle>divTitle2</divTitle>
 	</site>
 	<site>
 		<mainSite>mainSite3</mainSite>
@@ -23,7 +33,12 @@
 		<divURLS>divURLS3</divURLS>
 		<divVote>divVote3</divVote>
 		<divMark>divMark3</divMark>
+		<titleVote>titleVote3</titleVote>
+		<titleMark>titleMark3</titleMark>
 		<divIngredients>divIngredients3</divIngredients>
+		<divRecipe>divRecipe3</divRecipe>
+		<divImg>divImg3</divImg>
+		<divTitle>divTitle3</divTitle>
 	</site>
 	
 </Sites>
