@@ -255,7 +255,8 @@ public class Main extends Application
         		        		//RECIPE
         		        		addContent = new TextField() ;
         		        		addContent.setPromptText( "Recipe" ) ;
-        		        		addContent.setMaxWidth( contentCol.getPrefWidth( ) ) ;
+        		        		addContent.setPrefWidth(200);
+        		        		addContent.setPrefHeight(200);
         		        		
         		        		//SCORE
         		        		addScore = new TextField() ;

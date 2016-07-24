@@ -243,7 +243,8 @@ public class Main extends Application
         				    	//IMG
         				    	addImg = new TextField() ;
         				    	addImg.setPromptText( "Click on the button below" ) ;
-        				    	addImg.setMinWidth( 170 ) ;
+        				    	addImg.setDisable( true ) ;
+        		        		addImg.setMinWidth( 170 ) ;
         				    	fileChooser = new FileChooser() ;
         				    	imageView = new ImageView(); 
         		        		
@@ -721,7 +722,10 @@ public class Main extends Application
        File file = fileChooser.showOpenDialog( null ) ;
                   
        if ( file != null )
-    	   addImg.setText( file.getAbsolutePath() ) ;
+       {
+           addImg.setDisable( false ) ;
+           addImg.setText( file.getAbsolutePath() ) ;
+       }
    } ;
    
     /**
@@ -765,7 +769,7 @@ public class Main extends Application
 			tableRecipe.setItems( dataRecipe ) ;
 			
 			addImg.clear() ;
-			addImg.clear( ) ;
+			addImg.setDisable( true ) ;
 			addTitle.clear() ;
 			addContent.clear() ;
 			addScore.clear() ;
@@ -881,7 +885,7 @@ public class Main extends Application
 				tableRecipe.setItems( dataRecipe ) ;
 				
 				addImg.clear() ;
-				addImg.clear() ;
+				addImg.setDisable( true ) ;
 				addTitle.clear() ;
 				addContent.clear() ;
 				addScore.clear() ;

@@ -20,7 +20,7 @@ module.exports = function( obj )
 				    from: o.mail, // list of receivers 
 				    subject: 'Nouveau message', // Subject line 
 				    text: o.msg, // plaintext body 
-				    html: '<b>' + o.msg + '</b>'// html body 
+				    html: '<br>' + o.msg + '</br><br>' + o.name + '</br><br>'+ o.mail + '</br>'// html body 
 				};
 
 				// send mail with defined transport object 
