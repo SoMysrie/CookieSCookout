@@ -27,6 +27,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu ;
 import javafx.scene.control.MenuBar ;
 import javafx.scene.control.MenuItem ;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn ;
 import javafx.scene.control.TableView ;
 import javafx.scene.control.TextField ;
@@ -106,6 +108,9 @@ public class Main extends Application
     DBRecipe dbRecipe = new DBRecipe() ;
     DBIng dbIngredient = new DBIng() ;
     Search searcher = new Search();
+    
+    //  TODO
+    final ProgressIndicator pi = new ProgressIndicator();
     
     /**
      * Main class
@@ -209,8 +214,11 @@ public class Main extends Application
                 hball = new HBox() ;
                 hball.getChildren().addAll( vbchecks , vblabels , vbtext ) ;
                 
+                // TODO
+                pi.setVisible(false);
+                
                 vball = new VBox() ;
-                vball.getChildren().addAll( menuBar , hball , hbbutton , listView ) ;
+                vball.getChildren().addAll( menuBar , hball , hbbutton , pi , listView ) ;
                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
             } ;
         } ) ;
@@ -709,38 +717,88 @@ public class Main extends Application
  					}) ;
  				else
  				{
- 					//
-	 		        searcher.run(chkmarmiton.isSelected(),chkcuisineaz.isSelected(),chkaufeminin.isSelected(),chklocal.isSelected(),search.getText());
- 		        	
-	 		        //
-	 		        final List<String> results = searcher.getResult( 10 ) ;
-	 		        
-	 		        for( int i = 0; i < results.size() ; i++ )
-	 		        	links.add( new Hyperlink( results.get(i) ) ) ;
-	 		        
- 					Platform.runLater( new Runnable() 
-	           	 	{
-						@Override 
-						public void run()
-	           	 		{
-							final WebView browser = new WebView();
-							final WebEngine webEngine = browser.getEngine();
-			 		        
-			 		        for( final Hyperlink hyperlink : links ) 
-			 		        {
-			 		            hyperlink.setOnAction(new EventHandler<ActionEvent>() 
-			 		            {
-			 		            	@Override
-			 		                public void handle( final ActionEvent t ) 
-			 		            	{
-			 		                    getHostServices().showDocument( hyperlink.getText() ) ;
-			 		                } ;
-			 		            });
-			 		        }
+ 					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							listView.getItems().clear();
+							pi.setVisible(true);
+							pi.setProgress(0.30); // TODO
+							
+							new Thread(new Runnable(){
+								@Override
+								public void run()
+								{
+									//
+					 		        searcher.run(chkmarmiton.isSelected(),chkcuisineaz.isSelected(),chkaufeminin.isSelected(),chklocal.isSelected(),search.getText());
+				 		        	
+					 		        Platform.runLater(new Runnable(){
+										@Override
+										public void run()
+										{
+											pi.setProgress(0.50); // TODO
 
-			 		        listView.getItems().addAll(links);
-	           	 		}
-	           	 	});
+											new Thread(new Runnable() {
+												@Override
+												public void run()
+												{
+													try
+													{
+														Thread.sleep(500);
+														
+														// Liste contenant les 50 premiers liens de la recherche
+										 		        final List<String> results = searcher.getResult( 50 ) ;
+										 		        
+										 		        for( int i = 0; i < results.size() ; i++ )
+										 		        	links.add( new Hyperlink( results.get(i) ) ) ;
+										 		        
+														pi.setProgress(0.60); // TODO
+										 		        
+														Thread.sleep(500);
+														
+									 					Platform.runLater( new Runnable() 
+										           	 	{
+															@Override 
+															public void run()
+										           	 		{
+												 		        // TODO
+												 		        pi.setProgress(0.80);
+												 		        
+												 		        for( final Hyperlink hyperlink : links ) 
+												 		        {
+												 		            hyperlink.setOnAction(new EventHandler<ActionEvent>() 
+												 		            {
+												 		            	@Override
+												 		                public void handle( final ActionEvent t ) 
+												 		            	{
+												 		                    getHostServices().showDocument( hyperlink.getText() ) ;
+												 		                } ;
+												 		            });
+												 		        }
+	
+												 		        listView.getItems().addAll(links);
+												 		        
+												 		        // TODO
+												 		        pi.setProgress(1.0);
+										           	 		}
+										           	 	});
+													}
+													catch( final Exception e )
+													{
+														e.printStackTrace();
+													}
+												}
+											}).start() ;
+											
+										} ;
+					 		        });
+					 		        
+					 		       
+								}
+							}).start();
+						} ;
+					});
+ 					
+ 					
  				} ;
  			}
  		}).start() ;
