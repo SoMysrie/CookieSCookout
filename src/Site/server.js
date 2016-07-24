@@ -53,8 +53,8 @@ fs.readFile( __dirname + '/settings.json', 'utf8', function ( err ,setting ) {
 				// SocketIO instance
 				const io = (socketio)(server) ;
 
-				// Web-Service & Web-Socket
-				( require( __dirname + '/inc/webservice.js' ) )({ app: app }) ;
+				// Pages & Web-Socket
+				( require( __dirname + '/inc/pages.js' ) )({ app: app , mysql: mysql }) ;
 				( require( __dirname + '/inc/websocket.js'  ) )({ io: io , mysql: mysql , mailer: nodemailer, transporter: transporter }) ;
 
 				console.log( 'Server are running at %s:%s', host, port) ;

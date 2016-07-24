@@ -11,6 +11,8 @@ jQuery( document ).ready(function( $ ){
 	// Fonction qui demande un nombre de recette 
 	function needRecipes( count , recipeSize )
 	{
+		requestRecipe = true ;
+
 		if( typeof count != 'number' || count < 1 )
 			return ;
 
@@ -71,11 +73,19 @@ jQuery( document ).ready(function( $ ){
 		if( data.length > 0 )
 			toastr.success( data.length + " recette(s) récupérées" ) ;
 
-		// Permet d'ajouter les recettes reçus à la suite de celle déjà présente sur la page
+		// Permet d'ajouter les recettes reçues à la suite de celle déjà présentes sur la page
 		for( var i = 0 ; i < data.length ; i++ )
+		{
 			$( 'section#recipes' ).append( '<div class="recipe" id="recipe-' + data[i].id + '" data-background="' + data[i].thumbs + '"><h1>' + data[i].title + '</h1></div>' ) ;
-	
-		// Affiche les minatures
+			
+			// On bind le click pour qu'il ouvre la fenetre 
+			(function(recipe){
+				$( 'div#recipe-' + recipe.id ).click(function(){
+					window.open( '/recipe/' + recipe.id + '/' + recipe.title ) ;
+				}) ;
+			})( data[i] ) ;
+		}
+		// Affiche les miniatures
 		updateThumbs() ;
 	}) ;
 
