@@ -10,7 +10,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
+import java.sql.*;
 import plugin.PluginLoader;
 import plugin.ResearchPlugin;
 import xmlLoader.XMLLoader;
@@ -24,9 +24,89 @@ public class Search {
 	public ArrayList<String> plugins =new ArrayList<>();
 	PluginLoader pluginLoader = new PluginLoader();
 	ArrayList<ResearchPlugin> researchPlugins;
-    ArrayList<NotedRecipes> resultSearch= new ArrayList<NotedRecipes>();
+	ArrayList<NotedRecipes> resultSearch= new ArrayList<NotedRecipes>();
+
+	public ArrayList<NotedRecipes> sql(String[] ingredient, String[] excepted)throws ClassNotFoundException, SQLException
+	{
+		if(ingredient.length==0)
+			return null;
+		ArrayList<NotedRecipes> res= new ArrayList<>();
+		Class.forName( "com.mysql.jdbc.Driver" ) ;
+		Connection cn = DriverManager.getConnection( "jdbc:mysql://localhost:3306/cookiescookout" , "root" , "" ) ;
+
+		Statement st = cn.createStatement() ;
+		ArrayList<Integer> ingre= new ArrayList<>();
+		ArrayList<Integer> ex= new ArrayList<>();
+		for(String s: ingredient){
+			String getIngret="Select idIngredient from Ingredient WHERE Ingredient.nameIngredient LIKE '%"+s+"%';";
+			ResultSet rs = st.executeQuery( getIngret) ;
+			while( rs.next() )
+			{
+				System.out.println(rs.getInt("idIngredient") ) ;
+				ingre.add(rs.getInt("idIngredient"));
+			}
+		}
+		for(String s: excepted){
+			String getEx="Select idIngredient from Ingredient WHERE Ingredient.nameIngredient LIKE '%"+s+"%';";
+			ResultSet rs = st.executeQuery( getEx) ;
+			while( rs.next() )
+			{
+				System.out.println(rs.getInt("idIngredient") ) ;
+				ex.add(rs.getInt("idIngredient"));
+			}
+		}
+		ArrayList<Integer> rec = new ArrayList<>();
+		String getRec="Select idRecipe from COMPOSE WHERE ";
+
+		for(int i=0;i< ingre.size();i++){
+			getRec+="Compose.idIngredient="+ingre.get(i)+" ";
+			if(ingre.size()!=i+1)
+				getRec+=" OR ";
+		}
+		if(ex.size()!=0) {
+			getRec += " NOT (";
+			int i;
+			for (i = 0; i < ex.size() - 1; i++) {
+				getRec += "Compose.idIngredient=" + ex.get(i) + " OR ";
+			}
+			getRec += "Compose.idIngredient=" + ex.get(i) + " );";
+		}
+		System.out.println(getRec);
+		ResultSet rs = st.executeQuery( getRec) ;
+		while( rs.next() )
+		{
+			if(!rec.contains(rs.getInt("idRecipe")))
+				rec.add(rs.getInt("idRecipe"));
+		}
+
+		int j;
+
+		for(j=0;j<rec.size();j++) {
+			ArrayList<String> arrayIn= new ArrayList<>();
+			String q="Select nameIngredient from Ingredient natural join Recipe where Recipe.idRecipe="+rec.get(j)+";";
+			rs = st.executeQuery(q);
+			while (rs.next()) {
+				if(!arrayIn.contains(rs.getString("nameIngredient")))
+					arrayIn.add(rs.getString("nameIngredient"));
+			}
+			String[] resultIng=new String[arrayIn.size()];
+			int k=0;
+			for(String s : arrayIn) {
+				resultIng[k] = s;
+				System.out.println(resultIng[k]);
+				k++;
+			}
+			q="Select * from Recipe where Recipe.idRecipe="+rec.get(j)+";";
+			rs = st.executeQuery(q);
+			while (rs.next()) {
+				res.add(new NotedRecipes(rs.getString("titleRecipe"),rs.getString("urlRecipe"),rs.getInt("pollRecipe"),rs.getInt("scoreRecipe"),resultIng,rs.getString("contentRecipe")));
+			}
+		}
 
 
+		return res;
+
+	}
 	public void setPluginLoader(){
 		String[] plug=new String[plugins.size()];
 		int i=0;
@@ -73,10 +153,10 @@ public class Search {
 				if(!cuisineaz)
 					remove.add(s);
 			if(s.getMainSite().contains("feminin")){
-					if(!feminin) {
-						remove.add(s);
+				if(!feminin) {
+					remove.add(s);
 
-					}}
+				}}
 		}
 		for(Site removes: remove)
 			sites.remove(removes);
@@ -127,7 +207,7 @@ public class Search {
 	}
 
 	public void research() {
-		
+
 		Document doc;
 		for (int i = 0; i < this.sites.size(); i++) {
 			try {
@@ -164,7 +244,7 @@ public class Search {
 						present=setIngredients( s, i, file);
 					}
 					if (!present) {
-                        // System.out.println(s.getUrls().get(i).getUrl());
+						// System.out.println(s.getUrls().get(i).getUrl());
 						setTitle(doc,s,i);
 						setRecipe(doc, s, i);
 						setVote(doc, s, i);
@@ -187,23 +267,23 @@ public class Search {
 
 	}
 
-    public boolean containIngredients(String ingredients, String reg){
-        boolean result =ingredients.toLowerCase().contains(
-                reg.toLowerCase())||ingredients.toLowerCase().contains(
-                reg.toLowerCase()+"s")||ingredients.toLowerCase().contains(
-                reg.toLowerCase()+"x");
-        if(reg.endsWith("s")){
-            result=ingredients.toLowerCase().contains(
-                    reg.toLowerCase().substring(0,reg.lastIndexOf("s")));
-        }
-        else if(reg.endsWith("x")) {
-            result = ingredients.toLowerCase().contains(
-                    reg.toLowerCase().substring(0, reg.lastIndexOf("x")));
-        }
-        return(result);
-    }
+	public boolean containIngredients(String ingredients, String reg){
+		boolean result =ingredients.toLowerCase().contains(
+				reg.toLowerCase())||ingredients.toLowerCase().contains(
+				reg.toLowerCase()+"s")||ingredients.toLowerCase().contains(
+				reg.toLowerCase()+"x");
+		if(reg.endsWith("s")){
+			result=ingredients.toLowerCase().contains(
+					reg.toLowerCase().substring(0,reg.lastIndexOf("s")));
+		}
+		else if(reg.endsWith("x")) {
+			result = ingredients.toLowerCase().contains(
+					reg.toLowerCase().substring(0, reg.lastIndexOf("x")));
+		}
+		return(result);
+	}
 	public boolean setIngredients( Site s,
-			int i, Element file) {
+								   int i, Element file) {
 		boolean ret= false;
 		String ingredients = file.outerHtml()
 				.replaceAll("<.*?>", "")
@@ -239,7 +319,7 @@ public class Search {
 	}
 	private void setVote(Document doc, Site s, int i) {
 		for (Element file : doc.select(s.getDivVote())) {
-            s.getUrls()
+			s.getUrls()
 					.get(i)
 					.setVote(
 							Integer.valueOf(extractVote(file.toString()
@@ -253,16 +333,16 @@ public class Search {
 		}
 	}
 	private void setMark(Document doc, Site s, int i) {
-        for (Element file : doc.select(s.getDivMark())) {
-            s.getUrls()
-                    .get(i)
-                    .setMark(
-                            Float.valueOf(extractMark(file.toString().replace(",",".")
-                                    ,s)));
+		for (Element file : doc.select(s.getDivMark())) {
+			s.getUrls()
+					.get(i)
+					.setMark(
+							Float.valueOf(extractMark(file.toString().replace(",",".")
+									,s)));
 
 
 
-        }
+		}
 
 	}
 	private void setRecipe(Document doc, Site s, int i) {
@@ -299,16 +379,16 @@ public class Search {
 
 	}
 	public String extractVote(String s,Site site) {
-        String[] split=site.getTitleVote().split("value");
-        String res=s.substring(s.indexOf(split[0])+split[0].length(),s.indexOf(split[1],s.indexOf(split[0])+split[0].length()));
+		String[] split=site.getTitleVote().split("value");
+		String res=s.substring(s.indexOf(split[0])+split[0].length(),s.indexOf(split[1],s.indexOf(split[0])+split[0].length()));
 
-        return res;
+		return res;
 	}
-    public String extractMark(String s,Site site) {
-        String[] split=site.getTitleMark().split("value");
-        String res=s.substring(s.indexOf(split[0])+split[0].length(),s.indexOf(split[1],s.indexOf(split[0])+split[0].length()));
-        return res;
-    }
+	public String extractMark(String s,Site site) {
+		String[] split=site.getTitleMark().split("value");
+		String res=s.substring(s.indexOf(split[0])+split[0].length(),s.indexOf(split[1],s.indexOf(split[0])+split[0].length()));
+		return res;
+	}
 
 
 
@@ -320,49 +400,70 @@ public class Search {
 			this.init(marmiton,cuisineaz, feminin,local,input);
 			this.researchWithPlugins();
 			this.addDatas();
-            this.setResultMap();
+			this.setResultMap(local);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-    public void setResultMap(){
+	public void setResultMap(boolean local){
 
-        for(Site s : this.getSites()){
-            for(NotedRecipes recipe : s.getUrls()){
-               resultSearch.add((recipe));
-            }
-        }
-        
-        Collections.sort(resultSearch,Collections.reverseOrder());
-        
-        for( NotedRecipes recipe : resultSearch) {
-            // System.out.println(recipe.getMark() + "   " + recipe.getVote() + "   " + recipe.getUrl());
-        }
-    }
-    
-    public List<String> getResult( final int count )
-    {
-        for( final Site s : this.getSites() )
-            for( final NotedRecipes recipe : s.getUrls() )
-               resultSearch.add( recipe ) ;
-        
-        Collections.sort( resultSearch , Collections.reverseOrder() ) ;
-        
-        final List<String> links = new ArrayList<String>() ;
-        
-        int i = 0 ;
-        
-        for( final NotedRecipes recipe : resultSearch ) 
-        {
-        	i++ ;
-        	links.add( recipe.getUrl() ) ;
-        	
-        	if( count > 0 && i == count )
-        		break ;
-        }
-        
-        return links ;
-    } ;
+		if(local){
+			String[] ing= new String[keyWords.size()];
+			String[] ex = new String[exceptedIngredients.size()];
+			int k=0;
+			for(String s : keyWords) {
+				ing[k]=s;
+				k++;
+			}
+			k=0;
+			for(String s : exceptedIngredients){
+				ex[k]=s;
+				k++;
+			}
+			try {
+				resultSearch.addAll(sql(ing,ex));
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		for(Site s : this.getSites()){
+			for(NotedRecipes recipe : s.getUrls()){
+				resultSearch.add((recipe));
+			}
+		}
+
+		Collections.sort(resultSearch,Collections.reverseOrder());
+
+		for( NotedRecipes recipe : resultSearch) {
+			// System.out.println(recipe.getMark() + "   " + recipe.getVote() + "   " + recipe.getUrl());
+		}
+	}
+
+	public List<String> getResult( final int count )
+	{
+		for( final Site s : this.getSites() )
+			for( final NotedRecipes recipe : s.getUrls() )
+				resultSearch.add( recipe ) ;
+
+		Collections.sort( resultSearch , Collections.reverseOrder() ) ;
+
+		final List<String> links = new ArrayList<String>() ;
+
+		int i = 0 ;
+
+		for( final NotedRecipes recipe : resultSearch )
+		{
+			i++ ;
+			links.add( recipe.getUrl() ) ;
+
+			if( count > 0 && i == count )
+				break ;
+		}
+
+		return links ;
+	} ;
 }
 
