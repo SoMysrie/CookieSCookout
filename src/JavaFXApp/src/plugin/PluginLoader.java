@@ -23,6 +23,7 @@ public class PluginLoader {
 	public PluginLoader(String[] files) {
 		this();
 		this.files = files;
+		System.out.println(files[0]);
 	}
 
 	public void setFiles(String[] files) {
@@ -30,7 +31,6 @@ public class PluginLoader {
 	}
 
 	public ArrayList<ResearchPlugin> loadResearchPlugin() throws Exception {
-
 		this.initializeLoader();
 		ArrayList<ResearchPlugin> tmp = new ArrayList<ResearchPlugin>();
 		for (int i = 0; i < this.classResearchPlugin.size(); i++) {
@@ -57,6 +57,7 @@ public class PluginLoader {
 			f[index] = new File(this.files[index]);
 
 			if (!f[index].exists()) {
+
 				break;
 			}
 
@@ -78,7 +79,7 @@ public class PluginLoader {
 					if(tmpClass !=null){
 					for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
 						if (tmpClass.getInterfaces()[i].getName().equals(
-								"JavaFXApp.src.plugin.ResearchPlugin")) {
+								"plugin.ResearchPlugin")) {
 							verifiyAndAddRessearchPlugin(tmpClass, i);
 						}
 
@@ -93,6 +94,7 @@ public class PluginLoader {
 	}
 
 	private void verifiyAndAddRessearchPlugin(Class tmpClass, int i) {
+
 		Boolean correct = true;
 		Method[] tmpClassIMethodes = tmpClass.getInterfaces()[i].getMethods();
 		for (int j = 0; j < tmpClassIMethodes.length && correct; j++) {
@@ -152,7 +154,7 @@ public class PluginLoader {
 		tmpClass = Class.forName(tmp, true, loader);	
 		}
 		catch(NoClassDefFoundError e){
-			System.out.println("erreur JavaFXApp.src.plugin");
+			System.out.println("erreur plugin");
 		}
 		
 		

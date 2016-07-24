@@ -1114,14 +1114,11 @@ public class Main extends Application
 		 File file = fileChooser.showOpenDialog( stage ) ;
 		 if ( file != null )
 		 {
-			 try 
-		     {
-				 desktop.open( file ) ;
-		     } 
-		     catch (IOException ex) 
-		     {
-		    	 Logger.getLogger( Main.class.getName() ).log(Level.SEVERE, null, ex ) ;
-		     }
+
+				searcher.plugins.add(file.getName());
+
+
+
 		 }
     } ;
     

@@ -19,11 +19,21 @@ public class Search {
 	public static String confPath = "conf/link.xml";
 	ArrayList<String> keyWords = new ArrayList<String>();
 	ArrayList<String> exceptedIngredients = new ArrayList<String>();
-	String[] plugins = {/*"JavaFXApp.src.plugin.jar","plugin2.jar"*/};
-	PluginLoader pluginLoader = new PluginLoader(plugins);
+	public ArrayList<String> plugins =new ArrayList<>();
+	PluginLoader pluginLoader = new PluginLoader();
 	ArrayList<ResearchPlugin> researchPlugins;
     ArrayList<NotedRecipes> resultSearch= new ArrayList<NotedRecipes>();
 
+
+	public void setPluginLoader(){
+		String[] plug=new String[plugins.size()];
+		int i=0;
+		for(String s : plugins){
+			plug[i]=s;
+			i++;
+		}
+		pluginLoader=new PluginLoader(plug);
+	}
 	public ArrayList<Site> getSites() {
 		return sites;
 	}
@@ -308,9 +318,9 @@ public class Search {
 
 	public void run(boolean marmiton, boolean cuisineaz, boolean feminin, boolean local, String input) {
 		try {
-
+			setPluginLoader();
 			this.researchPlugins = this.pluginLoader.loadResearchPlugin();
-			System.out.println(researchPlugins.size());
+
 			this.init(marmiton,cuisineaz, feminin,local,input);
 			this.researchWithPlugins();
 			this.addDatas();
