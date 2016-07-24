@@ -1,8 +1,11 @@
 package link;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,7 +13,6 @@ import org.jsoup.nodes.Element;
 
 import plugin.PluginLoader;
 import plugin.ResearchPlugin;
-
 import xmlLoader.XMLLoader;
 
 public class Search {
@@ -63,7 +65,7 @@ public class Search {
 		ArrayList<Site> remove = new ArrayList<>();
 		this.sites = loader.load(confPath);
 		for(Site s : sites){
-			System.out.println(s.getMainSite().contains("feminin"));
+			//// System.out.println(s.getMainSite().contains("feminin"));
 			if(s.getMainSite().contains("marmiton"))
 				if(!marmiton)
 					remove.add(s);
@@ -135,14 +137,12 @@ public class Search {
 						sites.get(i).addURL(file.attr("href"));
 				}
 			} catch (UnknownHostException e) {
-				System.out.println("Impossible d'acc�der au site "
-						+ sites.get(i).getSearchSite());
-				System.out
-						.println("V�rifiez que vous n'avez pas de proxy, ni de VPN activ�s");
+				//// System.out.println("Impossible d'acc�der au site "+ sites.get(i).getSearchSite());
+				//// System.out.println("V�rifiez que vous n'avez pas de proxy, ni de VPN activ�s");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				System.out.println("Malformed URL :" + sites.get(i).searchSite);
+				//// System.out.println("Malformed URL :" + sites.get(i).searchSite);
 			} finally {
 				sites.get(i).reinitSearchSite(this.researcher);
 			}
@@ -164,7 +164,7 @@ public class Search {
 						present=setIngredients( s, i, file);
 					}
 					if (!present) {
-                        System.out.println(s.getUrls().get(i).getUrl());
+                        // System.out.println(s.getUrls().get(i).getUrl());
 						setTitle(doc,s,i);
 						setRecipe(doc, s, i);
 						setVote(doc, s, i);
@@ -176,10 +176,8 @@ public class Search {
 					}
 
 				} catch (UnknownHostException e) {
-					System.out.println("Impossible d'accéder au site "
-							+ sites.get(i).getSearchSite());
-					System.out
-							.println("Vérifiez que vous n'avez pas de proxy, ni de VPN activés");
+					// System.out.println("Impossible d'accéder au site "+ sites.get(i).getSearchSite());
+					//System.out.println("Vérifiez que vous n'avez pas de proxy, ni de VPN activés");
 				} catch (IOException e) {
 					// TODO Bloc catch auto-g�n�r�
 					e.printStackTrace();
@@ -212,8 +210,7 @@ public class Search {
 				.replaceAll("[\r\n]", "");
 		for (String str : exceptedIngredients) {
 			if (this.containIngredients(ingredients,str)) {
-				System.out.println("REMOVE : "
-						+ s.getUrls().get(i).getUrl());
+				// System.out.println("REMOVE : "+ s.getUrls().get(i).getUrl());
 				s.getUrls().remove(i);
 				ret=true;
 			} else {
@@ -227,8 +224,7 @@ public class Search {
 					s.getUrls().get(i).getIngredients()[j] = s
 							.getUrls().get(i).getIngredients()[j]
 							.replaceAll(" +", " ");
-					System.out.println(s.getUrls().get(i)
-							.getIngredients()[j]);
+					// System.out.println(s.getUrls().get(i).getIngredients()[j]);
 				}
 			}
 		}
@@ -236,7 +232,7 @@ public class Search {
 	}
 
 	private void setImg(Document doc, Site s, int i){
-		System.out.println("TEST : "+s.getDivImg());
+		// System.out.println("TEST : "+s.getDivImg());
 		for (Element file : doc.select(s.getDivImg())) {
 			s.getUrls().get(i).setImage(file.attr("src"));
 		}
@@ -290,7 +286,7 @@ public class Search {
 
 			String title =file.toString().replaceAll("<.*?>", "")
 					.replaceAll("[\r\n]", "");
-			System.out.println("Titre : "+ title);
+			// System.out.println("Titre : "+ title);
 			s.getUrls()
 					.get(i)
 					.setTitle(
@@ -326,7 +322,6 @@ public class Search {
 			this.addDatas();
             this.setResultMap();
 		} catch (Exception e) {
-			// TODO Bloc catch auto-g�n�r�
 			e.printStackTrace();
 		}
 
@@ -338,11 +333,36 @@ public class Search {
                resultSearch.add((recipe));
             }
         }
-        Collections.sort(resultSearch,Collections.reverseOrder()
-        );
-        for(NotedRecipes recipe : resultSearch) {
-            System.out.println(recipe.getMark() + "   " + recipe.getVote() + "   " + recipe.getUrl());
+        
+        Collections.sort(resultSearch,Collections.reverseOrder());
+        
+        for( NotedRecipes recipe : resultSearch) {
+            // System.out.println(recipe.getMark() + "   " + recipe.getVote() + "   " + recipe.getUrl());
         }
     }
+    
+    public List<String> getResult( final int count )
+    {
+        for( final Site s : this.getSites() )
+            for( final NotedRecipes recipe : s.getUrls() )
+               resultSearch.add( recipe ) ;
+        
+        Collections.sort( resultSearch , Collections.reverseOrder() ) ;
+        
+        final List<String> links = new ArrayList<String>() ;
+        
+        int i = 0 ;
+        
+        for( final NotedRecipes recipe : resultSearch ) 
+        {
+        	i++ ;
+        	links.add( recipe.getUrl() ) ;
+        	
+        	if( count > 0 && i == count )
+        		break ;
+        }
+        
+        return links ;
+    } ;
 }
 

@@ -102,7 +102,7 @@ public class NotedRecipes implements Comparable {
             return 1;
         else {
             if(recipe.getMark()>this.getMark()) {
-                System.out.println(recipe.getUrl()+"       "+this.getUrl());;
+                // system.out.println(recipe.getUrl()+"       "+this.getUrl());;
                 return -1;
             }
             else if(recipe.getMark()<this.getMark())

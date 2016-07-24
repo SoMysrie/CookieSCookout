@@ -133,7 +133,7 @@ public class Site {
 
     public void addURL(String s) {
         this.urls.add(new NotedRecipes(this.mainSite + s));
-        System.out.println(this.mainSite + s);
+        //System.out.println(this.mainSite + s);
     }
 
 

@@ -1,6 +1,5 @@
 package application ;
 
-import java.awt.Desktop ;
 import java.io.File ;
 import java.sql.SQLException ;
 import java.util.ArrayList;
@@ -46,7 +45,6 @@ import link.Search;
 
 public class Main extends Application 
 {
-	Search searcher = new Search();
 	//controls needed for app:
     CheckBox chkmarmiton , chkcuisineaz , chkaufeminin , chkdbRecipe , chklocal ;
     Label label , lbltotal , lbllist , 
@@ -67,7 +65,6 @@ public class Main extends Application
     HBox hbadd , hball , hbbutton , hblist , hbRecipe ;
     
     //Desktop needed for searching a file
-    private Desktop desktop = Desktop.getDesktop() ;
     FileChooser fileChooser , pictureChooser ;
     ImageView imageView ; 
     
@@ -102,12 +99,13 @@ public class Main extends Application
     
     //ListView
     ListView<Ingredient> listIngredient ;
-    ListView listView ;
+    ListView<Hyperlink> listView ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
     DBRecipe dbRecipe = new DBRecipe() ;
     DBIng dbIngredient = new DBIng() ;
+    Search searcher = new Search();
     
     /**
      * Main class
@@ -117,8 +115,7 @@ public class Main extends Application
      */
     public static void main( String[] args ) throws ClassNotFoundException, SQLException
     {
-    	System.out.println( "CookieSCookout app..." ) ;
- 		WsServer ws = new WsServer() ;
+    	WsServer ws = new WsServer() ;
  		ws.start() ;
  		
         launch( args ) ;
@@ -139,7 +136,7 @@ public class Main extends Application
         	{
         		//Hyperlink
         		links = new ArrayList<>();
-        		listView = new ListView();
+        		listView = new ListView<>();
  				
         		//vbox for checkboxes
         		vbchecks = new VBox() ;
@@ -693,55 +690,61 @@ public class Main extends Application
      */
     private void handleButtonSearch( ActionEvent e )
     {
-		//searcher.run(chkmarmiton.isSelected(),chkcuisineaz.isSelected(),chkaufeminin.isSelected(),chklocal.isSelected(),search.getText());
 		// On démarre un autre fil d'execution pour ne pas ralentir la mise à jour de l'interface graphique
- 		new Thread( new Runnable()
+ 		new Thread(new Runnable()
  		{
  			@Override
  			public void run()
  			{
- 				Platform.runLater( new Runnable() 
-           	 	{
-					@Override 
-					public void run()
-           	 		{
-						Alert alert = new Alert( AlertType.WARNING ) ;
-						alert.setTitle( "Warning Dialog") ;
-						alert.setContentText( "You have to inter some ingredient(s) !" ) ;
-						
-						if ( search.getText() != null && !search.getText().isEmpty() )
+ 				if( search.getText() != null && search.getText().isEmpty() )
+ 					Platform.runLater( new Runnable(){
+						@Override
+						public void run()
 						{
+							Alert alert = new Alert( AlertType.WARNING ) ;
+							alert.setTitle( "Warning Dialog") ;
+							alert.setContentText( "You have to inter some ingredient(s) !" ) ;
+							alert.showAndWait() ;
+						} ;
+ 					}) ;
+ 				else
+ 				{
+ 					//
+	 		        searcher.run(chkmarmiton.isSelected(),chkcuisineaz.isSelected(),chkaufeminin.isSelected(),chklocal.isSelected(),search.getText());
+ 		        	
+	 		        //
+	 		        final List<String> results = searcher.getResult( 10 ) ;
+	 		        
+	 		        for( int i = 0; i < results.size() ; i++ )
+	 		        	links.add( new Hyperlink( results.get(i) ) ) ;
+	 		        
+ 					Platform.runLater( new Runnable() 
+	           	 	{
+						@Override 
+						public void run()
+	           	 		{
 							final WebView browser = new WebView();
 							final WebEngine webEngine = browser.getEngine();
-			 		        link = new Hyperlink("http://blog.professional-webworkx.de");
-			 		        link2= new Hyperlink("http://www.stackoverflow.com");
 			 		        
-			 		        links.add(link);
-			 		        links.add(link2);
-			 		        
-			 		        for(final Hyperlink hyperlink : links) 
+			 		        for( final Hyperlink hyperlink : links ) 
 			 		        {
 			 		            hyperlink.setOnAction(new EventHandler<ActionEvent>() 
 			 		            {
 			 		            	@Override
-			 		                public void handle(ActionEvent t) 
+			 		                public void handle( final ActionEvent t ) 
 			 		            	{
-			 		                    getHostServices().showDocument(hyperlink.getText());
-			 		                }
+			 		                    getHostServices().showDocument( hyperlink.getText() ) ;
+			 		                } ;
 			 		            });
 			 		        }
 
 			 		        listView.getItems().addAll(links);
-						}
-						else
-				 		{
-							Optional<ButtonType> result = alert.showAndWait() ;
-						}
-           	 		}
-           	 	});
+	           	 		}
+	           	 	});
+ 				} ;
  			}
  		}).start() ;
-    }
+    } ;
      
     /**
      * Button clear for the Home Tab
