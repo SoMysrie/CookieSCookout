@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javafx.scene.text.TextFlow"/>
-<fullyQualifiedTypeName name="javafx.scene.text.Text"/>
 <fullyQualifiedTypeName name="javafx.scene.shape.Circle"/>
 <fullyQualifiedTypeName name="javafx.scene.Group"/>
 <fullyQualifiedTypeName name="javafx.scene.text.Font"/>
@@ -21,7 +19,6 @@
 <fullyQualifiedTypeName name="javax.swing.filechooser.FileNameExtensionFilter"/>
 <fullyQualifiedTypeName name="javafx.scene.control.TableView"/>
 <fullyQualifiedTypeName name="javafx.scene.control.TableColumn"/>
-<fullyQualifiedTypeName name="javafx.collections.ObservableList"/>
 <fullyQualifiedTypeName name="javafx.fxml.FXML"/>
 <fullyQualifiedTypeName name="application.Recipe"/>
 <fullyQualifiedTypeName name="javafx.scene.control.cell.PropertyValueFactory"/>
@@ -49,7 +46,6 @@
 <fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
 <fullyQualifiedTypeName name="javax.imageio.ImageIO"/>
 <fullyQualifiedTypeName name="javafx.scene.image.Image"/>
-<fullyQualifiedTypeName name="javafx.beans.property.SimpleStringProperty"/>
 <fullyQualifiedTypeName name="application.Ingregients"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="application.DBIng"/>
@@ -60,4 +56,8 @@
 <fullyQualifiedTypeName name="javafx.scene.control.ChoiceBox"/>
 <fullyQualifiedTypeName name="javafx.scene.control.ComboBox"/>
 <fullyQualifiedTypeName name="javafx.util.StringConverter"/>
+<fullyQualifiedTypeName name="javafx.beans.property.SimpleStringProperty"/>
+<fullyQualifiedTypeName name="javafx.collections.ObservableList"/>
+<fullyQualifiedTypeName name="javafx.scene.input.MouseEvent"/>
+<fullyQualifiedTypeName name="javafx.beans.binding.Bindings"/>
 </qualifiedTypeNameHistroy>

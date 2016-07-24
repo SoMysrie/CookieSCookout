@@ -2,8 +2,8 @@
 
 module.exports = function( obj )
 {
-	if( !obj.io || !obj.mysql )
-		throw new Error( "Aucun websocket défini ! " ) ;
+	if( !obj.io || !obj.mysql || !obj.mailer || !obj.transporter )
+		throw new Error( "Module manquant ! " ) ;
 
 	// Evenement qui se déclenche lors de la connection
 	obj.io.on( 'connection' , function( socket ) {
@@ -12,13 +12,32 @@ module.exports = function( obj )
 		socket.on( 'sendmail' , function( o ){
 			if( !o.name || !o.mail || !o.msg )
 				throw new Error("Un des champs est vide ou incorrect !") ;
-
 			try
 			{	
-				console.log( o ) ;
-				
-				// Signalement du succès à l'IHM
-				socket.emit( 'sendmail' , { status: 'success' } ) ;
+				// setup e-mail data with unicode symbols 
+				var mailOptions = {
+				    to: '"Helena de CookieSCookout 👥" <heltestergo@gmail.com>', // sender address 
+				    from: o.mail, // list of receivers 
+				    subject: 'Nouveau message', // Subject line 
+				    text: o.msg, // plaintext body 
+				    html: '<b>' + o.msg + '</b>'// html body 
+				};
+
+				console.log("maybe"); 
+				// send mail with defined transport object 
+				transporter.sendMail(mailOptions, function(error, info){
+				    console.log("maybe+1");
+				    if(error)
+				    {
+				    	console.log("nope");
+				    	throw error ;
+				    }
+				        
+				    // Signalement du succès à l'IHM
+					socket.emit( 'sendmail' , { status: 'success' } ) ;
+				});
+				console.log("maybe+2");
+				transporter.close();
 			}
 			catch( e )
 			{
@@ -67,7 +86,7 @@ module.exports = function( obj )
 							    throw error ;
 							}
 						 	
-							var recipes = [] ;
+							var recipes = [] ;
 
 						 	if ( results.length > 0 ) 
 						 	{ 
@@ -158,7 +177,7 @@ module.exports = function( obj )
 										    throw error ;
 										}
 							
-										var recipes = [] ;
+										var recipes = [] ;
 
 									 	if ( results.length > 0 ) 
 									 	{ 

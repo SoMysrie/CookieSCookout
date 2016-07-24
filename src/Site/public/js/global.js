@@ -115,7 +115,7 @@ jQuery( document ).ready(function( $ ){
 		toastr.info( "Votre message est en cours d'expédition..." ) ;
 	}) ;
 
-	//
+	// Pour la recherche
 	$('form#searchform').submit( function(event){
 
 		// Empêche la validation du formulaire

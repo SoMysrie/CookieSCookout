@@ -23,6 +23,7 @@ public class PluginLoader {
 	public PluginLoader(String[] files) {
 		this();
 		this.files = files;
+		System.out.println(files[0]);
 	}
 
 	public void setFiles(String[] files) {

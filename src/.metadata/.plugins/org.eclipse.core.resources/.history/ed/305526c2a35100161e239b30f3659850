@@ -1,9 +1,14 @@
 package application ;
 
+import link.Search;
+
 import java.awt.Desktop ;
 import java.io.File ;
+import java.io.IOException ;
 import java.sql.SQLException ;
 import java.util.Optional;
+import java.util.logging.Level ;
+import java.util.logging.Logger ;
 
 import cookiescookout.ws.WsServer ;
 import javafx.application.Application ;
@@ -35,7 +40,6 @@ import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
-import link.Search;
 
 
 
