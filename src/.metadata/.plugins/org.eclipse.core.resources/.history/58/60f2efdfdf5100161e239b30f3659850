@@ -3,8 +3,6 @@ package application ;
 import java.awt.Desktop ;
 import java.io.File ;
 import java.sql.SQLException ;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import cookiescookout.ws.WsServer ;
@@ -36,8 +34,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
 import link.Search;
@@ -70,10 +66,7 @@ public class Main extends Application
     private Desktop desktop = Desktop.getDesktop() ;
     FileChooser fileChooser , pictureChooser ;
     ImageView imageView ; 
-    
-    // URL
-    Hyperlink link , link2 ;
-    List<Hyperlink> links ;
+    Hyperlink link ;
     
     //TableView for dbRecipe
     private TableView<Recipe> tableRecipe ;
@@ -102,7 +95,6 @@ public class Main extends Application
     
     //ListView
     ListView<Ingredient> listIngredient ;
-    ListView listView ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -138,8 +130,9 @@ public class Main extends Application
             public void handle( ActionEvent event ) 
         	{
         		//Hyperlink
-        		links = new ArrayList<>();
-        		listView = new ListView();
+        		link = new Hyperlink();
+ 				link.setText("http://example.com");
+ 				link.setVisible( false ) ;
  				
         		//vbox for checkboxes
         		vbchecks = new VBox() ;
@@ -213,7 +206,7 @@ public class Main extends Application
                 hball.getChildren().addAll( vbchecks , vblabels , vbtext ) ;
                 
                 vball = new VBox() ;
-                vball.getChildren().addAll( menuBar , hball , hbbutton , listView ) ;
+                vball.getChildren().addAll( menuBar , hball , hbbutton , link ) ;
                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
             } ;
         } ) ;
@@ -700,43 +693,22 @@ public class Main extends Application
  			@Override
  			public void run()
  			{
+ 				;
+ 				
  				Platform.runLater( new Runnable() 
            	 	{
 					@Override 
 					public void run()
            	 		{
-						Alert alert = new Alert( AlertType.WARNING ) ;
-						alert.setTitle( "Warning Dialog") ;
-						alert.setContentText( "You have to inter some ingredient(s) !" ) ;
-						
-						if ( search.getText() != null && !search.getText().isEmpty() )
-						{
-							final WebView browser = new WebView();
-							final WebEngine webEngine = browser.getEngine();
-			 		        link = new Hyperlink("http://blog.professional-webworkx.de");
-			 		        link2= new Hyperlink("http://www.stackoverflow.com");
-			 		        
-			 		        links.add(link);
-			 		        links.add(link2);
-			 		        
-			 		        for(final Hyperlink hyperlink : links) 
-			 		        {
-			 		            hyperlink.setOnAction(new EventHandler<ActionEvent>() 
-			 		            {
-			 		            	@Override
-			 		                public void handle(ActionEvent t) 
-			 		            	{
-			 		                    getHostServices().showDocument(hyperlink.getText());
-			 		                }
-			 		            });
-			 		        }
-
-			 		        listView.getItems().addAll(links);
-						}
-						else
-				 		{
-							Optional<ButtonType> result = alert.showAndWait() ;
-						}
+						Alert alert = new Alert( AlertType.INFORMATION ) ;
+		 				alert.setTitle( "Information Dialog") 
+						link.setVisible( true ) ;
+						link.setOnAction(new EventHandler<ActionEvent>() {
+		 				    @Override
+		 				    public void handle(ActionEvent e) {
+		 				    	Optional<ButtonType> result = alert.showAndWait() ;
+		 				    }
+		 				});
            	 		}
            	 	});
  			}

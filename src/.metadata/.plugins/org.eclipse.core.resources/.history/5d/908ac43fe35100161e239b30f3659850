@@ -707,7 +707,7 @@ public class Main extends Application
            	 		{
 						Alert alert = new Alert( AlertType.WARNING ) ;
 						alert.setTitle( "Warning Dialog") ;
-						alert.setContentText( "You have to inter some ingredient(s) !" ) ;
+						alert.setContentText( "You have to inter some ingredients !" ) ;
 						
 						if ( search.getText() != null && !search.getText().isEmpty() )
 						{

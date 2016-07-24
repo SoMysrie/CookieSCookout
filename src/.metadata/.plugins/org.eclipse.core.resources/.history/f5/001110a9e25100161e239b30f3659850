@@ -707,9 +707,9 @@ public class Main extends Application
            	 		{
 						Alert alert = new Alert( AlertType.WARNING ) ;
 						alert.setTitle( "Warning Dialog") ;
-						alert.setContentText( "You have to inter some ingredient(s) !" ) ;
+						alert.setContentText( "You have to inter some ingredients !" ) ;
 						
-						if ( search.getText() != null && !search.getText().isEmpty() )
+						if ( addImg.getText() != null && !addImg.getText().isEmpty() )
 						{
 							final WebView browser = new WebView();
 							final WebEngine webEngine = browser.getEngine();

@@ -705,38 +705,27 @@ public class Main extends Application
 					@Override 
 					public void run()
            	 		{
-						Alert alert = new Alert( AlertType.WARNING ) ;
-						alert.setTitle( "Warning Dialog") ;
-						alert.setContentText( "You have to inter some ingredient(s) !" ) ;
-						
-						if ( search.getText() != null && !search.getText().isEmpty() )
-						{
-							final WebView browser = new WebView();
-							final WebEngine webEngine = browser.getEngine();
-			 		        link = new Hyperlink("http://blog.professional-webworkx.de");
-			 		        link2= new Hyperlink("http://www.stackoverflow.com");
-			 		        
-			 		        links.add(link);
-			 		        links.add(link2);
-			 		        
-			 		        for(final Hyperlink hyperlink : links) 
-			 		        {
-			 		            hyperlink.setOnAction(new EventHandler<ActionEvent>() 
-			 		            {
-			 		            	@Override
-			 		                public void handle(ActionEvent t) 
-			 		            	{
-			 		                    getHostServices().showDocument(hyperlink.getText());
-			 		                }
-			 		            });
-			 		        }
+						final WebView browser = new WebView();
+		 		        final WebEngine webEngine = browser.getEngine();
+		 		        link = new Hyperlink("http://blog.professional-webworkx.de");
+		 		        link2= new Hyperlink("http://www.stackoverflow.com");
+		 		        
+		 		       links.add(link);
+		 		        links.add(link2);
+		 		        
+		 		       for(final Hyperlink hyperlink : links) {
+		 		            hyperlink.setOnAction(new EventHandler<ActionEvent>() {
 
-			 		        listView.getItems().addAll(links);
-						}
-						else
-				 		{
-							Optional<ButtonType> result = alert.showAndWait() ;
-						}
+		 		                @Override
+		 		                public void handle(ActionEvent t) {
+		 		                    getHostServices().showDocument(hyperlink.getText());
+		 		                }
+		 		            });
+		 		        }
+
+		 		        listView.getItems().addAll(links);
+		 		        
+		 		        
            	 		}
            	 	});
  			}

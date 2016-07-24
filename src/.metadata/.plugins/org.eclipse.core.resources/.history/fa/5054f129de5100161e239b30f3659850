@@ -3,8 +3,6 @@ package application ;
 import java.awt.Desktop ;
 import java.io.File ;
 import java.sql.SQLException ;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import cookiescookout.ws.WsServer ;
@@ -36,8 +34,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
 import link.Search;
@@ -63,17 +59,13 @@ public class Main extends Application
     Alert alert ;
     
     //VBoxes and hbaddoxes for the labels and checkboxes 
-    VBox vbchecks , vblabels , vbbutton , vbtext , vball , vbRecipe , vbtable ;
+    VBox vbchecks , vblabels , vbbutton , vbtext , vball  , vbRecipe , vbtable ;
     HBox hbadd , hball , hbbutton , hblist , hbRecipe ;
     
     //Desktop needed for searching a file
     private Desktop desktop = Desktop.getDesktop() ;
     FileChooser fileChooser , pictureChooser ;
-    ImageView imageView ; 
-    
-    // URL
-    Hyperlink link , link2 ;
-    List<Hyperlink> links ;
+    ImageView imageView ;
     
     //TableView for dbRecipe
     private TableView<Recipe> tableRecipe ;
@@ -102,7 +94,6 @@ public class Main extends Application
     
     //ListView
     ListView<Ingredient> listIngredient ;
-    ListView listView ;
     
     //Calling Methods
     MainContainer mainContainer = new MainContainer() ;
@@ -137,10 +128,6 @@ public class Main extends Application
         	@Override
             public void handle( ActionEvent event ) 
         	{
-        		//Hyperlink
-        		links = new ArrayList<>();
-        		listView = new ListView();
- 				
         		//vbox for checkboxes
         		vbchecks = new VBox() ;
                 vbchecks.setSpacing( 10 ) ;
@@ -197,7 +184,7 @@ public class Main extends Application
                 vblabels.getChildren().addAll( lbltotal , lbllist ) ;
                 vbtext.getChildren().add( search ) ;
                 hbbutton.getChildren().addAll( btsearch , btclear ) ;
-                
+                 
                 //attach click-method to all 5 checkboxes
                 chkmarmiton.setOnAction( e -> handleButtonAction( e ) ) ;
                 chkcuisineaz.setOnAction( e -> handleButtonAction( e ) ) ;
@@ -213,7 +200,7 @@ public class Main extends Application
                 hball.getChildren().addAll( vbchecks , vblabels , vbtext ) ;
                 
                 vball = new VBox() ;
-                vball.getChildren().addAll( menuBar , hball , hbbutton , listView ) ;
+                vball.getChildren().addAll( menuBar , hball , hbbutton ) ;
                 mainContainer.createMainContainer( stage , menuBar , vball ) ;
             } ;
         } ) ;
@@ -700,47 +687,25 @@ public class Main extends Application
  			@Override
  			public void run()
  			{
+ 				Hyperlink link = new Hyperlink();
+ 				link.setText("http://example.com");
+ 				Alert alert = new Alert( AlertType.INFORMATION ) ;
+ 				alert.setTitle( "Information Dialog") ;
+ 				
  				Platform.runLater( new Runnable() 
            	 	{
-					@Override 
-					public void run()
+					@Override public void run()
            	 		{
-						Alert alert = new Alert( AlertType.WARNING ) ;
-						alert.setTitle( "Warning Dialog") ;
-						alert.setContentText( "You have to inter some ingredient(s) !" ) ;
-						
-						if ( search.getText() != null && !search.getText().isEmpty() )
-						{
-							final WebView browser = new WebView();
-							final WebEngine webEngine = browser.getEngine();
-			 		        link = new Hyperlink("http://blog.professional-webworkx.de");
-			 		        link2= new Hyperlink("http://www.stackoverflow.com");
-			 		        
-			 		        links.add(link);
-			 		        links.add(link2);
-			 		        
-			 		        for(final Hyperlink hyperlink : links) 
-			 		        {
-			 		            hyperlink.setOnAction(new EventHandler<ActionEvent>() 
-			 		            {
-			 		            	@Override
-			 		                public void handle(ActionEvent t) 
-			 		            	{
-			 		                    getHostServices().showDocument(hyperlink.getText());
-			 		                }
-			 		            });
-			 		        }
-
-			 		        listView.getItems().addAll(links);
-						}
-						else
-				 		{
-							Optional<ButtonType> result = alert.showAndWait() ;
-						}
+						link.setOnAction(new EventHandler<ActionEvent>() {
+		 				    @Override
+		 				    public void handle(ActionEvent e) {
+		 				    	Optional<ButtonType> result = alert.showAndWait() ;
+		 				    }
+		 				});
            	 		}
            	 	});
  			}
- 		}).start() ;
+ 		}).start() ; ;
     }
      
     /**
