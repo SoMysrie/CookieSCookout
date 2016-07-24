@@ -23,21 +23,14 @@ module.exports = function( obj )
 				    html: '<b>' + o.msg + '</b>'// html body 
 				};
 
-				console.log("maybe"); 
 				// send mail with defined transport object 
-				transporter.sendMail(mailOptions, function(error, info){
-				    console.log("maybe+1");
+				obj.transporter.sendMail( mailOptions , function( error, info ){
 				    if(error)
-				    {
-				    	console.log("nope");
 				    	throw error ;
-				    }
 				        
 				    // Signalement du succès à l'IHM
 					socket.emit( 'sendmail' , { status: 'success' } ) ;
 				});
-				console.log("maybe+2");
-				transporter.close();
 			}
 			catch( e )
 			{
@@ -45,7 +38,72 @@ module.exports = function( obj )
 				socket.emit( 'sendmail' , { status: 'error' } ) ;
 			}
 		}) ;
+		
+		
+		// // Evenement qui se déclenche lors de l'envoi du message
+		// socket.on( 'printrecipe' , function( o ){
+		// 	try
+		// 	{	
+		// 		var mySqlClient = obj.mysql.createConnection({
+		// 			host     : "localhost",
+		// 			user     : "root",
+		// 			password : "root",
+		// 			database : "CookieSCookout"
+		// 		});
 
+		// 		mySqlClient.connect();
+					
+		// 		var selectQuery = "SELECT * FROM Recipe ;" ; 
+ 
+		// 		mySqlClient.query(selectQuery,function select(error, results, fields) {
+		// 			if (error) 
+		// 			{
+		// 			    mySqlClient.end();
+		// 				socket.emit( 'printrecipe' , { status: 'error' } ) ;
+		// 				throw error ;
+		// 			}					 
+					
+		// 			if ( results.length > 0 )  
+		// 			{
+		// 				var recipe = null ;
+
+		// 				for( var i = 0 ; i < results.length ; i++)
+		// 				{
+		// 					if( recipe == null )
+		// 					{
+		// 						recipe = {
+		// 							'imgRecipe'	: results[i]['imgRecipe'] ,
+		// 			    			'idRecipe'	: results[i]['idRecipe']
+		// 			    		}
+
+		// 			    		continue ;
+		// 			    	}
+					    			
+		// 			    	recipes.push( recipe ) ;
+		// 					recipe = null ;
+		// 				}
+									    
+		// 				recipes.push( recipe ) ;
+
+		// 				// Envoi des recettes
+		// 				socket.emit( 'printrecipe' , recipes ) ;
+		// 			} 
+		// 			    else 
+		// 			    	socket.emit( 'printrecipe' , [] ) ;
+		// 			    mySqlClient.end();
+		// 		});
+				
+		// 		// Signalement du succès à l'IHM
+		// 		socket.emit( 'printrecipe' , { status: 'success' } ) ;
+		// 	}
+		// 	catch( e )
+		// 	{
+		// 		// Signalement de l'échec à l'IHM
+		// 		socket.emit( 'printrecipe' , { status: 'error' } ) ;
+		// 	}	
+		// }) ;
+
+	
 		// Evenement qui se déclenche lors de l'envoi de la recherche
 		socket.on( 'sendsearch' , function( o ){
 			if( !o.search )
