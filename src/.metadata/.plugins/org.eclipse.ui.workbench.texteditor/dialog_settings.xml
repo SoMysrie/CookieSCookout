@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="getTitle" key="selection"/>
+		<item value="cbRecipe" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="getTitle"/>
 			<item value="cbRecipe"/>
-			<item value="cbRe"/>
-			<item value="btsubmit"/>
-			<item value="listRecipe"/>
-			<item value="listIngredient"/>
-			<item value="vbbox"/>
-			<item value="vball"/>
+			<item value="Scene scene = new Scene(root, 750, 750);"/>
+			<item value="CookiesCookout"/>
+			<item value="launch"/>
+			<item value="System.out"/>
+			<item value="TODO"/>
+			<item value="pi"/>
+			<item value="listView"/>
 		</list>
 		<list key="replacehistory">
+			<item value="Scene scene = new Scene(root, 600, 600);"/>
+			<item value="QuickAndCode@"/>
+			<item value="// system.out"/>
+			<item value="// System.out.println"/>
 			<item value="listIngredient"/>
 			<item value="listToRecipe"/>
 			<item value="vball"/>
 			<item value="menuDB"/>
-			<item value="lblDB"/>
-			<item value=""/>
-			<item value="dbIngredient"/>
-			<item value="table"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="290" key="DIALOG_WIDTH"/>
+		<item value="443" key="DIALOG_WIDTH"/>
 		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
 		<item value="409" key="DIALOG_HEIGHT"/>
-		<item value="811" key="DIALOG_X_ORIGIN"/>
-		<item value="76" key="DIALOG_Y_ORIGIN"/>
+		<item value="658" key="DIALOG_X_ORIGIN"/>
+		<item value="103" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
