@@ -236,7 +236,7 @@ public class Search {
 
 	public void addDatas() {
 		Document doc;
-		//ArrayList<Integer> indexToRemove = new ArrayList<Integer>();
+		ArrayList<Integer> indexToRemove = new ArrayList<Integer>();
 		for (Site s : this.sites) {
 
 			for (int i = 0; i < s.getUrls().size(); i++) {

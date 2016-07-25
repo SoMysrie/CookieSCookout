@@ -1,12 +1,8 @@
 package link;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.UnknownHostException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +10,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
+import java.sql.*;
 import plugin.PluginLoader;
 import plugin.ResearchPlugin;
 import xmlLoader.XMLLoader;
@@ -46,7 +42,7 @@ public class Search {
 			ResultSet rs = st.executeQuery( getIngret) ;
 			while( rs.next() )
 			{
-				// System.out.println(rs.getInt("idIngredient") ) ;
+				System.out.println(rs.getInt("idIngredient") ) ;
 				ingre.add(rs.getInt("idIngredient"));
 			}
 		}
@@ -55,7 +51,7 @@ public class Search {
 			ResultSet rs = st.executeQuery( getEx) ;
 			while( rs.next() )
 			{
-				// System.out.println(rs.getInt("idIngredient") ) ;
+				System.out.println(rs.getInt("idIngredient") ) ;
 				ex.add(rs.getInt("idIngredient"));
 			}
 		}
@@ -75,7 +71,7 @@ public class Search {
 			}
 			getRec += "Compose.idIngredient=" + ex.get(i) + " );";
 		}
-		// System.out.println(getRec);
+		System.out.println(getRec);
 		ResultSet rs = st.executeQuery( getRec) ;
 		while( rs.next() )
 		{
@@ -97,7 +93,7 @@ public class Search {
 			int k=0;
 			for(String s : arrayIn) {
 				resultIng[k] = s;
-				// System.out.println(resultIng[k]);
+				System.out.println(resultIng[k]);
 				k++;
 			}
 			q="Select * from Recipe where Recipe.idRecipe="+rec.get(j)+";";
@@ -236,7 +232,7 @@ public class Search {
 
 	public void addDatas() {
 		Document doc;
-		//ArrayList<Integer> indexToRemove = new ArrayList<Integer>();
+		ArrayList<Integer> indexToRemove = new ArrayList<Integer>();
 		for (Site s : this.sites) {
 
 			for (int i = 0; i < s.getUrls().size(); i++) {
@@ -440,10 +436,10 @@ public class Search {
 		}
 
 		Collections.sort(resultSearch,Collections.reverseOrder());
-		/*
+
 		for( NotedRecipes recipe : resultSearch) {
 			// System.out.println(recipe.getMark() + "   " + recipe.getVote() + "   " + recipe.getUrl());
-		}*/
+		}
 	}
 
 	public List<String> getResult( final int count )

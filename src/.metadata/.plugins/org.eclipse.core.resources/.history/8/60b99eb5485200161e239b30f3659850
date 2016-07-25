@@ -1114,7 +1114,7 @@ public class Main extends Application
 		}
 		else
 		{
-			alert.showAndWait() ;
+			Optional<ButtonType> result = alert.showAndWait() ;
 		}
     }
     
@@ -1138,7 +1138,7 @@ public class Main extends Application
 		}
 		else
 		{
-			alert.showAndWait() ;
+			Optional<ButtonType> result = alert.showAndWait() ;
 		}
     }
     
@@ -1212,7 +1212,7 @@ public class Main extends Application
     	}
     	else
     	{
-    		alert.showAndWait() ;
+    		Optional<ButtonType> result = alert.showAndWait() ;
     	}
     	
     }

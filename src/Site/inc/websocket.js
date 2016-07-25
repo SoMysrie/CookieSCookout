@@ -206,17 +206,11 @@ module.exports = function( obj )
 						    	// Ajoute chaque id de la recette trouvée avec le nom de l'ingrédient
 						    	for( var i = 0 ; i < results.length ; i++)
 						    	{
-						    		console.log(results[i]['idRecipe']);
 								    ids_query += "Recipe.idRecipe = " + results[i]['idRecipe'] ;
 
 				    				if( i+1 < results.length )
 				    					ids_query += " OR " ;
 								} ;
-
-								console.log("SELECT * FROM Ingredient, COMPOSE, Recipe " 
-								  + "WHERE COMPOSE.idRecipe = Recipe.idRecipe "
-								  + "and Ingredient.idIngredient = COMPOSE.idIngredient "
-								  + "and ( " + ids_query + " ) ;" );
 
 						    	mySqlClient.query(
 									"SELECT * FROM Ingredient, COMPOSE, Recipe " 

@@ -16,8 +16,6 @@ public class PluginLoader {
 
 	private ArrayList<Object> classResearchPlugin;
 
-	private JarFile jar;
-
 	public PluginLoader() {
 		this.classResearchPlugin = new ArrayList<Object>();
 	}
@@ -66,7 +64,7 @@ public class PluginLoader {
 
 			loader = new URLClassLoader(new URL[] { u });
 
-			jar = new JarFile(f[index].getAbsolutePath());
+			JarFile jar = new JarFile(f[index].getAbsolutePath());
 
 			enumeration = jar.entries();
 
@@ -94,7 +92,7 @@ public class PluginLoader {
 
 	}
 
-	private void verifiyAndAddRessearchPlugin(Class<?> tmpClass, int i) {
+	private void verifiyAndAddRessearchPlugin(Class tmpClass, int i) {
 
 		Boolean correct = true;
 		Method[] tmpClassIMethodes = tmpClass.getInterfaces()[i].getMethods();
@@ -115,7 +113,7 @@ public class PluginLoader {
 			this.classResearchPlugin.add(tmpClass);
 	}
 
-	private Boolean verifiyImplementations(Class<?> tmpClass,
+	private Boolean verifiyImplementations(Class tmpClass,
 			Method[] tmpClassIMethodes, int j, Boolean find, int k) {
 		if (tmpClass.getMethods()[k].getName().equals(
 				tmpClassIMethodes[j].getName())
@@ -130,7 +128,7 @@ public class PluginLoader {
 		return find;
 	}
 
-	private Boolean checkParameters(Class<?> tmpClass, Method[] tmpClassIMethodes,
+	private Boolean checkParameters(Class tmpClass, Method[] tmpClassIMethodes,
 			int j, Boolean find, int k) {
 		for (int ind = 0; ind < tmpClass.getMethods()[k]
 				.getParameterTypes().length && !find; ind++) {

@@ -27,6 +27,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu ;
 import javafx.scene.control.MenuBar ;
 import javafx.scene.control.MenuItem ;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn ;
 import javafx.scene.control.TableView ;
@@ -36,6 +37,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox ;
 import javafx.scene.layout.VBox ;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser ;
 import javafx.stage.Stage ;
 import link.Search;
@@ -106,7 +109,7 @@ public class Main extends Application
     DBIng dbIngredient = new DBIng() ;
     Search searcher = new Search();
     
-    //  Bar de progression
+    //  TODO
     final ProgressIndicator pi = new ProgressIndicator();
     
     /**
@@ -211,7 +214,7 @@ public class Main extends Application
                 hball = new HBox() ;
                 hball.getChildren().addAll( vbchecks , vblabels , vbtext ) ;
                 
-                // Bar de progression cachée
+                // TODO
                 pi.setVisible(false);
                 
                 vball = new VBox() ;
@@ -719,7 +722,7 @@ public class Main extends Application
 						public void run() {
 							listView.getItems().clear();
 							pi.setVisible(true);
-							pi.setProgress(0.30); 
+							pi.setProgress(0.30); // TODO
 							
 							new Thread(new Runnable(){
 								@Override
@@ -732,7 +735,7 @@ public class Main extends Application
 										@Override
 										public void run()
 										{
-											pi.setProgress(0.50); // Progression à 50%
+											pi.setProgress(0.50); // TODO
 
 											new Thread(new Runnable() {
 												@Override
@@ -748,7 +751,7 @@ public class Main extends Application
 										 		        for( int i = 0; i < results.size() ; i++ )
 										 		        	links.add( new Hyperlink( results.get(i) ) ) ;
 										 		        
-														pi.setProgress(0.60); // Progression à 60%
+														pi.setProgress(0.60); // TODO
 										 		        
 														Thread.sleep(500);
 														
@@ -757,7 +760,7 @@ public class Main extends Application
 															@Override 
 															public void run()
 										           	 		{
-												 		        // Progression à 80%
+												 		        // TODO
 												 		        pi.setProgress(0.80);
 												 		        
 												 		        for( final Hyperlink hyperlink : links ) 
@@ -774,7 +777,7 @@ public class Main extends Application
 	
 												 		        listView.getItems().addAll(links);
 												 		        
-												 		        // Progression à 100%
+												 		        // TODO
 												 		        pi.setProgress(1.0);
 										           	 		}
 										           	 	});
@@ -1114,7 +1117,7 @@ public class Main extends Application
 		}
 		else
 		{
-			alert.showAndWait() ;
+			Optional<ButtonType> result = alert.showAndWait() ;
 		}
     }
     
@@ -1138,7 +1141,7 @@ public class Main extends Application
 		}
 		else
 		{
-			alert.showAndWait() ;
+			Optional<ButtonType> result = alert.showAndWait() ;
 		}
     }
     
@@ -1212,7 +1215,7 @@ public class Main extends Application
     	}
     	else
     	{
-    		alert.showAndWait() ;
+    		Optional<ButtonType> result = alert.showAndWait() ;
     	}
     	
     }

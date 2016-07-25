@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Convert local variable &apos;plugin.PluginLoader.initializeLoader().jar&apos; in &apos;plugin.PluginLoader.initializeLoader()&apos; to field&#x0A;- Original project: &apos;JavaFXApp&apos;&#x0A;- Original element: &apos;plugin.PluginLoader.initializeLoader().jar&apos;&#x0A;- Field name: &apos;jar&apos;&#x0A;- Initialize field in method&#x0A;- Declared visibility: &apos;private&apos;" description="Convert local variable &apos;jar&apos; to field" final="false" flags="2" id="org.eclipse.jdt.ui.promote.temp" initialize="1" input="/src&lt;plugin{PluginLoader.java" name="jar" selection="1493 45" stamp="1469438368426" static="false" version="1.0" visibility="2"/>
+</session>

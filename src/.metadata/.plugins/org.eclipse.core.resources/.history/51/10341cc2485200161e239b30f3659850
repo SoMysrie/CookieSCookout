@@ -3,7 +3,7 @@ package link;
 /**
  * Created by Nicolas_Travail on 17/03/2016.
  */
-public class NotedRecipes implements Comparable<Object> {
+public class NotedRecipes implements Comparable {
     
 	private String name;
 	private String url;
@@ -72,7 +72,7 @@ public class NotedRecipes implements Comparable<Object> {
 		this.name= name;
 		this.url = url;
 		this.vote = vote;
-		//this.mark = mark;
+		this.mark = mark;
 		this.ingredients = ingredients;
 		this.recipe = recipe;
 	}
